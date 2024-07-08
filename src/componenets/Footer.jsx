@@ -5,7 +5,6 @@ export default function Footer() {
     const scriptUrls = [
       '../../public/assets/js/bootstrap.bundle.min.js',
       '../../public/assets/js/splide.min.js',
-      '../../public/assets/js/slimselect.min.js',
       '../../public/assets/js/smooth-scrollbar.js',
       '../../public/assets/js/plyr.min.js',
       '../../public/assets/js/photoswipe.min.js',

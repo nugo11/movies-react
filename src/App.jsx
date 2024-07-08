@@ -1,7 +1,5 @@
 import { useState } from "react";
 import db from "./db/articles.json";
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
 
 function getRatingclassName(rating) {
   if (Number(rating) < 6) return "red";
@@ -55,7 +53,7 @@ function App() {
                           <li className="splide__slide">
                             <div className="item item--hero">
                               <div className="item__cover">
-                                 <LazyLoadImage effect="blur"
+                                 <img 
                                   src={`/src/db/${item.poster}`}
                                   alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                                 />
@@ -228,7 +226,7 @@ function App() {
                       <div className="col-6 col-sm-4 col-lg-3 col-xl-2">
                         <div className="item">
                           <div className="item__cover">
-                             <LazyLoadImage effect="blur"
+                             <img 
                               src={`/src/db/${item.poster}`}
                               alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                             />
@@ -349,7 +347,7 @@ function App() {
                             <li className="splide__slide">
                               <div className="item item--hero">
                                 <div className="item__cover" id="sabavshvo">
-                                   <LazyLoadImage effect="blur"
+                                   <img 
                                     src={`/src/db/${item.poster}`}
                                     alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                                   />
@@ -467,7 +465,7 @@ function App() {
                     <li className="splide__slide">
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
-                           <LazyLoadImage effect="blur"
+                           <img 
                             src="../public/assets/img/tv/tv-01.png"
                             alt="მთავარი არხი"
                           />
@@ -477,7 +475,7 @@ function App() {
                     <li className="splide__slide">
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
-                           <LazyLoadImage effect="blur"
+                           <img 
                             src="../public/assets/img/tv/tv-02.png"
                             alt="მთავარი არხი"
                           />
@@ -487,7 +485,7 @@ function App() {
                     <li className="splide__slide">
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
-                           <LazyLoadImage effect="blur"
+                           <img 
                             src="../public/assets/img/tv/tv-03.png"
                             alt="მთავარი არხი"
                           />
@@ -497,7 +495,7 @@ function App() {
                     <li className="splide__slide">
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
-                           <LazyLoadImage effect="blur"
+                           <img 
                             src="../public/assets/img/tv/tv-04.png"
                             alt="მთავარი არხი"
                           />
@@ -507,7 +505,7 @@ function App() {
                     <li className="splide__slide">
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
-                           <LazyLoadImage effect="blur"
+                           <img 
                             src="../public/assets/img/tv/tv-05.png"
                             alt="მთავარი არხი"
                           />
@@ -517,7 +515,7 @@ function App() {
                     <li className="splide__slide">
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
-                           <LazyLoadImage effect="blur"
+                           <img 
                             src="../public/assets/img/tv/tv-06.png"
                             alt="მთავარი არხი"
                           />
@@ -527,7 +525,7 @@ function App() {
                     <li className="splide__slide">
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
-                           <LazyLoadImage effect="blur"
+                           <img 
                             src="../public/assets/img/tv/tv-07.png"
                             alt="მთავარი არხი"
                           />
@@ -537,7 +535,7 @@ function App() {
                     <li className="splide__slide">
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
-                           <LazyLoadImage effect="blur"
+                           <img 
                             src="../public/assets/img/tv/tv-08.png"
                             alt="მთავარი არხი"
                           />
@@ -547,7 +545,7 @@ function App() {
                     <li className="splide__slide">
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
-                           <LazyLoadImage effect="blur"
+                           <img 
                             src="../public/assets/img/tv/tv-09.png"
                             alt="მთავარი არხი"
                           />

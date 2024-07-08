@@ -8,6 +8,7 @@ import App from './App.jsx'
 import Header from "./componenets/Header.jsx";
 import Footer from "./componenets/Footer.jsx";
 import Detail from "./componenets/Detail.jsx";
+import Mov from "./componenets/Mov.jsx";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/:detailLink",
     element: <Detail />
+  },
+  {
+    path: "/movies",
+    element: <Mov />
   }
 ]);
 
