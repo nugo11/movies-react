@@ -36,7 +36,7 @@ export default function Detail() {
       <div className="fullbg-pattern"></div>
       <div className="detail-container">
         <section className="section section--details">
-          <div class="content__head content__head--mt">
+          <div className="content__head content__head--mt">
             <div className="container">
               <div className="row">
                 <div className="col-12">
@@ -105,7 +105,7 @@ export default function Detail() {
                       <div className="row">
                       <div className="col-12">
       {loading ? (
-       <span class="loader"></span>
+       <span className="loader"></span>
       ) : (
         <div key={index} dangerouslySetInnerHTML={{ __html: item }} />
       )}

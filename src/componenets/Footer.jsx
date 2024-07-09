@@ -17,9 +17,6 @@ export default function Footer() {
         const script = document.createElement('script');
         script.src = src;
         script.async = false; // Load scripts in order
-        script.onload = () => {
-          console.log(`${src} loaded`);
-        };
         script.onerror = () => {
           console.error(`Error loading ${src}`);
         };

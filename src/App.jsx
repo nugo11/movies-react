@@ -10,8 +10,11 @@ function getRatingclassName(rating) {
 
 
 function App() {
-  const [swich, setSwich] = useState('tab-1');
-  console.log(swich)
+   const [tab, setTab] = useState('tab-1'); 
+
+  const handleTabClick = (tabId) => {
+    setTab(tabId);
+  };
   return (
     <>
       <div className="fulminebg"></div>
@@ -50,7 +53,7 @@ function App() {
                     {db.slice(0, 6).map((item) => {
                       return (
                         <>
-                          <li className="splide__slide">
+                          <li className="splide__slide" key={`${item.detailLink}${item.year}`}>
                             <div className="item item--hero">
                               <div className="item__cover">
                                  <img 
@@ -136,16 +139,12 @@ function App() {
           <div className="container">
             <div className="row">
               <div className="col-12">
-                {/* content title */}
                 <h2 className="content__title">
                   <b>
                     <span style={{ color: "#f9ab00" }}>ახა</span>ლი
                   </b>{" "}
                   დამატებული
                 </h2>
-                {/* end content title */}
-
-                {/* content tabs nav */}
                 <div className="combineul">
                   <ul
                     className="nav nav-tabs content__tabs"
@@ -155,44 +154,26 @@ function App() {
                     <li className="nav-item" role="presentation">
                       <button
                         id="1-tab"
-                        className="active"
-                        data-bs-toggle="tab"
-                        data-bs-target="#tab-1"
-                        type="button"
-                        role="tab"
-                        aria-controls="tab-1"
-                        aria-selected="true"
-                        onClick={() => setSwich('tab-1')}
+                        className={tab === 'tab-1' ? 'active' : ''}
+                        onClick={() => handleTabClick('tab-1')}
                       >
                         ფილმები
                       </button>
                     </li>
-
                     <li className="nav-item" role="presentation">
                       <button
                         id="2-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#tab-2"
-                        type="button"
-                        role="tab"
-                        aria-controls="tab-2"
-                        aria-selected="false"
-                        onClick={() => setSwich('tab-2')}
+                        className={tab === 'tab-2' ? 'active' : ''}
+                        onClick={() => handleTabClick('tab-2')}
                       >
                         სერიალები
                       </button>
                     </li>
-
                     <li className="nav-item" role="presentation">
                       <button
                         id="3-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#tab-3"
-                        type="button"
-                        role="tab"
-                        aria-controls="tab-3"
-                        aria-selected="false"
-                        onClick={() => setSwich('tab-3')}
+                        className={tab === 'tab-3' ? 'active' : ''}
+                        onClick={() => handleTabClick('tab-3')}
                       >
                         ანიმე
                       </button>
@@ -202,97 +183,84 @@ function App() {
                     <a href="/movies">ყველას ნახვა</a>
                   </ul>
                 </div>
-                {/* end content tabs nav */}
               </div>
             </div>
           </div>
         </div>
 
         <div className="container">
-          {/* content tabs */}
           <div className="tab-content">
             <div
-              className="tab-pane fade show active"
+              className={`tab-pane fade ${tab === 'tab-1' ? 'show active' : ''}`}
               id="tab-1"
               role="tabpanel"
               aria-labelledby="1-tab"
-              tabindex="0"
+              tabIndex="0"
             >
               <div className="row">
-                {db.slice(0, 12).map((item) => {
-                  return (
-                    <>
-                      {/* item */}
-                      <div className="col-6 col-sm-4 col-lg-3 col-xl-2">
-                        <div className="item">
-                          <div className="item__cover">
-                             <img 
-                              src={`/src/db/${item.poster}`}
-                              alt={`${item.title_geo} / ${item.title_en} ქართულად`}
-                            />
-                            <a href={`/${item.detailLink}`} className="item__play">
-                              <i className="ti ti-player-play-filled"></i>
-                            </a>
-                            <span
+                {db.slice(0, 12).map((item) => (
+                  <div key={item.detailLink} className="col-6 col-sm-4 col-lg-3 col-xl-2">
+                    <div className="item">
+                      <div className="item__cover">
+                        <img 
+                          src={`/src/db/${item.poster}`}
+                          alt={`${item.title_geo} / ${item.title_en} ქართულად`}
+                        />
+                        <a href={`/${item.detailLink}`} className="item__play">
+                          <i className="ti ti-player-play-filled"></i>
+                        </a>
+                        <span
                               className={`item__rate item__rate--${getRatingclassName(
                                 item.imdb
                               )}`}
                             >
                               {item.imdb}
                             </span>
-                            <div className="item__favorite" type="button">
-                              HD
-                            </div>
-                            <div className="item__lang" type="button">
-                              <ul>
-                                <li
-                                  style={{
-                                    color: item.country[0] ? "white" : "gray",
-                                  }}
-                                >
-                                  GEO
-                                </li>
-                                <li
-                                  style={{
-                                    color: item.country[1] ? "white" : "gray",
-                                  }}
-                                >
-                                  ENG
-                                </li>
-                                <li
-                                  style={{
-                                    color: item.country[2] ? "white" : "gray",
-                                  }}
-                                >
-                                  RUS
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          <div className="item__content">
-                            <h3 className="item__title">
-                              <a href={`/${item.detailLink}`}>
-                                {item.title_geo}
-                              </a>
-                            </h3>
-                            <span className="item__category">
-                              <a href={`/${item.detailLink}`}>
-                                {item.title_en}
-                              </a>
-                            </span>
-                          </div>
+                        <div className="item__favorite" type="button">
+                          HD
+                        </div>
+                        <div className="item__lang" type="button">
+                          <ul>
+                            <li style={{ color: item.country[0] ? "white" : "gray" }}>GEO</li>
+                            <li style={{ color: item.country[1] ? "white" : "gray" }}>ENG</li>
+                            <li style={{ color: item.country[2] ? "white" : "gray" }}>RUS</li>
+                          </ul>
                         </div>
                       </div>
-                      {/* end item */}
-                    </>
-                  );
-                })}
+                      <div className="item__content">
+                        <h3 className="item__title">
+                          <a href={`/${item.detailLink}`}>{item.title_geo}</a>
+                        </h3>
+                        <span className="item__category">
+                          <a href={`/${item.detailLink}`}>{item.title_en}</a>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-
-         
+            <div
+              className={`tab-pane fade ${tab === 'tab-2' ? 'show active' : ''}`}
+              id="tab-2"
+              role="tabpanel"
+              aria-labelledby="2-tab"
+              tabIndex="0"
+            >
+              {/* Serials content */}
+              <p>Serials content goes here</p>
+            </div>
+            <div
+              className={`tab-pane fade ${tab === 'tab-3' ? 'show active' : ''}`}
+              id="tab-3"
+              role="tabpanel"
+              aria-labelledby="3-tab"
+              tabIndex="0"
+            >
+              {/* Anime content */}
+              <p>Anime content goes here</p>
+            </div>
           </div>
-          {/* end content tabs */}
         </div>
       </section>
 
@@ -344,7 +312,7 @@ function App() {
                       .map((item) => {
                         return (
                           <>
-                            <li className="splide__slide">
+                            <li className="splide__slide" key={`${item.detailLink}${item.imdb}`}>
                               <div className="item item--hero">
                                 <div className="item__cover" id="sabavshvo">
                                    <img 

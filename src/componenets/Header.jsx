@@ -84,10 +84,10 @@ export default function Header() {
                           (data) =>
                             String(data.title_geo).includes(change) ||
                             String(data.title_en).toLowerCase().includes(change)
-                        ).slice(0, 6).map((item) => {
-                          return (
-                            <>
-                            <a href={`/${item.detailLink}`}>
+                        )
+                        .slice(0, 6)
+                        .map((item) => (
+                            <a href={`/${item.detailLink}`} key={item.detailLink}>
                               <li>
                                 <img
                                   src={`../src/db/${item.poster}`}
@@ -98,7 +98,7 @@ export default function Header() {
                                   <small>{item.title_en}</small>
                                 </div>
                                 <span
-                                  class="item_rate_quicksearch"
+                                  className="item_rate_quicksearch"
                                   style={{
                                     border: `1px solid ${getRatingclassName(
                                       item.imdb
@@ -108,10 +108,8 @@ export default function Header() {
                                   {item.imdb}
                                 </span>
                               </li>
-                              </a>
-                            </>
-                          );
-                        })}
+                            </a>
+                        ))}
                     </ul>
                   </div>
 
