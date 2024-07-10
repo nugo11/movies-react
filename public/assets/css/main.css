@@ -4939,17 +4939,17 @@ small {
   color: #f9ab00;
 }
 
-
 .selected-options {
   margin-top: 10px;
 }
 
 .filter_two {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    gap: 20px;
-    font-size: 14px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 20px;
+  font-size: 14px;
+  margin-left: 10px;
 }
 
 .filter_two select {
@@ -4959,6 +4959,15 @@ small {
   border-radius: 8px;
   padding: 17px 20px;
   color: rgba(255, 255, 255, 0.68);
+  cursor: pointer;
+}
+
+.filter_two select:hover {
+  color: #f9ab00;
+}
+
+.filter_two select option {
+  color: #f9ab00;
 }
 
 .filter_two input {
@@ -4980,7 +4989,7 @@ small {
 }
 
 #fullSearch {
-    background-color: #f9ab00;
+  background-color: #f9ab00;
   border-radius: 8px;
   cursor: pointer;
   padding: 15px 50px;
@@ -4992,15 +5001,38 @@ small {
 }
 
 #fullSearch:hover {
-    background-color: #f9ab00;
-    color: white;
+  background-color: #f9ab00;
+  color: white;
 }
 
-.filter_year, .filter_imdb {
+.filter_year,
+.filter_imdb {
   background-color: #222028;
   padding: 10px 15px;
   border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 10px
+  gap: 10px;
+}
+
+.center404 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.imgbg404 {
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 9px 5px 0px;
+}
+
+.imgbg404 img {
+  width: 180px;
 }

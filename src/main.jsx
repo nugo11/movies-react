@@ -12,7 +12,6 @@ import Detail from "./componenets/Detail.jsx";
 import Mov from "./componenets/Mov.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
     <Router>
       <Header />
       <Routes>
@@ -22,5 +21,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </Routes>
       <Footer />
     </Router>
-  </React.StrictMode>
 );

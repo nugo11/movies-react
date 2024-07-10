@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
 const options = [
-  "ყველა ფილმი",
   "კომედია",
   "სათავგადასავლო",
   "საშინელება",
@@ -48,6 +46,14 @@ function useQuery() {
 
 export default function Mov() {
   const [movies, setMovies] = useState(null);
+  const [filterValues, setFilterValues] = useState({
+    country: "",
+    year_from: 1921,
+    year_to: 2026,
+    imdb_from: 1.1,
+    imdb_to: 9.9,
+    genre: [],
+  });
   const query = useQuery();
   const navigate = useNavigate();
   const moviesPerPage = 18;
@@ -77,14 +83,30 @@ export default function Mov() {
   const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
   const currentMovies = movies ? movies.slice(indexOfFirstMovie, indexOfLastMovie) : [];
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
+  const handleFilterChange = (name, value) => {
+    setFilterValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const applyFilters = () => {
     const params = new URLSearchParams(query);
-    if (value) {
-      params.set(name, value);
-    } else {
-      params.delete(name);
-    }
+
+    Object.keys(filterValues).forEach((key) => {
+      if (key === "genre") {
+        params.delete("genre");
+        filterValues[key].forEach((g) => params.append("genre", g));
+      } else if (filterValues[key]) {
+        params.set(key, filterValues[key]);
+      } else {
+        params.delete(key);
+      }
+    });
+
+  params.delete("page");
+
+
     navigate(`?${params.toString()}`);
   };
 
@@ -92,7 +114,7 @@ export default function Mov() {
     const params = new URLSearchParams(query);
     params.set("page", pageNumber);
     navigate(`?${params.toString()}`);
-    window.scrollTo({top: 0});
+    window.scrollTo({ top: 0 });
   };
 
   const renderPagination = () => {
@@ -105,12 +127,11 @@ export default function Mov() {
     }
 
     return (
-      
       <ul className="paginator">
         {currentPage > 1 && (
           <li className="paginator__item paginator__item--prev">
             <a onClick={() => paginate(currentPage - 1)}>
-            <i className="ti ti-chevron-left"></i>
+              <i className="ti ti-chevron-left"></i>
             </a>
           </li>
         )}
@@ -136,40 +157,38 @@ export default function Mov() {
           return null;
         })}
         {currentPage < totalPages && (
-          <li  className="paginator__item paginator__item--next">
+          <li className="paginator__item paginator__item--next">
             <a onClick={() => paginate(currentPage + 1)}>
-            <i className="ti ti-chevron-right"></i>
+              <i className="ti ti-chevron-right"></i>
             </a>
           </li>
         )}
       </ul>
-    
-  );
-};
-const scrollRef = useRef(null);
-const [selectedOptions, setSelectedOptions] = useState([]);
-
-const [pushSelected, setPushSelected] = useState([]);
-  function selectedPush() {
-    setPushSelected(selectedOptions);
-  }
-
-  const handleOptionClick = (option) => {
-    setSelectedOptions((prevSelected) =>
-      prevSelected.includes(option)
-        ? prevSelected.filter((opt) => opt !== option)
-        : [...prevSelected, option]
     );
   };
 
-const scrollLeft = () => {
-  scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
-};
+  const scrollRef = useRef(null);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
-const scrollRight = () => {
-  scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
-};
+  const handleOptionClick = (option) => {
+    const newSelectedOptions = selectedOptions.includes(option)
+      ? selectedOptions.filter((opt) => opt !== option)
+      : [...selectedOptions, option];
+    
+    setSelectedOptions(newSelectedOptions);
+    setFilterValues((prevValues) => ({
+      ...prevValues,
+      genre: newSelectedOptions,
+    }));
+  };
 
+  const scrollLeft = () => {
+    scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -200,8 +219,8 @@ const scrollRight = () => {
       </section>
       {/* end page title */}
 
-     {/*filter */}
-     <div className="filter">
+        {/* filter */}
+        <div className="filter">
         <div className="container">
           <div className="row">
             <div className="col-12">
@@ -229,21 +248,47 @@ const scrollRight = () => {
                 </div>
 
                 <div className="filter_two">
-                  <select name="lang" id="land">
+                  <select
+                    name="country"
+                    id="lang"
+                    value={filterValues.lang}
+                    onChange={(e) => handleFilterChange(e.target.name, e.target.value)}
+                  >
+                    <option value="">გახმოვანება</option>
                     <option value="ქართულად">ქართულად</option>
                     <option value="ინგლისურად">ინგლისურად</option>
                     <option value="რუსულად">რუსულად</option>
                   </select>
                   <div className="filter_year">
-                    <input type="text" value="1921" id="" />
-                    <input type="text" value="2026" id="" />
+                    <input
+                      type="number"
+                      placeholder="1921"
+                      value={filterValues.year_from}
+                      onChange={(e) => handleFilterChange('year_from', e.target.value)}
+                    />
+                    <input
+                      type="number"
+                      placeholder="2026"
+                      value={filterValues.year_to}
+                      onChange={(e) => handleFilterChange('year_to', e.target.value)}
+                    />
                   </div>
                   <div className="filter_imdb">
-                    <input type="text" value="1.1" id="" />
-                    <input type="text" value="10" id="" />
+                    <input
+                      type="number"
+                      placeholder="1.1"
+                      value={filterValues.imdb_from}
+                      onChange={(e) => handleFilterChange('imdb_from', e.target.value)}
+                    />
+                    <input
+                      type="number"
+                      placeholder="9.9"
+                      value={filterValues.imdb_to}
+                      onChange={(e) => handleFilterChange('imdb_to', e.target.value)}
+                    />
                   </div>
-                  <button id="fullSearch" >
-                    ძებნა
+                  <button id="fullSearch" onClick={applyFilters}>
+                    მოძებნა
                   </button>
                 </div>
               </div>
@@ -251,10 +296,10 @@ const scrollRight = () => {
           </div>
         </div>
       </div>
-      {/*end filter */}
+      {/* end filter */}
 
-      {/* catalog */}
-      <div className="section section--catalog">
+     {/* catalog */}
+     <div className="section section--catalog">
         <div className="container">
           <div className="row">
             {/* item */}

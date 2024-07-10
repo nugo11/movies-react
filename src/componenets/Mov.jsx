@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import img404 from '../../public/assets/img/404 - mov.webp'
 
 const options = [
   "კომედია",
@@ -63,12 +64,13 @@ export default function Mov() {
     const filters = Object.fromEntries(query.entries());
     fetchMovies(filters)
       .then((data) => {
+        console.log(data);
         setMovies(data);
       })
       .catch((error) => {
         console.error("Error fetching movies:", error);
       });
-  }, [query]);
+  }, [query.toString()]);
 
   const fetchMovies = async (filters) => {
     const queryString = new URLSearchParams(filters).toString();
@@ -78,6 +80,7 @@ export default function Mov() {
     }
     return await response.json();
   };
+
 
   const indexOfLastMovie = currentPage * moviesPerPage;
   const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
@@ -91,24 +94,25 @@ export default function Mov() {
   };
 
   const applyFilters = () => {
-    const params = new URLSearchParams(query);
+  const params = new URLSearchParams(query);
 
-    Object.keys(filterValues).forEach((key) => {
-      if (key === "genre") {
-        params.delete("genre");
-        filterValues[key].forEach((g) => params.append("genre", g));
-      } else if (filterValues[key]) {
-        params.set(key, filterValues[key]);
-      } else {
-        params.delete(key);
+  Object.keys(filterValues).forEach((key) => {
+    if (key === "genre") {
+      params.delete("genre");
+      if (filterValues[key].length > 0) {
+        params.set("genre", filterValues[key].join(","));
       }
-    });
+    } else if (filterValues[key]) {
+      params.set(key, filterValues[key]);
+    } else {
+      params.delete(key);
+    }
+  });
 
   params.delete("page");
 
-
-    navigate(`?${params.toString()}`);
-  };
+  navigate(`?${params.toString()}`);
+};
 
   const paginate = (pageNumber) => {
     const params = new URLSearchParams(query);
@@ -174,7 +178,7 @@ export default function Mov() {
     const newSelectedOptions = selectedOptions.includes(option)
       ? selectedOptions.filter((opt) => opt !== option)
       : [...selectedOptions, option];
-    
+
     setSelectedOptions(newSelectedOptions);
     setFilterValues((prevValues) => ({
       ...prevValues,
@@ -368,7 +372,11 @@ export default function Mov() {
                 ))}
               </>
             ) : (
-              <p>Loading...</p>
+              <div className="center404">
+                <div className="imgbg404">
+                <img src={img404} alt="404 error movie" /></div>
+              <b style={{fontSize: 40, color: '#f9ab00'}}>ფილმი ვერ მოიძებნა</b>
+              </div>
             )}
             {/* end item */}
           </div>
