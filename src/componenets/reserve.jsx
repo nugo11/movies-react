@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import db from "../db/articles.json";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const itemsPerPage = 18;
 
 const options = [
   "ყველა ფილმი",
@@ -37,118 +35,121 @@ const options = [
   "მისტიკა",
 ];
 
+function getRatingClassName(rating) {
+  if (Number(rating) < 6) return "red";
+  if (Number(rating) < 7) return "yellow";
+  if (Number(rating) >= 7) return "green";
+  return "";
+}
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 export default function Mov() {
-  function getRatingclassName(rating) {
-    if (Number(rating) < 6) return "red";
-    if (Number(rating) < 7) return "yellow";
-    if (Number(rating) >= 7) return "green";
-    return "";
-  }
-
+  const [movies, setMovies] = useState(null);
+  const query = useQuery();
   const navigate = useNavigate();
-  const location = useLocation();
-  const [currentPage, setCurrentPage] = useState(1);
-  
+  const moviesPerPage = 18;
+  const currentPage = Number(query.get("page")) || 1;
+
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const page = queryParams.get('page');
-    if (page) {
-      setCurrentPage(Number(page));
+    const filters = Object.fromEntries(query.entries());
+    fetchMovies(filters)
+      .then((data) => {
+        setMovies(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching movies:", error);
+      });
+  }, [query]);
+
+  const fetchMovies = async (filters) => {
+    const queryString = new URLSearchParams(filters).toString();
+    const response = await fetch(`http://localhost:3000/api/articles?${queryString}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch movies");
     }
-  }, [location]);
+    return await response.json();
+  };
 
-  const totalPages = Math.ceil(db.length / itemsPerPage);
-  const currentItems = db.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const indexOfLastMovie = currentPage * moviesPerPage;
+  const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
+  const currentMovies = movies ? movies.slice(indexOfFirstMovie, indexOfLastMovie) : [];
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    navigate(`/movies?page=${page}`);
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    const params = new URLSearchParams(query);
+    if (value) {
+      params.set(name, value);
+    } else {
+      params.delete(name);
+    }
+    navigate(`?${params.toString()}`);
+  };
+
+  const paginate = (pageNumber) => {
+    const params = new URLSearchParams(query);
+    params.set("page", pageNumber);
+    navigate(`?${params.toString()}`);
+    window.scrollTo({top: 0});
   };
 
   const renderPagination = () => {
-    const pages = [];
-    const pageNeighbours = 2;
-    const totalNumbers = (pageNeighbours * 2) + 2;
-    const totalBlocks = totalNumbers + 2;
+    if (!movies) return null;
 
-    if (totalPages > totalBlocks) {
-      const startPage = Math.max(2, currentPage - pageNeighbours);
-      const endPage = Math.min(totalPages - 1, currentPage + pageNeighbours);
-      let hasLeftSpill = startPage > 2;
-      let hasRightSpill = (totalPages - endPage) > 1;
-      let spillOffset = totalNumbers - (endPage - startPage + 1);
-
-      switch (true) {
-        case (hasLeftSpill && !hasRightSpill): {
-          let extraPages = [...Array(spillOffset)].map((_, index) => startPage - index - 1);
-          pages.push(1, 'LEFT', ...extraPages.reverse(), ...range(startPage, endPage), totalPages);
-          break;
-        }
-
-        case (!hasLeftSpill && hasRightSpill): {
-          let extraPages = [...Array(spillOffset)].map((_, index) => endPage + index + 1);
-          pages.push(1, ...range(startPage, endPage), ...extraPages, 'RIGHT', totalPages);
-          break;
-        }
-
-        case (hasLeftSpill && hasRightSpill):
-        default: {
-          pages.push(1, 'LEFT', ...range(startPage, endPage), 'RIGHT', totalPages);
-          break;
-        }
-      }
-    } else {
-      pages.push(...range(1, totalPages));
+    const totalPages = Math.ceil(movies.length / moviesPerPage);
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
     }
 
     return (
+      
       <ul className="paginator">
-        <li className={`paginator__item paginator__item--prev ${currentPage === 1 ? 'disabled' : ''}`}>
-          <a href="#" onClick={() => handlePageChange(currentPage - 1)}>
+        {currentPage > 1 && (
+          <li className="paginator__item paginator__item--prev">
+            <a onClick={() => paginate(currentPage - 1)}>
             <i className="ti ti-chevron-left"></i>
-          </a>
-        </li>
-        {pages.map((page, index) =>
-          page === 'LEFT' ? (
-            <li key={index} className="paginator__item">
-              <span>...</span>
-            </li>
-          ) : page === 'RIGHT' ? (
-            <li key={index} className="paginator__item">
-              <span>...</span>
-            </li>
-          ) : (
-            <li key={index} className={`paginator__item ${currentPage === page ? 'paginator__item--active' : ''}`}>
-              <a href="#" onClick={() => handlePageChange(page)}>{page}</a>
-            </li>
-          )
+            </a>
+          </li>
         )}
-        <li className={`paginator__item paginator__item--next ${currentPage === totalPages ? 'disabled' : ''}`}>
-          <a href="#" onClick={() => handlePageChange(currentPage + 1)}>
+        {pageNumbers.map((number) => {
+          if (
+            number === 1 ||
+            number === totalPages ||
+            (number >= currentPage - 2 && number <= currentPage + 2)
+          ) {
+            return (
+              <li
+                key={number}
+                className={`paginator__item ${currentPage === number ? "paginator__item--active" : ""}`}
+              >
+                <a onClick={() => paginate(number)} className="page-link">
+                  {number}
+                </a>
+              </li>
+            );
+          } else if (number === 2 || number === totalPages - 1) {
+            return <li key={number} className="page-item">...</li>;
+          }
+          return null;
+        })}
+        {currentPage < totalPages && (
+          <li  className="paginator__item paginator__item--next">
+            <a onClick={() => paginate(currentPage + 1)}>
             <i className="ti ti-chevron-right"></i>
-          </a>
-        </li>
+            </a>
+          </li>
+        )}
       </ul>
-    );
-  };
+    
+  );
+};
+const scrollRef = useRef(null);
+const [selectedOptions, setSelectedOptions] = useState([]);
 
-  const range = (from, to, step = 1) => {
-    let i = from;
-    const range = [];
-
-    while (i <= to) {
-      range.push(i);
-      i += step;
-    }
-
-    return range;
-  };
-
-
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const scrollRef = useRef(null);
-
-  const [pushSelected, setPushSelected] = useState([]);
+const [pushSelected, setPushSelected] = useState([]);
   function selectedPush() {
     setPushSelected(selectedOptions);
   }
@@ -161,28 +162,28 @@ export default function Mov() {
     );
   };
 
-  const scrollLeft = () => {
-    scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
-  };
+const scrollLeft = () => {
+  scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
+};
 
-  const scrollRight = () => {
-    scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
-  };
+const scrollRight = () => {
+  scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
+};
 
 
   return (
     <>
-      {/*page title */}
+      {/* page title */}
       <section className="section section--first" style={{ marginTop: 80 }}>
         <div className="container">
           <div className="row">
             <div className="col-12">
               <div className="section__wrap">
-                {/*section title */}
+                {/* section title */}
                 <h1 className="section__title section__title--head">ფილმები</h1>
-                {/*end section title */}
+                {/* end section title */}
 
-                {/*breadcrumbs */}
+                {/* breadcrumbs */}
                 <ul className="breadcrumbs">
                   <li className="breadcrumbs__item">
                     <a href="/">მთავარი</a>
@@ -191,13 +192,13 @@ export default function Mov() {
                     ფილმები
                   </li>
                 </ul>
-                {/*end breadcrumbs */}
+                {/* end breadcrumbs */}
               </div>
             </div>
           </div>
         </div>
       </section>
-      {/*end page title */}
+      {/* end page title */}
 
      {/*filter */}
      <div className="filter">
@@ -241,7 +242,7 @@ export default function Mov() {
                     <input type="text" value="1.1" id="" />
                     <input type="text" value="10" id="" />
                   </div>
-                  <button id="fullSearch" onClick={() => selectedPush()}>
+                  <button id="fullSearch" >
                     ძებნა
                   </button>
                 </div>
@@ -252,29 +253,91 @@ export default function Mov() {
       </div>
       {/*end filter */}
 
-      {/*catalog */}
+      {/* catalog */}
       <div className="section section--catalog">
         <div className="container">
           <div className="row">
-            {/*item */}
-            {fetch('http://localhost:3000/api/movies')
-  .then(res => res.json()) 
-  .then(data => data)}
-            {/*end item */}
+            {/* item */}
+            {currentMovies.length ? (
+              <>
+                {currentMovies.map((item) => (
+                  <div
+                    key={item.detailLink}
+                    className="col-6 col-sm-4 col-lg-3 col-xl-2"
+                  >
+                    <div className="item">
+                      <div className="item__cover">
+                        <img
+                          src={`/src/db/${item.poster}`}
+                          alt={`${item.title_geo} / ${item.title_en} ქართულად`}
+                        />
+                        <a href={`/${item.detailLink}`} className="item__play">
+                          <i className="ti ti-player-play-filled"></i>
+                        </a>
+                        <span
+                          className={`item__rate item__rate--${getRatingClassName(
+                            item.imdb
+                          )}`}
+                        >
+                          {item.imdb}
+                        </span>
+                        <div className="item__favorite" type="button">
+                          HD
+                        </div>
+                        <div className="item__lang" type="button">
+                          <ul>
+                            <li
+                              style={{
+                                color: item.country[0] ? "white" : "gray",
+                              }}
+                            >
+                              GEO
+                            </li>
+                            <li
+                              style={{
+                                color: item.country[1] ? "white" : "gray",
+                              }}
+                            >
+                              ENG
+                            </li>
+                            <li
+                              style={{
+                                color: item.country[2] ? "white" : "gray",
+                              }}
+                            >
+                              RUS
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="item__content">
+                        <h3 className="item__title">
+                          <a href={`/${item.detailLink}`}>{item.title_geo}</a>
+                        </h3>
+                        <span className="item__category">
+                          <a href={`/${item.detailLink}`}>{item.title_en}</a>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <p>Loading...</p>
+            )}
+            {/* end item */}
           </div>
 
           <div className="row">
-            {/*paginator */}
+            {/* paginator */}
             <div className="col-12">
-              {/*paginator desktop */}
               {renderPagination()}
-              {/*end paginator desktop */}
             </div>
-            {/*end paginator */}
+            {/* end paginator */}
           </div>
         </div>
       </div>
-      {/*end catalog */}
+      {/* end catalog */}
     </>
   );
 }

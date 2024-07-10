@@ -15,7 +15,6 @@ app.use(cors({
     allowedHeaders: ['Content-Type'],
 }));
 
-// Stream large JSON file with optional query parameters for filtering
 app.get('/api/articles', (req, res) => {
     // Read query parameters
     const { year, country, genre, director, actors, title_geo, title_en } = req.query;
@@ -34,7 +33,6 @@ app.get('/api/articles', (req, res) => {
 
     const filteredArticles = [];
 
-    // Initialize a string to accumulate data chunks
     let data = '';
 
     // Parse data chunks and filter based on query parameters
@@ -71,17 +69,15 @@ app.get('/api/articles', (req, res) => {
 
             filteredArticles.push(...filtered);
 
-            // Send filtered articles as prettied JSON response
             const jsonResponse = JSON.stringify(filteredArticles, null, 2); // 2 spaces indentation for prettifying
-
             res.send(jsonResponse);
+    console.log(jsonResponse)
         } catch (err) {
             console.error(`Error parsing JSON: ${err}`);
             res.status(500).json({ error: 'Error parsing articles' });
         }
     });
 
-    // Start reading the stream
     readable.resume();
 });
 
