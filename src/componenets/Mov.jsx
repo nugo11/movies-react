@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import img404 from '../../public/assets/img/404 - mov.webp'
+import img404 from "../../public/assets/img/404 - mov.webp";
 
 const options = [
   "კომედია",
@@ -60,31 +60,54 @@ export default function Mov() {
   const moviesPerPage = 18;
   const currentPage = Number(query.get("page")) || 1;
 
+  const [show404, setShow404] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
   useEffect(() => {
     const filters = Object.fromEntries(query.entries());
     fetchMovies(filters)
       .then((data) => {
-        console.log(data);
         setMovies(data);
       })
       .catch((error) => {
         console.error("Error fetching movies:", error);
       });
-  }, [query.toString()]);
+      setTimeout(() => {
+        setShow404(true)
+      }, 1000);
 
+      const getUrlParameter = (name) => {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        const results = regex.exec(window.location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+      };
+  
+      const genreParam = getUrlParameter('genre');
+  
+      const genres = genreParam.split(',');
+  
+      setSelectedOptions(genres);
+
+    }, [query.toString()]);
+
+    
   const fetchMovies = async (filters) => {
     const queryString = new URLSearchParams(filters).toString();
-    const response = await fetch(`http://localhost:3000/api/articles?${queryString}`);
+    const response = await fetch(
+      `http://localhost:3000/api/articles?${queryString}`
+    );
     if (!response.ok) {
       throw new Error("Failed to fetch movies");
     }
     return await response.json();
   };
 
-
   const indexOfLastMovie = currentPage * moviesPerPage;
   const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-  const currentMovies = movies ? movies.slice(indexOfFirstMovie, indexOfLastMovie) : [];
+  const currentMovies = movies
+    ? movies.slice(indexOfFirstMovie, indexOfLastMovie)
+    : [];
 
   const handleFilterChange = (name, value) => {
     setFilterValues((prevValues) => ({
@@ -94,25 +117,25 @@ export default function Mov() {
   };
 
   const applyFilters = () => {
-  const params = new URLSearchParams(query);
+    const params = new URLSearchParams(query);
 
-  Object.keys(filterValues).forEach((key) => {
-    if (key === "genre") {
-      params.delete("genre");
-      if (filterValues[key].length > 0) {
-        params.set("genre", filterValues[key].join(","));
+    Object.keys(filterValues).forEach((key) => {
+      if (key === "genre") {
+        params.delete("genre");
+        if (filterValues[key].length > 0) {
+          params.set("genre", filterValues[key].join(","));
+        }
+      } else if (filterValues[key]) {
+        params.set(key, filterValues[key]);
+      } else {
+        params.delete(key);
       }
-    } else if (filterValues[key]) {
-      params.set(key, filterValues[key]);
-    } else {
-      params.delete(key);
-    }
-  });
+    });
 
-  params.delete("page");
+    params.delete("page");
 
-  navigate(`?${params.toString()}`);
-};
+    navigate(`?${params.toString()}`);
+  };
 
   const paginate = (pageNumber) => {
     const params = new URLSearchParams(query);
@@ -148,7 +171,9 @@ export default function Mov() {
             return (
               <li
                 key={number}
-                className={`paginator__item ${currentPage === number ? "paginator__item--active" : ""}`}
+                className={`paginator__item ${
+                  currentPage === number ? "paginator__item--active" : ""
+                }`}
               >
                 <a onClick={() => paginate(number)} className="page-link">
                   {number}
@@ -156,7 +181,11 @@ export default function Mov() {
               </li>
             );
           } else if (number === 2 || number === totalPages - 1) {
-            return <li key={number} className="page-item">...</li>;
+            return (
+              <li key={number} className="page-item">
+                ...
+              </li>
+            );
           }
           return null;
         })}
@@ -172,7 +201,6 @@ export default function Mov() {
   };
 
   const scrollRef = useRef(null);
-  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleOptionClick = (option) => {
     const newSelectedOptions = selectedOptions.includes(option)
@@ -180,6 +208,7 @@ export default function Mov() {
       : [...selectedOptions, option];
 
     setSelectedOptions(newSelectedOptions);
+    
     setFilterValues((prevValues) => ({
       ...prevValues,
       genre: newSelectedOptions,
@@ -193,6 +222,7 @@ export default function Mov() {
   const scrollRight = () => {
     scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
   };
+
 
   return (
     <>
@@ -223,8 +253,8 @@ export default function Mov() {
       </section>
       {/* end page title */}
 
-        {/* filter */}
-        <div className="filter">
+      {/* filter */}
+      <div className="filter">
         <div className="container">
           <div className="row">
             <div className="col-12">
@@ -256,7 +286,9 @@ export default function Mov() {
                     name="country"
                     id="lang"
                     value={filterValues.lang}
-                    onChange={(e) => handleFilterChange(e.target.name, e.target.value)}
+                    onChange={(e) =>
+                      handleFilterChange(e.target.name, e.target.value)
+                    }
                   >
                     <option value="">გახმოვანება</option>
                     <option value="ქართულად">ქართულად</option>
@@ -268,13 +300,17 @@ export default function Mov() {
                       type="number"
                       placeholder="1921"
                       value={filterValues.year_from}
-                      onChange={(e) => handleFilterChange('year_from', e.target.value)}
+                      onChange={(e) =>
+                        handleFilterChange("year_from", e.target.value)
+                      }
                     />
                     <input
                       type="number"
                       placeholder="2026"
                       value={filterValues.year_to}
-                      onChange={(e) => handleFilterChange('year_to', e.target.value)}
+                      onChange={(e) =>
+                        handleFilterChange("year_to", e.target.value)
+                      }
                     />
                   </div>
                   <div className="filter_imdb">
@@ -282,13 +318,17 @@ export default function Mov() {
                       type="number"
                       placeholder="1.1"
                       value={filterValues.imdb_from}
-                      onChange={(e) => handleFilterChange('imdb_from', e.target.value)}
+                      onChange={(e) =>
+                        handleFilterChange("imdb_from", e.target.value)
+                      }
                     />
                     <input
                       type="number"
                       placeholder="9.9"
                       value={filterValues.imdb_to}
-                      onChange={(e) => handleFilterChange('imdb_to', e.target.value)}
+                      onChange={(e) =>
+                        handleFilterChange("imdb_to", e.target.value)
+                      }
                     />
                   </div>
                   <button id="fullSearch" onClick={applyFilters}>
@@ -302,8 +342,8 @@ export default function Mov() {
       </div>
       {/* end filter */}
 
-     {/* catalog */}
-     <div className="section section--catalog">
+      {/* catalog */}
+      <div className="section section--catalog">
         <div className="container">
           <div className="row">
             {/* item */}
@@ -372,10 +412,13 @@ export default function Mov() {
                 ))}
               </>
             ) : (
-              <div className="center404">
+              <div className="center404" style={{display: show404 === true && 'flex'}}>
                 <div className="imgbg404">
-                <img src={img404} alt="404 error movie" /></div>
-              <b style={{fontSize: 40, color: '#f9ab00'}}>ფილმი ვერ მოიძებნა</b>
+                  <img src={img404} alt="404 error movie" />
+                </div>
+                <b style={{ fontSize: 40, color: "#f9ab00" }}>
+                  ფილმი ვერ მოიძებნა
+                </b>
               </div>
             )}
             {/* end item */}
@@ -383,9 +426,7 @@ export default function Mov() {
 
           <div className="row">
             {/* paginator */}
-            <div className="col-12">
-              {renderPagination()}
-            </div>
+            <div className="col-12">{renderPagination()}</div>
             {/* end paginator */}
           </div>
         </div>
