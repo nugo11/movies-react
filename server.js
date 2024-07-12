@@ -43,7 +43,6 @@ app.get("/api/articles", async (req, res) => {
   } = req.query;
 
   const { genre } = req.query;
-  
 
   try {
     const readable = fs.createReadStream(articlesPath, { encoding: "utf8" });
@@ -77,9 +76,13 @@ app.get("/api/articles", async (req, res) => {
             match = false;
           }
 
-          if (country && !article.country.includes(country)) match = false;
-          if(genre) {
-            const genreFix = genre[0].replace("[", "").replace("]", "").replace(/'/g, "");
+          if (country && !article.country.some(item => item.includes(country))) match = false;
+
+          if (genre) {
+            const genreFix = genre[0]
+              .replace("[", "")
+              .replace("]", "")
+              .replace(/'/g, "");
             const genreArr = genreFix.split(",");
             if (genreArr && genreArr.length > 0) {
               if (!genreArr.every((g) => article.genre.includes(g))) {
@@ -88,26 +91,31 @@ app.get("/api/articles", async (req, res) => {
             }
           }
 
-          if (director && !article.director.includes(director)) match = false;
-
+          if (director && !article.director.includes(director[0])) match = false;
+          
           if (actors && !article.actors.some((actor) => actor.includes(actors)))
             match = false;
 
           if (
             title_geo &&
             typeof article.title_geo === "string" &&
-            article.title_geo.toLowerCase().indexOf(title_geo.toLowerCase()) ===
-              -1
+            article.title_geo.indexOf(title_geo) === -1
           ) {
             match = false;
           }
           if (
-            title_en &&
-            typeof article.title_en === "string" &&
-            article.title_en.toLowerCase().indexOf(title_en.toLowerCase()) ===
-              -1
+            Array.isArray(title_en) &&
+            title_en.length > 0 &&
+            typeof article.title_en === "string"
           ) {
-            match = false;
+            const found = title_en.some(
+              (en) =>
+                typeof en === "string" &&
+                article.title_en.toLowerCase().includes(en.toLowerCase())
+            );
+            if (!found) {
+              match = false;
+            }
           }
 
           return match;

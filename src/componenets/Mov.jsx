@@ -57,11 +57,19 @@ export default function Mov() {
   });
   const query = useQuery();
   const navigate = useNavigate();
-  const moviesPerPage = 18;
+  const moviesPerPage = 30;
   const currentPage = Number(query.get("page")) || 1;
 
   const [show404, setShow404] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const [year_from_state, setYearState] = useState(null);
+  const [year_to_state, setYearToState] = useState(null);
+
+  const [Imdb_from_state, setImdbState] = useState(null);
+  const [Imdb_to_state, setImdbToState] = useState(null);
+
+  const [FilterCountry, setFilterCountry] = useState(null);
 
   useEffect(() => {
     const filters = Object.fromEntries(query.entries());
@@ -72,26 +80,71 @@ export default function Mov() {
       .catch((error) => {
         console.error("Error fetching movies:", error);
       });
-      setTimeout(() => {
-        setShow404(true)
-      }, 1000);
+    setTimeout(() => {
+      setShow404(true);
+    }, 1000);
 
-      const getUrlParameter = (name) => {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        const results = regex.exec(window.location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-      };
-  
-      const genreParam = getUrlParameter('genre');
-  
-      const genres = genreParam.split(',');
-  
+    const getUrlParameter = (name) => {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+      const results = regex.exec(window.location.search);
+      return results === null
+        ? ""
+        : decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
+
+    const genreParam = getUrlParameter("genre");
+
+    if (genreParam) {
+      const genres = genreParam
+        .split(",")
+        .filter((genre) => genre.trim() !== "");
       setSelectedOptions(genres);
+    } else {
+      setSelectedOptions([]);
+    }
 
-    }, [query.toString()]);
+    const year_from_Param = getUrlParameter("year_from");
 
-    
+    if (year_from_Param) {
+      setYearState(year_from_Param);
+    } else {
+      setYearState(1921);
+    }
+
+    const year_to_Param = getUrlParameter("year_to");
+
+    if (year_to_Param) {
+      setYearToState(year_to_Param);
+    } else {
+      setYearToState(2026);
+    }
+
+    const Imdb_from_Param = getUrlParameter("imdb_from");
+
+    if (Imdb_from_Param) {
+      setImdbState(Imdb_from_Param);
+    } else {
+      setImdbState(1.1);
+    }
+
+    const Imdb_to_Param = getUrlParameter("imdb_to");
+
+    if (Imdb_to_Param) {
+      setImdbToState(Imdb_to_Param);
+    } else {
+      setImdbToState(9.9);
+    }
+
+    const country = getUrlParameter("country");
+
+    if (country) {
+      setFilterCountry(country);
+    } else {
+      setFilterCountry("");
+    }
+  }, [query.toString()]);
+
   const fetchMovies = async (filters) => {
     const queryString = new URLSearchParams(filters).toString();
     const response = await fetch(
@@ -208,7 +261,7 @@ export default function Mov() {
       : [...selectedOptions, option];
 
     setSelectedOptions(newSelectedOptions);
-    
+
     setFilterValues((prevValues) => ({
       ...prevValues,
       genre: newSelectedOptions,
@@ -223,7 +276,7 @@ export default function Mov() {
     scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
   };
 
-
+  console.log(selectedOptions);
   return (
     <>
       {/* page title */}
@@ -290,24 +343,44 @@ export default function Mov() {
                       handleFilterChange(e.target.name, e.target.value)
                     }
                   >
-                    <option value="">გახმოვანება</option>
-                    <option value="ქართულად">ქართულად</option>
-                    <option value="ინგლისურად">ინგლისურად</option>
-                    <option value="რუსულად">რუსულად</option>
+                    <option
+                      value=""
+                      selected={FilterCountry === "" ? "selected" : ""}
+                    >
+                      გახმოვანება
+                    </option>
+                    <option
+                      value="ქართულად"
+                      selected={FilterCountry === "ქართულად" ? "selected" : ""}
+                    >
+                      ქართულად
+                    </option>
+                    <option
+                      value="ინგლისურად"
+                      selected={
+                        FilterCountry === "ინგლისურად" ? "selected" : ""
+                      }
+                    >
+                      ინგლისურად
+                    </option>
+                    <option
+                      value="რუსულად"
+                      selected={FilterCountry === "რუსულად" ? "selected" : ""}
+                    >
+                      რუსულად
+                    </option>
                   </select>
                   <div className="filter_year">
                     <input
                       type="number"
-                      placeholder="1921"
-                      value={filterValues.year_from}
+                      placeholder={year_from_state}
                       onChange={(e) =>
                         handleFilterChange("year_from", e.target.value)
                       }
                     />
                     <input
                       type="number"
-                      placeholder="2026"
-                      value={filterValues.year_to}
+                      placeholder={year_to_state}
                       onChange={(e) =>
                         handleFilterChange("year_to", e.target.value)
                       }
@@ -316,16 +389,14 @@ export default function Mov() {
                   <div className="filter_imdb">
                     <input
                       type="number"
-                      placeholder="1.1"
-                      value={filterValues.imdb_from}
+                      placeholder={Imdb_from_state}
                       onChange={(e) =>
                         handleFilterChange("imdb_from", e.target.value)
                       }
                     />
                     <input
                       type="number"
-                      placeholder="9.9"
-                      value={filterValues.imdb_to}
+                      placeholder={Imdb_to_state}
                       onChange={(e) =>
                         handleFilterChange("imdb_to", e.target.value)
                       }
@@ -412,7 +483,10 @@ export default function Mov() {
                 ))}
               </>
             ) : (
-              <div className="center404" style={{display: show404 === true && 'flex'}}>
+              <div
+                className="center404"
+                style={{ display: show404 === true && "flex" }}
+              >
                 <div className="imgbg404">
                   <img src={img404} alt="404 error movie" />
                 </div>

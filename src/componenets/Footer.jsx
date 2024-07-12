@@ -13,18 +13,26 @@ export default function Footer() {
     ];
 
     const loadScripts = () => {
+      const divScript = document.createElement('div');
       scriptUrls.forEach((src) => {
         const script = document.createElement('script');
         script.src = src;
-        script.async = false; // Load scripts in order
+        script.async = false;
         script.onerror = () => {
           console.error(`Error loading ${src}`);
         };
-        document.body.appendChild(script);
+        divScript.classList.add('scriptContainer')
+        document.body.appendChild(divScript);
+        divScript.appendChild(script)
+        divScript.remove()
       });
     };
 
     loadScripts();
+
+    setTimeout(() => {
+      loadScripts();
+    }, 1000);
 
     return () => {
       scriptUrls.forEach((src) => {

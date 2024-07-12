@@ -1,5 +1,6 @@
 import { useState } from "react";
 import db from "../db/articles.json";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [change, setChange] = useState("");
@@ -24,15 +25,15 @@ export default function Header() {
 
                 <ul className="header__nav">
                   <li className="header__nav-item">
-                    <a href="/" className="header__nav-link">
+                  <a href="/" className="header__nav-link">
                       მთავარი
                     </a>
                   </li>
 
                   <li className="header__nav-item">
-                    <a href="/movies" className="header__nav-link">
+                    <Link to="/movies" className="header__nav-link">
                       ფილმები
-                    </a>
+                    </Link>
                   </li>
 
                   <li className="header__nav-item">
@@ -63,7 +64,9 @@ export default function Header() {
                       onChange={(e) => setChange(e.target.value)}
                     />
                     <button className="header__search-button" type="button">
-                      <i className="ti ti-search"></i>
+                      <Link to={`/movies?title_en=${change}`}>
+                        <i className="ti ti-search"></i>
+                      </Link>
                     </button>
                     <button className="header__search-close" type="button">
                       <i className="ti ti-x"></i>
@@ -87,28 +90,28 @@ export default function Header() {
                         )
                         .slice(0, 6)
                         .map((item) => (
-                            <a href={`/${item.detailLink}`} key={item.detailLink}>
-                              <li>
-                                <img
-                                  src={`../src/db/${item.poster}`}
-                                  alt={`${item.title_geo} / ${item.title_en} ქართულად`}
-                                />
-                                <div className="title">
-                                  <h3>{item.title_geo}</h3>
-                                  <small>{item.title_en}</small>
-                                </div>
-                                <span
-                                  className="item_rate_quicksearch"
-                                  style={{
-                                    border: `1px solid ${getRatingclassName(
-                                      item.imdb
-                                    )}`,
-                                  }}
-                                >
-                                  {item.imdb}
-                                </span>
-                              </li>
-                            </a>
+                          <a href={`/${item.detailLink}`} key={item.detailLink}>
+                            <li>
+                              <img
+                                src={`../src/db/${item.poster}`}
+                                alt={`${item.title_geo} / ${item.title_en} ქართულად`}
+                              />
+                              <div className="title">
+                                <h3>{item.title_geo}</h3>
+                                <small>{item.title_en}</small>
+                              </div>
+                              <span
+                                className="item_rate_quicksearch"
+                                style={{
+                                  border: `1px solid ${getRatingclassName(
+                                    item.imdb
+                                  )}`,
+                                }}
+                              >
+                                {item.imdb}
+                              </span>
+                            </li>
+                          </a>
                         ))}
                     </ul>
                   </div>
