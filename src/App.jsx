@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import db from "./db/articles.json";
+import db from "./db/mov/articles.json";
 
 function getRatingclassName(rating) {
   if (Number(rating) < 6) return "red";
@@ -44,8 +44,8 @@ function App() {
     <>
       {loader === true ? (
         <div className="laoder_mix">
-          <div class="loaderi">
-            <div class="loaderi__filmstrip"></div>
+          <div className="loaderi">
+            <div className="loaderi__filmstrip"></div>
           </div>
         </div>
       ) : (
@@ -379,7 +379,7 @@ function App() {
                     </div>
 
                     <div className="splide__track">
-                      <ul className="splide__list">
+                      {/* <ul className="splide__list">
                         {db
                           .filter((data) => data.genre.includes("ანიმაციური"))
                           .slice(0, 8)
@@ -464,7 +464,7 @@ function App() {
                               </>
                             );
                           })}
-                      </ul>
+                      </ul> */}
                     </div>
                   </div>
                 </div>

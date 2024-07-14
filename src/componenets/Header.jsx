@@ -1,5 +1,5 @@
 import { useState } from "react";
-import db from "../db/articles.json";
+import db from "../db/mov/articles.json";
 import { Link } from "react-router-dom";
 
 export default function Header() {
@@ -11,6 +11,9 @@ export default function Header() {
     if (Number(rating) >= 7) return "#29b474";
     return "";
   }
+
+  const geo_alphabet = 'ქწერტყუიოპასდფგჰჯკლზხცვბნმ';
+  const eng_alphabet = 'qwertyuiopasdfghjklzxcvbnm';
 
   return (
     <>
@@ -37,9 +40,9 @@ export default function Header() {
                   </li>
 
                   <li className="header__nav-item">
-                    <a href="/series" className="header__nav-link">
+                  <Link to="/serial" className="header__nav-link">
                       სერიალები
-                    </a>
+                    </Link>
                   </li>
 
                   <li className="header__nav-item">

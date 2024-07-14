@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import img404 from "../../public/assets/img/404 - mov.webp";
 
 const options = [
@@ -431,9 +431,14 @@ export default function Mov() {
                           src={`/src/db/${item.poster}`}
                           alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                         />
-                        <a href={`/${item.detailLink}`} className="item__play">
+                        <Link
+                          key={item.detailLink}
+                          to={`/${item.detailLink}`}
+                          state={{ movies }}
+                          className="item__play"
+                        >
                           <i className="ti ti-player-play-filled"></i>
-                        </a>
+                        </Link>
                         <span
                           className={`item__rate item__rate--${getRatingClassName(
                             item.imdb
@@ -472,10 +477,22 @@ export default function Mov() {
                       </div>
                       <div className="item__content">
                         <h3 className="item__title">
-                          <a href={`/${item.detailLink}`}>{item.title_geo}</a>
+                          <Link
+                            key={item.detailLink}
+                            to={`/${item.detailLink}`}
+                            state={{ movies }}
+                          >
+                            {item.title_geo}
+                          </Link>
                         </h3>
                         <span className="item__category">
-                          <a href={`/${item.detailLink}`}>{item.title_en}</a>
+                          <Link
+                            key={item.detailLink}
+                            to={`/${item.detailLink}`}
+                            state={{ movies }}
+                          >
+                            {item.title_en}
+                          </Link>
                         </span>
                       </div>
                     </div>

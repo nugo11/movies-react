@@ -5090,3 +5090,105 @@ small {
     top: -15px;
   }
 }
+
+#playerContainerforserial {
+  position: relative;
+}
+
+#serialSelect {
+  position: absolute;
+  top: 13px;
+  left: 25px;
+  height: 45px;
+  width: 120px;
+  text-align: center;
+  background-color: #1a191f;
+  color: rgba(255, 255, 255, 0.884);
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: 0.5s;
+  z-index: 10;
+}
+
+#serialSelect:hover {
+color:#f9ab00;
+}
+#serialSelect option {
+color:#f9ab00;
+padding: 10px;
+}
+
+#serialSelect:nth-child(2) {
+  left: 160px;
+}
+
+
+.episodes {
+  position: absolute;
+  right: 0;
+  z-index: 999;
+}
+#episode_list {
+  position: absolute;
+  right: 0;
+  background: #00000096;
+  z-index: 999;
+  width: 180px;
+  color: #fff;
+  height: 355px;
+  top: 45px;
+  overflow-y: scroll;
+}
+
+#episode_list .item {
+  width: 100%;
+  margin-top: 0;
+  cursor: pointer;
+color:#fff;
+padding: 10px;
+}
+
+#episode_list .item:hover, .item.active {
+background: #f9ab00;
+color:#fff;
+}
+
+.iframe_player{
+width: 100%;
+  height: 520px;
+}
+
+
+
+
+#menu {
+  background: #00000094;
+  color: #fff;
+  height: 40px;
+  line-height: 40px;
+  width: 180px;
+  padding: 0 15px;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  z-index: 999;
+}
+.playlist{
+position: absolute;
+  display: flex;
+  width: 100%;
+  padding-top: 18px;
+  white-space: nowrap;
+  flex-direction: column;
+  overflow-y: scroll;
+outline: 0;
+}
+.playlist{
+position: absolute;
+  display: block;
+  width: 100%;
+  padding-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+}
