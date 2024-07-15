@@ -22,15 +22,15 @@ export default function Header() {
           <div className="row">
             <div className="col-12">
               <div className="header__content">
-                <a href="/" className="header__logo">
+                <Link to="/" className="header__logo">
                   <img src="../../public/assets/img/logo.png" alt="" />
-                </a>
+                </Link>
 
                 <ul className="header__nav">
                   <li className="header__nav-item">
-                  <a href="/" className="header__nav-link">
+                  <Link to="/" className="header__nav-link">
                       მთავარი
-                    </a>
+                    </Link>
                   </li>
 
                   <li className="header__nav-item">

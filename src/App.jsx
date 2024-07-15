@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import db from "./db/mov/articles.json";
+import { Link } from "react-router-dom";
+
 
 function getRatingclassName(rating) {
   if (Number(rating) < 6) return "red";
@@ -15,21 +17,38 @@ function App() {
     setTab(tabId);
   };
 
-  const [movies1, setMovies1] = useState(null);
+  const [movies, setMovies1] = useState(null);
+  const [series1, setseries1] = useState(null);
+  const [sabavshvo, setsabavshvo] = useState(null);
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    fetchMovies("http://localhost:3000/api/articles")
+    fetchMovies(`http://localhost:3000/api/articles`)
       .then((data) => {
         setMovies1(data);
       })
       .catch((error) => {
         console.error("Error fetching movies:", error);
       });
+
+    fetchMovies(`http://localhost:3000/api/serial`)
+      .then((data) => {
+        setseries1(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching movies:", error);
+      });
+    fetchMovies(`http://localhost:3000/api/articles?genre=ანიმაციური`)
+      .then((data) => {
+        setsabavshvo(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching movies:", error);
+      });
   }, []);
 
-  const fetchMovies = async () => {
-    const response = await fetch(`http://localhost:3000/api/articles`);
+  const fetchMovies = async (link) => {
+    const response = await fetch(link);
     if (!response.ok) {
       throw new Error("Failed to fetch movies");
     }
@@ -39,6 +58,48 @@ function App() {
   setTimeout(() => {
     setLoader(false);
   }, 1000);
+
+  useEffect(() => {
+    const scriptUrls = [
+      '../../public/assets/js/bootstrap.bundle.min.js',
+      '../../public/assets/js/splide.min.js',
+      '../../public/assets/js/smooth-scrollbar.js',
+      '../../public/assets/js/plyr.min.js',
+      '../../public/assets/js/photoswipe.min.js',
+      '../../public/assets/js/photoswipe-ui-default.min.js',
+      '../../public/assets/js/main.js',
+    ];
+
+    const loadScripts = () => {
+      const divScript = document.createElement('div');
+      scriptUrls.forEach((src) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = false;
+        script.onerror = () => {
+          console.error(`Error loading ${src}`);
+        };
+        divScript.classList.add('scriptContainer')
+        document.body.appendChild(divScript);
+        divScript.appendChild(script)
+        divScript.remove()
+      });
+    };
+
+    loadScripts();
+
+    setTimeout(() => {
+      loadScripts();
+    }, 1000);
+
+    return () => {
+      scriptUrls.forEach((src) => {
+        const scripts = document.querySelectorAll(`script[src="${src}"]`);
+        scripts.forEach((script) => script.remove());
+      });
+    };
+  }, []);
+
 
   return (
     <>
@@ -57,10 +118,12 @@ function App() {
               <div className="row">
                 <div className="col-12">
                   <h1 className="home__title">
-                    <b>
-                      <span style={{ color: "#f9ab00" }}>ფილ</span>მები
-                    </b>{" "}
-                    ქართულად
+                    <Link to="/movies">
+                      <b>
+                        <span style={{ color: "#f9ab00" }}>ფილ</span>მები
+                      </b>{" "}
+                      ქართულად
+                    </Link>
                   </h1>
                 </div>
 
@@ -83,8 +146,8 @@ function App() {
 
                     <div className="splide__track">
                       <ul className="splide__list">
-                        {movies1 &&
-                          movies1.slice(0, 6).map((item) => {
+                        {movies &&
+                          movies.slice(0, 6).map((item) => {
                             return (
                               <>
                                 <li
@@ -97,12 +160,14 @@ function App() {
                                         src={`/src/db/${item.poster}`}
                                         alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                                       />
-                                      <a
-                                        href={`/${item.detailLink}`}
+                                      <Link
+                                        key={item.detailLink}
+                                        to={`/${item.detailLink}`}
+                                        state={{ movies }}
                                         className="item__play"
                                       >
                                         <i className="ti ti-player-play-filled"></i>
-                                      </a>
+                                      </Link>
                                       <span
                                         className={`item__rate item__rate--${getRatingclassName(
                                           item.imdb
@@ -150,14 +215,22 @@ function App() {
                                     </div>
                                     <div className="item__content">
                                       <h3 className="item__title">
-                                        <a href={`/${item.detailLink}`}>
+                                        <Link
+                                          key={item.detailLink}
+                                          to={`/${item.detailLink}`}
+                                          state={{ movies }}
+                                        >
                                           {item.title_geo}
-                                        </a>
+                                        </Link>
                                       </h3>
                                       <span className="item__category">
-                                        <a href={`/${item.detailLink}`}>
+                                        <Link
+                                          key={item.detailLink}
+                                          to={`/${item.detailLink}`}
+                                          state={{ movies }}
+                                        >
                                           {item.title_en}
-                                        </a>
+                                        </Link>
                                       </span>
                                     </div>
                                   </div>
@@ -169,6 +242,150 @@ function App() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="section section--border">
+            <div className="container">
+              <div className="row">
+                {/*  section title  */}
+                <div className="col-12">
+                  <div className="section__title-wrap">
+                    <h2 className="section__title" style={{ fontSize: 28 }}>
+                      <Link to="/serial">
+                        <b>
+                          <span style={{ color: "#f9ab00" }}>სერ</span>იალები
+                        </b>{" "}
+                        ქართულად
+                      </Link>
+                    </h2>
+                    <Link
+                      to="/serial"
+                      className="section__view section__view--carousel"
+                    >
+                      ყველას ნახვა
+                    </Link>
+                  </div>
+                </div>
+                {/*  end section title  */}
+
+                {/*  carousel  */}
+                <div className="col-12">
+                  <div className="section__carousel splide splide--content">
+                    <div className="splide__arrows">
+                      <button
+                        className="splide__arrow splide__arrow--prev"
+                        type="button"
+                      >
+                        <i className="ti ti-chevron-left"></i>
+                      </button>
+                      <button
+                        className="splide__arrow splide__arrow--next"
+                        type="button"
+                      >
+                        <i className="ti ti-chevron-right"></i>
+                      </button>
+                    </div>
+
+                    <div className="splide__track">
+                      <ul className="splide__list">
+                        {series1.slice(0, 8).map((item) => {
+                          return (
+                            <>
+                              <li
+                                className="splide__slide"
+                                key={`${item.detailLink}${item.imdb}`}
+                              >
+                                <div className="item item--hero">
+                                  <div className="item__cover" id="sabavshvo">
+                                    <img
+                                      src={`/src/db/${item.poster}`}
+                                      alt={`${item.title_geo} / ${item.title_en} ქართულად`}
+                                    />
+                                    <Link
+                                      key={item.detailLink}
+                                      to={`/${item.detailLink}`}
+                                      state={{ series1 }}
+                                      className="item__play"
+                                    >
+                                      <i className="ti ti-player-play-filled"></i>
+                                    </Link>
+                                    <span
+                                      className={`item__rate item__rate--${getRatingclassName(
+                                        item.imdb
+                                      )}`}
+                                    >
+                                      {item.imdb}
+                                    </span>
+                                    <div
+                                      className="item__favorite"
+                                      type="button"
+                                    >
+                                      HD
+                                    </div>
+                                    <div className="item__lang" type="button">
+                                      <ul>
+                                        <li
+                                          style={{
+                                            color: item.country[0]
+                                              ? "white"
+                                              : "gray",
+                                          }}
+                                        >
+                                          GEO
+                                        </li>
+                                        <li
+                                          style={{
+                                            color: item.country[1]
+                                              ? "white"
+                                              : "gray",
+                                          }}
+                                        >
+                                          ENG
+                                        </li>
+                                        <li
+                                          style={{
+                                            color: item.country[2]
+                                              ? "white"
+                                              : "gray",
+                                          }}
+                                        >
+                                          RUS
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                  <div className="item__content">
+                                    <h3 className="item__title">
+                                      <Link
+                                        key={item.detailLink}
+                                        to={`/${item.detailLink}`}
+                                        state={{ series1 }}
+                                      >
+                                        {item.title_geo}
+                                      </Link>
+                                    </h3>
+                                    <span className="item__category">
+                                      <Link
+                                        key={item.detailLink}
+                                        to={`/${item.detailLink}`}
+                                        state={{ series1 }}
+                                      >
+                                        {item.title_en}
+                                      </Link>
+                                    </span>
+                                  </div>
+                                </div>
+                              </li>
+                            </>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                {/*  end carousel  */}
               </div>
             </div>
           </section>
@@ -220,7 +437,7 @@ function App() {
                         </li>
                       </ul>
                       <ul className="viewallul">
-                        <a href="/movies">ყველას ნახვა</a>
+                        <Link href="/movies">ყველას ნახვა</Link>
                       </ul>
                     </div>
                   </div>
@@ -251,12 +468,9 @@ function App() {
                               src={`/src/db/${item.poster}`}
                               alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                             />
-                            <a
-                              href={`/${item.detailLink}`}
-                              className="item__play"
-                            >
+                            <Link className="item__play">
                               <i className="ti ti-player-play-filled"></i>
-                            </a>
+                            </Link>
                             <span
                               className={`item__rate item__rate--${getRatingclassName(
                                 item.imdb
@@ -295,14 +509,10 @@ function App() {
                           </div>
                           <div className="item__content">
                             <h3 className="item__title">
-                              <a href={`/${item.detailLink}`}>
-                                {item.title_geo}
-                              </a>
+                              <Link>{item.title_geo}</Link>
                             </h3>
                             <span className="item__category">
-                              <a href={`/${item.detailLink}`}>
-                                {item.title_en}
-                              </a>
+                              <Link>{item.title_en}</Link>
                             </span>
                           </div>
                         </div>
@@ -350,12 +560,12 @@ function App() {
                       </span>
                       ავშვო
                     </h2>
-                    <a
+                    <Link
                       href="catalog.html"
                       className="section__view section__view--carousel"
                     >
                       ყველას ნახვა
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 {/*  end section title  */}
@@ -379,92 +589,82 @@ function App() {
                     </div>
 
                     <div className="splide__track">
-                      {/* <ul className="splide__list">
-                        {db
-                          .filter((data) => data.genre.includes("ანიმაციური"))
-                          .slice(0, 8)
-                          .map((item) => {
-                            return (
-                              <>
-                                <li
-                                  className="splide__slide"
-                                  key={`${item.detailLink}${item.imdb}`}
-                                >
-                                  <div className="item item--hero">
-                                    <div className="item__cover" id="sabavshvo">
-                                      <img
-                                        src={`/src/db/${item.poster}`}
-                                        alt={`${item.title_geo} / ${item.title_en} ქართულად`}
-                                      />
-                                      <a
-                                        href={`/${item.detailLink}`}
-                                        className="item__play"
-                                      >
-                                        <i className="ti ti-player-play-filled"></i>
-                                      </a>
-                                      <span
-                                        className={`item__rate item__rate--${getRatingclassName(
-                                          item.imdb
-                                        )}`}
-                                      >
-                                        {item.imdb}
-                                      </span>
-                                      <div
-                                        className="item__favorite"
-                                        type="button"
-                                      >
-                                        HD
-                                      </div>
-                                      <div className="item__lang" type="button">
-                                        <ul>
-                                          <li
-                                            style={{
-                                              color: item.country[0]
-                                                ? "white"
-                                                : "gray",
-                                            }}
-                                          >
-                                            GEO
-                                          </li>
-                                          <li
-                                            style={{
-                                              color: item.country[1]
-                                                ? "white"
-                                                : "gray",
-                                            }}
-                                          >
-                                            ENG
-                                          </li>
-                                          <li
-                                            style={{
-                                              color: item.country[2]
-                                                ? "white"
-                                                : "gray",
-                                            }}
-                                          >
-                                            RUS
-                                          </li>
-                                        </ul>
-                                      </div>
+                      <ul className="splide__list">
+                        {sabavshvo.slice(0, 8).map((item) => {
+                          return (
+                            <>
+                              <li
+                                className="splide__slide"
+                                key={`${item.detailLink}${item.imdb}`}
+                              >
+                                <div className="item item--hero">
+                                  <div className="item__cover" id="sabavshvo">
+                                    <img
+                                      src={`/src/db/${item.poster}`}
+                                      alt={`${item.title_geo} / ${item.title_en} ქართულად`}
+                                    />
+                                    <Link className="item__play">
+                                      <i className="ti ti-player-play-filled"></i>
+                                    </Link>
+                                    <span
+                                      className={`item__rate item__rate--${getRatingclassName(
+                                        item.imdb
+                                      )}`}
+                                    >
+                                      {item.imdb}
+                                    </span>
+                                    <div
+                                      className="item__favorite"
+                                      type="button"
+                                    >
+                                      HD
                                     </div>
-                                    <div className="item__content">
-                                      <h3 className="item__title">
-                                        <a href={`/${item.detailLink}`}>
-                                          {item.title_geo}
-                                        </a>
-                                      </h3>
-                                      <span className="item__category">
-                                        <a href={`/${item.detailLink}`}>
-                                          {item.title_en}
-                                        </a>
-                                      </span>
+                                    <div className="item__lang" type="button">
+                                      <ul>
+                                        <li
+                                          style={{
+                                            color: item.country[0]
+                                              ? "white"
+                                              : "gray",
+                                          }}
+                                        >
+                                          GEO
+                                        </li>
+                                        <li
+                                          style={{
+                                            color: item.country[1]
+                                              ? "white"
+                                              : "gray",
+                                          }}
+                                        >
+                                          ENG
+                                        </li>
+                                        <li
+                                          style={{
+                                            color: item.country[2]
+                                              ? "white"
+                                              : "gray",
+                                          }}
+                                        >
+                                          RUS
+                                        </li>
+                                      </ul>
                                     </div>
                                   </div>
-                                </li>
-                              </>
-                            );
-                          })}
-                      </ul> */}
+                                  <div className="item__content">
+                                    <h3 className="item__title">
+                                      <Link>{item.title_geo}</Link>
+                                    </h3>
+                                    <span className="item__category">
+                                      <Link>{item.title_en}</Link>
+                                    </span>
+                                  </div>
+                                </div>
+                              </li>
+                            </>
+                          );
+                        })}
+                      </ul>
                     </div>
                   </div>
                 </div>

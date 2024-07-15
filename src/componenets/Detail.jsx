@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from "react";
-import db from "../db/mov/articles.json";
 import { useParams, Link, useLocation } from "react-router-dom";
 
 export default function Detail() {
   const { detailLink } = useParams();
-
   const location = useLocation();
-  const movies = location.state?.movies || [];
+  const movies = location.state?.series1 ? (location.state?.series1 || []) : (location.state?.movies || []);
 
   const selectedItem = movies.find((movie) => movie.detailLink === detailLink);
+
+  console.log(movies)
   if (!selectedItem) {
     return <div>Item not found</div>;
   }
 
-  function getRatingClassName(rating) {
-    if (Number(rating) < 6) return "red";
-    if (Number(rating) < 7) return "yellow";
-    if (Number(rating) >= 7) return "green";
-    return "";
-  }
-
-  const [count, setCount] = useState(10);
+  const [count, setCount] = useState(selectedItem.movieScriptContent_script ? 10 : 0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,13 +24,15 @@ export default function Detail() {
     return () => clearTimeout(timer);
   }, []);
 
-  window.scrollTo({ top: 0 });
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
 
-  const [filteredScript, setfilteredScript] = useState("");
+  const [filteredScript, setFilteredScript] = useState({});
 
   useEffect(() => {
     if (selectedItem.movieScriptContent_script) {
-      setfilteredScript(
+      setFilteredScript(
         JSON.parse(
           selectedItem.movieScriptContent_script
             .replaceAll(/\s/g, "")
@@ -68,6 +63,12 @@ export default function Detail() {
   const [selectedSeason, setSelectedSeason] = useState("1");
   const [selectedEpisode, setSelectedEpisode] = useState("");
 
+  useEffect(() => {
+    if (filteredScript[selectedSeason]) {
+      setSelectedEpisode(filteredScript[selectedSeason][0].url);
+    }
+  }, [filteredScript, selectedSeason]);
+
   const handleSeasonChange = (e) => {
     const newSeason = e.target.value;
     setSelectedSeason(newSeason);
@@ -80,14 +81,20 @@ export default function Detail() {
 
   const seasons = Object.keys(filteredScript);
 
-  console.log(filteredScript);
+  function getRatingClassName(rating) {
+    if (Number(rating) < 6) return "red";
+    if (Number(rating) < 7) return "yellow";
+    if (Number(rating) >= 7) return "green";
+    return "";
+  }
+  
   return (
     <>
       <div
         className="fullbg"
         style={{ backgroundImage: `url(../src/db/${selectedItem.poster})` }}
       ></div>
-      <div className="fullbg-pattern"></div>
+      <div className="fullbg-pattern" style={{height: '80%'}}></div>
       <div className="detail-container">
         <section className="section section--details">
           <div className="content__head content__head--mt">
@@ -211,7 +218,7 @@ export default function Detail() {
                             <button
                               id={`${index}-tab`}
                               className={`${
-                                count === index ? "active" : "activei"
+                                (count === index) ? "active" : "activei"
                               }`}
                               data-bs-toggle="tab"
                               data-bs-target={`#tab-${index}`}
@@ -372,7 +379,7 @@ export default function Detail() {
                       <div
                         key={index}
                         className={`tab-pane fade ${
-                          count === index ? "show active" : ""
+                          (count === index) || ((count === index) && !selectedItem.movieScriptContent_script) ? "show active" : ""
                         }`}
                         id={`tab-${index}`}
                         role="tabpanel"
