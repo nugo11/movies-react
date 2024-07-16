@@ -72,6 +72,7 @@ export default function Ser() {
   const [FilterCountry, setFilterCountry] = useState(null);
 
   useEffect(() => {
+        window.scrollTo({ top: 0 });
     const filters = Object.fromEntries(query.entries());
     fetchMovies(filters)
       .then((data) => {

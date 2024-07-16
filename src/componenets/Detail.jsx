@@ -4,11 +4,10 @@ import { useParams, Link, useLocation } from "react-router-dom";
 export default function Detail() {
   const { detailLink } = useParams();
   const location = useLocation();
-  const movies = location.state?.series1 ? (location.state?.series1 || []) : (location.state?.movies || []);
+  const movies = location.state?.series ? (location.state?.series || []) : (location.state?.movies || []);
 
   const selectedItem = movies.find((movie) => movie.detailLink === detailLink);
 
-  console.log(movies)
   if (!selectedItem) {
     return <div>Item not found</div>;
   }

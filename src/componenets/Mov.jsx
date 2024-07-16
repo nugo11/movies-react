@@ -46,6 +46,7 @@ function useQuery() {
 }
 
 export default function Mov() {
+  
   const [movies, setMovies] = useState(null);
   const [filterValues, setFilterValues] = useState({
     country: "",
@@ -72,6 +73,7 @@ export default function Mov() {
   const [FilterCountry, setFilterCountry] = useState(null);
 
   useEffect(() => {
+    window.scrollTo({ top: 0 });
     const filters = Object.fromEntries(query.entries());
     fetchMovies(filters)
       .then((data) => {

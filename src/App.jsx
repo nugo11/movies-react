@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import db from "./db/mov/articles.json";
 import { Link } from "react-router-dom";
+import { useMovies } from '../src/componenets/MoviesContext';
 
 
 function getRatingclassName(rating) {
@@ -17,43 +18,9 @@ function App() {
     setTab(tabId);
   };
 
-  const [movies, setMovies1] = useState(null);
-  const [series1, setseries1] = useState(null);
-  const [sabavshvo, setsabavshvo] = useState(null);
+  const { movies, series, sabavshvo } = useMovies();
   const [loader, setLoader] = useState(true);
 
-  useEffect(() => {
-    fetchMovies(`http://localhost:3000/api/articles`)
-      .then((data) => {
-        setMovies1(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching movies:", error);
-      });
-
-    fetchMovies(`http://localhost:3000/api/serial`)
-      .then((data) => {
-        setseries1(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching movies:", error);
-      });
-    fetchMovies(`http://localhost:3000/api/articles?genre=ანიმაციური`)
-      .then((data) => {
-        setsabavshvo(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching movies:", error);
-      });
-  }, []);
-
-  const fetchMovies = async (link) => {
-    const response = await fetch(link);
-    if (!response.ok) {
-      throw new Error("Failed to fetch movies");
-    }
-    return await response.json();
-  };
 
   setTimeout(() => {
     setLoader(false);
@@ -61,28 +28,28 @@ function App() {
 
   useEffect(() => {
     const scriptUrls = [
-      '../../public/assets/js/bootstrap.bundle.min.js',
-      '../../public/assets/js/splide.min.js',
-      '../../public/assets/js/smooth-scrollbar.js',
-      '../../public/assets/js/plyr.min.js',
-      '../../public/assets/js/photoswipe.min.js',
-      '../../public/assets/js/photoswipe-ui-default.min.js',
-      '../../public/assets/js/main.js',
+      "../../public/assets/js/bootstrap.bundle.min.js",
+      "../../public/assets/js/splide.min.js",
+      "../../public/assets/js/smooth-scrollbar.js",
+      "../../public/assets/js/plyr.min.js",
+      "../../public/assets/js/photoswipe.min.js",
+      "../../public/assets/js/photoswipe-ui-default.min.js",
+      "../../public/assets/js/main.js",
     ];
 
     const loadScripts = () => {
-      const divScript = document.createElement('div');
+      const divScript = document.createElement("div");
       scriptUrls.forEach((src) => {
-        const script = document.createElement('script');
+        const script = document.createElement("script");
         script.src = src;
         script.async = false;
         script.onerror = () => {
           console.error(`Error loading ${src}`);
         };
-        divScript.classList.add('scriptContainer')
+        divScript.classList.add("scriptContainer");
         document.body.appendChild(divScript);
-        divScript.appendChild(script)
-        divScript.remove()
+        divScript.appendChild(script);
+        divScript.remove();
       });
     };
 
@@ -99,7 +66,6 @@ function App() {
       });
     };
   }, []);
-
 
   return (
     <>
@@ -290,7 +256,7 @@ function App() {
 
                     <div className="splide__track">
                       <ul className="splide__list">
-                        {series1.slice(0, 8).map((item) => {
+                        {series.slice(0, 8).map((item) => {
                           return (
                             <>
                               <li
@@ -298,7 +264,7 @@ function App() {
                                 key={`${item.detailLink}${item.imdb}`}
                               >
                                 <div className="item item--hero">
-                                  <div className="item__cover" id="sabavshvo">
+                                  <div className="item__cover">
                                     <img
                                       src={`/src/db/${item.poster}`}
                                       alt={`${item.title_geo} / ${item.title_en} ქართულად`}
@@ -306,7 +272,7 @@ function App() {
                                     <Link
                                       key={item.detailLink}
                                       to={`/${item.detailLink}`}
-                                      state={{ series1 }}
+                                      state={{ series }}
                                       className="item__play"
                                     >
                                       <i className="ti ti-player-play-filled"></i>
@@ -361,7 +327,7 @@ function App() {
                                       <Link
                                         key={item.detailLink}
                                         to={`/${item.detailLink}`}
-                                        state={{ series1 }}
+                                        state={{ series }}
                                       >
                                         {item.title_geo}
                                       </Link>
@@ -370,7 +336,7 @@ function App() {
                                       <Link
                                         key={item.detailLink}
                                         to={`/${item.detailLink}`}
-                                        state={{ series1 }}
+                                        state={{ series }}
                                       >
                                         {item.title_en}
                                       </Link>
@@ -468,7 +434,12 @@ function App() {
                               src={`/src/db/${item.poster}`}
                               alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                             />
-                            <Link className="item__play">
+                            <Link
+                              key={item.detailLink}
+                              to={`/${item.detailLink}`}
+                              state={{ movies }}
+                              className="item__play"
+                            >
                               <i className="ti ti-player-play-filled"></i>
                             </Link>
                             <span
@@ -509,10 +480,22 @@ function App() {
                           </div>
                           <div className="item__content">
                             <h3 className="item__title">
-                              <Link>{item.title_geo}</Link>
+                              <Link
+                                key={item.detailLink}
+                                to={`/${item.detailLink}`}
+                                state={{ movies }}
+                              >
+                                {item.title_geo}
+                              </Link>
                             </h3>
                             <span className="item__category">
-                              <Link>{item.title_en}</Link>
+                              <Link
+                                key={item.detailLink}
+                                to={`/${item.detailLink}`}
+                                state={{ movies }}
+                              >
+                                {item.title_en}
+                              </Link>
                             </span>
                           </div>
                         </div>
@@ -554,18 +537,19 @@ function App() {
                 {/*  section title  */}
                 <div className="col-12">
                   <div className="section__title-wrap">
-                    <h2 className="section__title">
-                      <span style={{ color: "#f9ab00", fontWeight: "bolder" }}>
-                        საბ
-                      </span>
-                      ავშვო
+                    <h2 className="section__title" style={{background: 'none'}}>
+                      <Link
+                        href="/movies?genre=ანიმაციური"
+                      >
+                        <span
+                          style={{ color: "#f9ab00", fontWeight: "bolder" }}
+                        >
+                          საბ
+                        </span>
+                        ავშვო
+                      </Link>
                     </h2>
-                    <Link
-                      href="catalog.html"
-                      className="section__view section__view--carousel"
-                    >
-                      ყველას ნახვა
-                    </Link>
+                      <Link className="section__view section__view--carousel" to="/movies?genre=ანიმაციური">ყველას ნახვა</Link>
                   </div>
                 </div>
                 {/*  end section title  */}
@@ -603,7 +587,12 @@ function App() {
                                       src={`/src/db/${item.poster}`}
                                       alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                                     />
-                                    <Link className="item__play">
+                                    <Link
+                                      key={item.detailLink}
+                                      to={`/${item.detailLink}`}
+                                      state={{ movies }}
+                                      className="item__play"
+                                    >
                                       <i className="ti ti-player-play-filled"></i>
                                     </Link>
                                     <span
@@ -653,10 +642,22 @@ function App() {
                                   </div>
                                   <div className="item__content">
                                     <h3 className="item__title">
-                                      <Link>{item.title_geo}</Link>
+                                      <Link
+                                        key={item.detailLink}
+                                        to={`/${item.detailLink}`}
+                                        state={{ movies }}
+                                      >
+                                        {item.title_geo}
+                                      </Link>
                                     </h3>
                                     <span className="item__category">
-                                      <Link>{item.title_en}</Link>
+                                      <Link
+                                        key={item.detailLink}
+                                        to={`/${item.detailLink}`}
+                                        state={{ movies }}
+                                      >
+                                        {item.title_en}
+                                      </Link>
                                     </span>
                                   </div>
                                 </div>

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import db from "../db/mov/articles.json";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMovies } from "./MoviesContext";
 
 export default function Header() {
   const [change, setChange] = useState("");
+  const navigate = useNavigate();
 
   function getRatingclassName(rating) {
     if (Number(rating) < 6) return "#eb5757";
@@ -12,8 +13,13 @@ export default function Header() {
     return "";
   }
 
-  const geo_alphabet = 'ქწერტყუიოპასდფგჰჯკლზხცვბნმ';
-  const eng_alphabet = 'qwertyuiopasdfghjklzxcvbnm';
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search?title=${change.toLocaleLowerCase()}`);
+    setChange("");
+  };
+
+  const { movies, series } = useMovies();
 
   return (
     <>
@@ -28,7 +34,7 @@ export default function Header() {
 
                 <ul className="header__nav">
                   <li className="header__nav-item">
-                  <Link to="/" className="header__nav-link">
+                    <Link to="/" className="header__nav-link">
                       მთავარი
                     </Link>
                   </li>
@@ -40,7 +46,7 @@ export default function Header() {
                   </li>
 
                   <li className="header__nav-item">
-                  <Link to="/serial" className="header__nav-link">
+                    <Link to="/serial" className="header__nav-link">
                       სერიალები
                     </Link>
                   </li>
@@ -59,17 +65,16 @@ export default function Header() {
                 </ul>
 
                 <div className="header__auth">
-                  <form action="#" className="header__search">
+                  <form className="header__search" onSubmit={handleSubmit}>
                     <input
                       className="header__search-input"
                       type="text"
                       placeholder="ძებნა..."
+                      value={change}
                       onChange={(e) => setChange(e.target.value)}
                     />
-                    <button className="header__search-button" type="button">
-                      <Link to={`/movies?title_en=${change}`}>
-                        <i className="ti ti-search"></i>
-                      </Link>
+                    <button className="header__search-button" type="submit">
+                      <i className="ti ti-search"></i>
                     </button>
                     <button className="header__search-close" type="button">
                       <i className="ti ti-x"></i>
@@ -85,7 +90,7 @@ export default function Header() {
                     }
                   >
                     <ul>
-                      {db
+                      {movies
                         .filter(
                           (data) =>
                             String(data.title_geo).includes(change) ||
@@ -93,7 +98,12 @@ export default function Header() {
                         )
                         .slice(0, 6)
                         .map((item) => (
-                          <a href={`/${item.detailLink}`} key={item.detailLink}>
+                          <Link
+                            key={item.detailLink}
+                            to={`/${item.detailLink}`}
+                            state={{ movies }}
+                            onClick={() => setChange("")}
+                          >
                             <li>
                               <img
                                 src={`../src/db/${item.poster}`}
@@ -114,7 +124,43 @@ export default function Header() {
                                 {item.imdb}
                               </span>
                             </li>
-                          </a>
+                          </Link>
+                        ))}
+                      {series
+                        .filter(
+                          (data) =>
+                            String(data.title_geo).includes(change) ||
+                            String(data.title_en).toLowerCase().includes(change)
+                        )
+                        .slice(0, 6)
+                        .map((item) => (
+                          <Link
+                            key={item.detailLink}
+                            to={`/${item.detailLink}`}
+                            state={{ series }}
+                            onClick={() => setChange("")}
+                          >
+                            <li>
+                              <img
+                                src={`../src/db/${item.poster}`}
+                                alt={`${item.title_geo} / ${item.title_en} ქართულად`}
+                              />
+                              <div className="title">
+                                <h3>{item.title_geo}</h3>
+                                <small>{item.title_en}</small>
+                              </div>
+                              <span
+                                className="item_rate_quicksearch"
+                                style={{
+                                  border: `1px solid ${getRatingclassName(
+                                    item.imdb
+                                  )}`,
+                                }}
+                              >
+                                {item.imdb}
+                              </span>
+                            </li>
+                          </Link>
                         ))}
                     </ul>
                   </div>
