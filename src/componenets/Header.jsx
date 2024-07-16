@@ -19,7 +19,7 @@ export default function Header() {
     setChange("");
   };
 
-  const { movies, series } = useMovies();
+  const { movies } = useMovies();
 
   return (
     <>
@@ -102,42 +102,6 @@ export default function Header() {
                             key={item.detailLink}
                             to={`/${item.detailLink}`}
                             state={{ movies }}
-                            onClick={() => setChange("")}
-                          >
-                            <li>
-                              <img
-                                src={`../src/db/${item.poster}`}
-                                alt={`${item.title_geo} / ${item.title_en} ქართულად`}
-                              />
-                              <div className="title">
-                                <h3>{item.title_geo}</h3>
-                                <small>{item.title_en}</small>
-                              </div>
-                              <span
-                                className="item_rate_quicksearch"
-                                style={{
-                                  border: `1px solid ${getRatingclassName(
-                                    item.imdb
-                                  )}`,
-                                }}
-                              >
-                                {item.imdb}
-                              </span>
-                            </li>
-                          </Link>
-                        ))}
-                      {series
-                        .filter(
-                          (data) =>
-                            String(data.title_geo).includes(change) ||
-                            String(data.title_en).toLowerCase().includes(change)
-                        )
-                        .slice(0, 6)
-                        .map((item) => (
-                          <Link
-                            key={item.detailLink}
-                            to={`/${item.detailLink}`}
-                            state={{ series }}
                             onClick={() => setChange("")}
                           >
                             <li>

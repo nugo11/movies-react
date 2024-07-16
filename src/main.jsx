@@ -11,8 +11,8 @@ import Search from "./componenets/search.jsx";
 import { MoviesProvider } from "./componenets/MoviesContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <MoviesProvider>
-    <Router>
+  <Router>
+    <MoviesProvider>
       <Header />
       <Routes>
         <Route path="/" element={<App />} />
@@ -22,6 +22,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/search" element={<Search />} />
       </Routes>
       <Footer />
-    </Router>
-  </MoviesProvider>
+    </MoviesProvider>
+  </Router>
 );

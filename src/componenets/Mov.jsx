@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import img404 from "../../public/assets/img/404 - mov.webp";
+import { useMovies } from "./MoviesContext";
 
 const options = [
   "კომედია",
@@ -46,20 +47,15 @@ function useQuery() {
 }
 
 export default function Mov() {
-  
-  const [movies, setMovies] = useState(null);
-  const [filterValues, setFilterValues] = useState({
-    country: "",
-    year_from: 1921,
-    year_to: 2026,
-    imdb_from: 1.1,
-    imdb_to: 9.9,
-    genre: [],
-  });
+  const { movies, totalPages } = useMovies();
   const query = useQuery();
   const navigate = useNavigate();
-  const moviesPerPage = 30;
   const currentPage = Number(query.get("page")) || 1;
+
+
+  const [filterValues, setFilterValues] = useState({
+    
+  });
 
   const [show404, setShow404] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -72,20 +68,9 @@ export default function Mov() {
 
   const [FilterCountry, setFilterCountry] = useState(null);
 
+
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    const filters = Object.fromEntries(query.entries());
-    fetchMovies(filters)
-      .then((data) => {
-        setMovies(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching movies:", error);
-      });
-    setTimeout(() => {
-      setShow404(true);
-    }, 1000);
-
     const getUrlParameter = (name) => {
       name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
       const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
@@ -94,7 +79,6 @@ export default function Mov() {
         ? ""
         : decodeURIComponent(results[1].replace(/\+/g, " "));
     };
-
     const genreParam = getUrlParameter("genre");
 
     if (genreParam) {
@@ -145,24 +129,7 @@ export default function Mov() {
     } else {
       setFilterCountry("");
     }
-  }, [query.toString()]);
-
-  const fetchMovies = async (filters) => {
-    const queryString = new URLSearchParams(filters).toString();
-    const response = await fetch(
-      `http://localhost:3000/api/articles?${queryString}`
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch movies");
-    }
-    return await response.json();
-  };
-
-  const indexOfLastMovie = currentPage * moviesPerPage;
-  const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-  const currentMovies = movies
-    ? movies.slice(indexOfFirstMovie, indexOfLastMovie)
-    : [];
+  }, []);
 
   const handleFilterChange = (name, value) => {
     setFilterValues((prevValues) => ({
@@ -185,74 +152,11 @@ export default function Mov() {
       } else {
         params.delete(key);
       }
-    });
+    });   
+     params.delete("page");
 
-    params.delete("page");
 
     navigate(`?${params.toString()}`);
-  };
-
-  const paginate = (pageNumber) => {
-    const params = new URLSearchParams(query);
-    params.set("page", pageNumber);
-    navigate(`?${params.toString()}`);
-    window.scrollTo({ top: 0 });
-  };
-
-  const renderPagination = () => {
-    if (!movies) return null;
-
-    const totalPages = Math.ceil(movies.length / moviesPerPage);
-    const pageNumbers = [];
-    for (let i = 1; i <= totalPages; i++) {
-      pageNumbers.push(i);
-    }
-
-    return (
-      <ul className="paginator">
-        {currentPage > 1 && (
-          <li className="paginator__item paginator__item--prev">
-            <a onClick={() => paginate(currentPage - 1)}>
-              <i className="ti ti-chevron-left"></i>
-            </a>
-          </li>
-        )}
-        {pageNumbers.map((number) => {
-          if (
-            number === 1 ||
-            number === totalPages ||
-            (number >= currentPage - 2 && number <= currentPage + 2)
-          ) {
-            return (
-              <li
-                key={number}
-                className={`paginator__item ${
-                  currentPage === number ? "paginator__item--active" : ""
-                }`}
-              >
-                <a onClick={() => paginate(number)} className="page-link">
-                  {number}
-                </a>
-              </li>
-            );
-          } else if (number === 2 || number === totalPages - 1) {
-            return (
-              <li key={number} className="page-item">
-                ...
-              </li>
-            );
-          }
-          return null;
-        })}
-        {currentPage < totalPages && (
-          <li className="paginator__item paginator__item--next">
-            <a onClick={() => paginate(currentPage + 1)}>
-              <i className="ti ti-chevron-right"></i>
-            </a>
-          </li>
-        )}
-      </ul>
-    );
   };
 
   const scrollRef = useRef(null);
@@ -278,7 +182,69 @@ export default function Mov() {
     scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
   };
 
-  console.log(selectedOptions);
+  const paginate = (pageNumber) => {
+    const params = new URLSearchParams(query);
+    params.set("page", pageNumber);
+    navigate(`?${params.toString()}`);
+    window.scrollTo({ top: 0 });
+  };
+
+  const renderPagination = () => {
+    if (!movies) return null;
+
+    const totalPage= totalPages;
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <ul className="paginator">
+        {currentPage > 1 && (
+          <li className="paginator__item paginator__item--prev">
+            <a onClick={() => paginate(currentPage - 1)}>
+              <i className="ti ti-chevron-left"></i>
+            </a>
+          </li>
+        )}
+        {pageNumbers.map((number) => {
+          if (
+            number === 1 ||
+            number === totalPage ||
+            (number >= currentPage - 2 && number <= currentPage + 2)
+          ) {
+            return (
+              <li
+                key={number}
+                className={`paginator__item ${
+                  currentPage === number ? "paginator__item--active" : ""
+                }`}
+              >
+                <a onClick={() => paginate(number)} className="page-link">
+                  {number}
+                </a>
+              </li>
+            );
+          } else if (number === 2 || number === totalPage - 1) {
+            return (
+              <li key={number} className="page-item">
+                ...
+              </li>
+            );
+          }
+          return null;
+        })}
+        {currentPage < totalPage && (
+          <li className="paginator__item paginator__item--next">
+            <a onClick={() => paginate(currentPage + 1)}>
+              <i className="ti ti-chevron-right"></i>
+            </a>
+          </li>
+        )}
+      </ul>
+    );
+  };
+
   return (
     <>
       {/* page title */}
@@ -420,9 +386,9 @@ export default function Mov() {
         <div className="container">
           <div className="row">
             {/* item */}
-            {currentMovies.length ? (
+            {movies.length ? (
               <>
-                {currentMovies.map((item) => (
+                {movies.map((item) => (
                   <div
                     key={item.detailLink}
                     className="col-6 col-sm-4 col-lg-3 col-xl-2"
@@ -519,7 +485,10 @@ export default function Mov() {
 
           <div className="row">
             {/* paginator */}
-            <div className="col-12">{renderPagination()}</div>
+            <div className="col-12">
+  {renderPagination()}
+</div>
+
             {/* end paginator */}
           </div>
         </div>

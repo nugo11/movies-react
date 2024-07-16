@@ -18,7 +18,7 @@ function App() {
     setTab(tabId);
   };
 
-  const { movies, series, sabavshvo } = useMovies();
+  const { movies } = useMovies();
   const [loader, setLoader] = useState(true);
 
 
@@ -66,6 +66,8 @@ function App() {
       });
     };
   }, []);
+
+  console.log(movies)
 
   return (
     <>
@@ -256,7 +258,7 @@ function App() {
 
                     <div className="splide__track">
                       <ul className="splide__list">
-                        {series.slice(0, 8).map((item) => {
+                        {movies.slice(0, 8).map((item) => {
                           return (
                             <>
                               <li
@@ -272,7 +274,7 @@ function App() {
                                     <Link
                                       key={item.detailLink}
                                       to={`/${item.detailLink}`}
-                                      state={{ series }}
+                                      state={{ movies }}
                                       className="item__play"
                                     >
                                       <i className="ti ti-player-play-filled"></i>
@@ -327,7 +329,7 @@ function App() {
                                       <Link
                                         key={item.detailLink}
                                         to={`/${item.detailLink}`}
-                                        state={{ series }}
+                                        state={{ movies }}
                                       >
                                         {item.title_geo}
                                       </Link>
@@ -336,7 +338,7 @@ function App() {
                                       <Link
                                         key={item.detailLink}
                                         to={`/${item.detailLink}`}
-                                        state={{ series }}
+                                        state={{ movies }}
                                       >
                                         {item.title_en}
                                       </Link>
@@ -574,7 +576,7 @@ function App() {
 
                     <div className="splide__track">
                       <ul className="splide__list">
-                        {sabavshvo.slice(0, 8).map((item) => {
+                        {movies.slice(0, 8).map((item) => {
                           return (
                             <>
                               <li
