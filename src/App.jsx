@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import db from "./db/mov/articles.json";
 import { Link } from "react-router-dom";
 import { useMovies } from '../src/componenets/MoviesContext';
 
@@ -66,8 +65,6 @@ function App() {
       });
     };
   }, []);
-
-  console.log(movies)
 
   return (
     <>
@@ -425,7 +422,7 @@ function App() {
                   tabIndex="0"
                 >
                   <div className="row">
-                    {db.slice(0, 12).map((item) => (
+                    {movies.slice(0, 12).map((item) => (
                       <div
                         key={item.detailLink}
                         className="col-6 col-sm-4 col-lg-3 col-xl-2"

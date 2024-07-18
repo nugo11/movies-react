@@ -5,7 +5,7 @@ const MoviesContext = createContext();
 
 export const MoviesProvider = ({ children }) => {
   const [movies, setMovies] = useState([]);
-  const [totalPages, setTotalPages] = useState(1); // Initialize totalPages state
+  const [totalPages, setTotalPages] = useState(1); 
   const location = useLocation();
 
   useEffect(() => {
@@ -22,8 +22,8 @@ export const MoviesProvider = ({ children }) => {
         const queryParams = new URLSearchParams(location.search);
         const queryString = queryParams.toString();
         const moviesData = await fetchMovies(`http://localhost:3000/api/articles?${queryString}`);
-        setMovies(moviesData.articles); // Update state with paginated articles
-        setTotalPages(moviesData.totalPages); // Update state with total pages
+        setMovies(moviesData.articles); 
+        setTotalPages(moviesData.totalPages); 
       } catch (error) {
         console.error(error);
       }

@@ -179,59 +179,6 @@ export default function Detail() {
                           );
                         }
                       )}
-                    {selectedItem.movieScriptContent &&
-                      selectedItem.movieScriptContent.map((item, index) => {
-                        let buttonText = `ფლეიერი ${index + 1}`;
-                        const isLastIndex =
-                          index === selectedItem.movieScriptContent.length - 1;
-                        const isSecondToLastIndex =
-                          index === selectedItem.movieScriptContent.length - 2;
-
-                        if (
-                          selectedItem.country.includes("ინგლისურად") &&
-                          selectedItem.country.includes("რუსულად")
-                        ) {
-                          if (isLastIndex) {
-                            buttonText = "რუსულად";
-                          } else if (isSecondToLastIndex) {
-                            buttonText = "ინგლისურად";
-                          }
-                        } else if (
-                          selectedItem.country.includes("ინგლისურად") &&
-                          isLastIndex
-                        ) {
-                          buttonText = "ინგლისურად";
-                        } else if (
-                          selectedItem.country.includes("რუსულად") &&
-                          isLastIndex
-                        ) {
-                          buttonText = "რუსულად";
-                        }
-
-                        return (
-                          <li
-                            className="nav-item"
-                            role="presentation"
-                            key={index}
-                          >
-                            <button
-                              id={`${index}-tab`}
-                              className={`${
-                                (count === index) ? "active" : "activei"
-                              }`}
-                              data-bs-toggle="tab"
-                              data-bs-target={`#tab-${index}`}
-                              type="button"
-                              role="tab"
-                              aria-controls={`tab-${index}`}
-                              aria-selected="true"
-                              onClick={() => setCount(index)}
-                            >
-                              {buttonText}
-                            </button>
-                          </li>
-                        );
-                      })}
                   </ul>
                 </div>
               </div>
@@ -242,7 +189,7 @@ export default function Detail() {
             <div className="row">
               <div className="col-12 ">
                 <div className="tab-content">
-                  {selectedItem.movieScriptContent_serial &&
+                  {selectedItem.movieScriptContent_serial && selectedItem.genre.includes('სერიალი') &&
                     selectedItem.movieScriptContent_serial.map(
                       (item, index) => (
                         <div
@@ -373,8 +320,8 @@ export default function Detail() {
                       </div>
                     </div>
                   )}
-                  {selectedItem.movieScriptContent &&
-                    selectedItem.movieScriptContent.map((item, index) => (
+                  {selectedItem.movieScriptContent_serial && !selectedItem.genre.includes('სერიალი') &&
+                    selectedItem.movieScriptContent_serial.map((item, index) => (
                       <div
                         key={index}
                         className={`tab-pane fade ${
