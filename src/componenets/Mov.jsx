@@ -4,6 +4,7 @@ import img404 from "../../public/assets/img/404 - mov.webp";
 import { useMovies } from "./MoviesContext";
 
 const options = [
+  "სერიალი",
   "კომედია",
   "სათავგადასავლო",
   "საშინელება",
@@ -52,10 +53,7 @@ export default function Mov() {
   const navigate = useNavigate();
   const currentPage = Number(query.get("page")) || 1;
 
-
-  const [filterValues, setFilterValues] = useState({
-    
-  });
+  const [filterValues, setFilterValues] = useState({});
 
   const [show404, setShow404] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -67,7 +65,6 @@ export default function Mov() {
   const [Imdb_to_state, setImdbToState] = useState(null);
 
   const [FilterCountry, setFilterCountry] = useState(null);
-
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -152,9 +149,8 @@ export default function Mov() {
       } else {
         params.delete(key);
       }
-    });   
-     params.delete("page");
-
+    });
+    params.delete("page");
 
     navigate(`?${params.toString()}`);
   };
@@ -192,7 +188,7 @@ export default function Mov() {
   const renderPagination = () => {
     if (!movies) return null;
 
-    const totalPage= totalPages;
+    const totalPage = totalPages;
     const pageNumbers = [];
     for (let i = 1; i <= totalPage; i++) {
       pageNumbers.push(i);
@@ -396,7 +392,7 @@ export default function Mov() {
                     <div className="item">
                       <div className="item__cover">
                         <img
-                          src={`/src/db/${item.poster}`}
+                          src={`/src/db/mov/${item.poster}`}
                           alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                         />
                         <Link
@@ -485,9 +481,7 @@ export default function Mov() {
 
           <div className="row">
             {/* paginator */}
-            <div className="col-12">
-  {renderPagination()}
-</div>
+            <div className="col-12">{renderPagination()}</div>
 
             {/* end paginator */}
           </div>

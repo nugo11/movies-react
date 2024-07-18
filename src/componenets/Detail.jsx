@@ -367,7 +367,7 @@ export default function Detail() {
                     <div className="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-3">
                       <div className="item__cover">
                         <img
-                          src={`../src/db/${selectedItem.poster}`}
+                          src={`../src/db/mov/${selectedItem.poster}`}
                           alt={`${selectedItem.title_geo} / ${selectedItem.title_en} ქართულად`}
                         />
                         <span

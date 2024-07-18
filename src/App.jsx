@@ -122,7 +122,7 @@ function App() {
                                   <div className="item item--hero">
                                     <div className="item__cover">
                                       <img
-                                        src={`/src/db/${item.poster}`}
+                                        src={`/src/db/mov/${item.poster}`}
                                         alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                                       />
                                       <Link
@@ -265,7 +265,7 @@ function App() {
                                 <div className="item item--hero">
                                   <div className="item__cover">
                                     <img
-                                      src={`/src/db/${item.poster}`}
+                                      src={`/src/db/mov/${item.poster}`}
                                       alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                                     />
                                     <Link
@@ -430,7 +430,7 @@ function App() {
                         <div className="item">
                           <div className="item__cover">
                             <img
-                              src={`/src/db/${item.poster}`}
+                              src={`/src/db/mov/${item.poster}`}
                               alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                             />
                             <Link
@@ -583,7 +583,7 @@ function App() {
                                 <div className="item item--hero">
                                   <div className="item__cover" id="sabavshvo">
                                     <img
-                                      src={`/src/db/${item.poster}`}
+                                      src={`/src/db/mov/${item.poster}`}
                                       alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                                     />
                                     <Link

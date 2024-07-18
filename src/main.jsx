@@ -6,7 +6,6 @@ import Header from "./componenets/Header.jsx";
 import Footer from "./componenets/Footer.jsx";
 import Detail from "./componenets/Detail.jsx";
 import Mov from "./componenets/Mov.jsx";
-import Ser from "./componenets/Ser.jsx";
 import Search from "./componenets/search.jsx";
 import { MoviesProvider } from "./componenets/MoviesContext.jsx";
 
@@ -18,7 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/" element={<App />} />
         <Route path="/:detailLink" element={<Detail />} />
         <Route path="/movies" element={<Mov />} />
-        <Route path="/serial" element={<Ser />} />
+        <Route path="/serial" element={<Mov />} />
         <Route path="/search" element={<Search />} />
       </Routes>
       <Footer />
