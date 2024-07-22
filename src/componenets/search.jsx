@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import img404 from "../../public/assets/img/404 - mov.webp";
 import { useMovies } from "./MoviesContext";
 
 export default function Search() {
-  const { movies, series } = useMovies();
+  const { searchResults } = useMovies();
   const [show404, setShow404] = useState(false);
-  const [textValue, setTextValue] = useState("");
 
-  const location = useLocation();
-
-  // Parse query parameter on initial load and on location change
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    setTextValue(params.get("title") || "");
     setTimeout(() => {
         setShow404(true);
       }, 1000);
-}, [location]);
+}, []);
 
 
   function getRatingClassName(rating) {
@@ -61,29 +55,9 @@ export default function Search() {
         <div className="container">
           <div className="row">
             {/* item */}
-            {movies.filter(
-                    (item) =>
-                      String(item.title_en)
-                        .toLowerCase()
-                        .includes(textValue) ||
-                      String(item.title_geo).includes(textValue)
-                  ).length || series.filter(
-                    (item) =>
-                      String(item.title_en)
-                        .toLowerCase()
-                        .includes(textValue) ||
-                      String(item.title_geo).includes(textValue)
-                  ).length ? (
+            {searchResults ? (
               <>
-                {movies
-                  .filter(
-                    (item) =>
-                      String(item.title_en)
-                        .toLowerCase()
-                        .includes(textValue) ||
-                      String(item.title_geo).includes(textValue)
-                  )
-                  .slice(0, 78)
+                {searchResults
                   .map((item) => (
                     <div
                       key={item.detailLink}
@@ -92,13 +66,13 @@ export default function Search() {
                       <div className="item">
                         <div className="item__cover">
                           <img
-                            src={`/src/db/${item.poster}`}
+                            src={`/src/db/mov/${item.poster}`}
                             alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                           />
                           <Link
                             key={item.detailLink}
                             to={`/${item.detailLink}`}
-                            state={{ movies }}
+                            state={{ searchResults }}
                             className="item__play"
                           >
                             <i className="ti ti-player-play-filled"></i>
@@ -144,7 +118,7 @@ export default function Search() {
                             <Link
                               key={item.detailLink}
                               to={`/${item.detailLink}`}
-                              state={{ movies }}
+                              state={{ searchResults }}
                             >
                               {item.title_geo}
                             </Link>
@@ -153,94 +127,7 @@ export default function Search() {
                             <Link
                               key={item.detailLink}
                               to={`/${item.detailLink}`}
-                              state={{ movies }}
-                            >
-                              {item.title_en}
-                            </Link>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-
-                {series
-                  .filter((item) =>
-                    String(item.title_en)
-                      .toLowerCase()
-                      .includes(textValue)  ||
-                      String(item.title_geo).includes(textValue)
-                  )
-                  .slice(0, 78)
-                  .map((item) => (
-                    <div
-                      key={item.detailLink}
-                      className="col-6 col-sm-4 col-lg-3 col-xl-2"
-                    >
-                      <div className="item">
-                        <div className="item__cover">
-                          <img
-                            src={`/src/db/${item.poster}`}
-                            alt={`${item.title_geo} / ${item.title_en} ქართულად`}
-                          />
-                          <Link
-                            key={item.detailLink}
-                            to={`/${item.detailLink}`}
-                            state={{ movies }}
-                            className="item__play"
-                          >
-                            <i className="ti ti-player-play-filled"></i>
-                          </Link>
-                          <span
-                            className={`item__rate item__rate--${getRatingClassName(
-                              item.imdb
-                            )}`}
-                          >
-                            {item.imdb}
-                          </span>
-                          <div className="item__favorite" type="button">
-                            HD
-                          </div>
-                          <div className="item__lang" type="button">
-                            <ul>
-                              <li
-                                style={{
-                                  color: item.country[0] ? "white" : "gray",
-                                }}
-                              >
-                                GEO
-                              </li>
-                              <li
-                                style={{
-                                  color: item.country[1] ? "white" : "gray",
-                                }}
-                              >
-                                ENG
-                              </li>
-                              <li
-                                style={{
-                                  color: item.country[2] ? "white" : "gray",
-                                }}
-                              >
-                                RUS
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div className="item__content">
-                          <h3 className="item__title">
-                            <Link
-                              key={item.detailLink}
-                              to={`/${item.detailLink}`}
-                              state={{ movies }}
-                            >
-                              {item.title_geo}
-                            </Link>
-                          </h3>
-                          <span className="item__category">
-                            <Link
-                              key={item.detailLink}
-                              to={`/${item.detailLink}`}
-                              state={{ movies }}
+                              state={{ searchResults }}
                             >
                               {item.title_en}
                             </Link>

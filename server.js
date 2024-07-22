@@ -7,10 +7,21 @@ const app = express();
 const PORT = 3000;
 
 const articlesPath = path.join(__dirname, "src", "db", "mov", "articles.json");
+
+// Load articles into memory
+let articles = [];
+try {
+  const data = fs.readFileSync(articlesPath, { encoding: "utf8" });
+  articles = JSON.parse(data);
+} catch (err) {
+  console.error(`Error loading articles: ${err}`);
+}
+
 app.use((req, res, next) => {
   const query = { ...req.query };
   Object.keys(query).forEach((key) => {
     if (Array.isArray(req.query[key])) {
+      // Convert single string query params to arrays
     } else if (typeof req.query[key] === "string") {
       req.query[key] = [req.query[key]];
     }
@@ -26,7 +37,7 @@ app.use(
   })
 );
 
-app.get("/api/articles", async (req, res) => {
+app.get("/api/articles", (req, res) => {
   const {
     year_from,
     year_to,
@@ -44,122 +55,94 @@ app.get("/api/articles", async (req, res) => {
   const { genre } = req.query;
 
   try {
-    const readable = fs.createReadStream(articlesPath, { encoding: "utf8" });
+    const filteredArticles = articles.filter((article) => {
+      if (!article.genre) return false;
 
-    let data = "";
+      let match = true;
 
-    readable.on("data", (chunk) => {
-      data += chunk;
-    });
-
-    readable.on("end", () => {
-      try {
-        const articles = JSON.parse(data);
-
-        const filteredArticles = articles.filter((article) => { if(article.genre) {
-
-          let match = true;
-
-          if (
-            year_from &&
-            year_to &&
-            (article.year < year_from || article.year > year_to)
-          ) {
-            match = false;
-          }
-
-          if (
-            imdb_from &&
-            imdb_to &&
-            (article.imdb < imdb_from || article.imdb > imdb_to)
-          ) {
-            match = false;
-          }
-
-          if (
-            country &&
-            !article.country.some((item) => item.includes(country))
-          )
-            match = false;
-
-          if (genre) {
-            const genreFix = genre[0]
-              .replace("[", "")
-              .replace("]", "")
-              .replace(/'/g, "");
-            const genreArr = genreFix.split(",");
-
-            if (genreArr && genreArr.length > 0) {
-              if (!genreArr.every((g) => article.genre.includes(g))) {
-                match = false;
-              }
-            }
-          }
-
-          if (director && !article.director.includes(director[0]))
-            match = false;
-
-          if (actors && !article.actors.some((actor) => actor.includes(actors)))
-            match = false;
-
-          if (
-            title_geo &&
-            typeof article.title_geo === "string" &&
-            article.title_geo.indexOf(title_geo) === -1
-          ) {
-            match = false;
-          }
-          if (
-            Array.isArray(title_en) &&
-            title_en.length > 0 &&
-            typeof article.title_en === "string"
-          ) {
-            const found = title_en.some(
-              (en) =>
-                typeof en === "string" &&
-                article.title_en.toLowerCase().includes(en.toLowerCase())
-            );
-            if (!found) {
-              match = false;
-            }
-          }
-          return match;
-        }
-
-        });
-
-        const pageInt = parseInt(page, 10);
-        const limitInt = parseInt(limit, 10);
-
-        const totalArticles = filteredArticles.length;
-        const totalPages = Math.ceil(totalArticles / limitInt);
-
-        const paginatedArticles = filteredArticles.slice(
-          (pageInt - 1) * limitInt,
-          pageInt * limitInt
-        );
-
-        res.setHeader("Content-Type", "application/json; charset=utf-8");
-        res.send({
-          articles: paginatedArticles,
-          totalPages: totalPages,
-          currentPage: pageInt,
-        });
-      } catch (err) {
-        console.error(`Error parsing JSON: ${err}`);
-        res.status(500).json({ error: "Error parsing articles" });
+      if (
+        year_from &&
+        year_to &&
+        (article.year < year_from || article.year > year_to)
+      ) {
+        match = false;
       }
+
+      if (
+        imdb_from &&
+        imdb_to &&
+        (article.imdb < imdb_from || article.imdb > imdb_to)
+      ) {
+        match = false;
+      }
+
+      if (country && !article.country.some((item) => item.includes(country))) {
+        match = false;
+      }
+
+      if (genre) {
+        const genreFix = genre[0]
+          .replace("[", "")
+          .replace("]", "")
+          .replace(/'/g, "");
+        const genreArr = genreFix.split(",");
+
+        if (genreArr && genreArr.length > 0) {
+          if (!genreArr.every((g) => article.genre.includes(g))) {
+            match = false;
+          }
+        }
+      }
+
+      if (director && !article.director.includes(director[0])) match = false;
+
+      if (actors && !article.actors.some((actor) => actor.includes(actors)))
+        match = false;
+
+      if (
+        title_geo &&
+        typeof article.title_geo === "string" &&
+        article.title_geo.indexOf(title_geo) === -1
+      ) {
+        match = false;
+      }
+      if (
+        Array.isArray(title_en) &&
+        title_en.length > 0 &&
+        typeof article.title_en === "string"
+      ) {
+        const found = title_en.some(
+          (en) =>
+            typeof en === "string" &&
+            article.title_en.toLowerCase().includes(en.toLowerCase())
+        );
+        if (!found) {
+          match = false;
+        }
+      }
+      return match;
     });
 
-    readable.on("error", (err) => {
-      console.error(`Error reading file: ${err}`);
-      res.status(500).json({ error: "Error reading articles" });
-    });
+    const pageInt = parseInt(page, 10);
+    const limitInt = parseInt(limit, 10);
 
-    readable.resume();
+    const totalArticles = filteredArticles.length;
+    const totalPages = Math.ceil(totalArticles / limitInt);
+
+    const paginatedArticles = filteredArticles.slice(
+      (pageInt - 1) * limitInt,
+      pageInt * limitInt
+    );
+
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.send({
+      articles: paginatedArticles,
+      totalPages: totalPages,
+      currentPage: pageInt,
+    });
   } catch (err) {
-    console.error(`General error: ${err}`);
-    res.status(500).json({ error: "General server error" });
+    console.error(`Error filtering articles: ${err}`);
+    res.status(500).json({ error: "Error filtering articles" });
   }
 });
 

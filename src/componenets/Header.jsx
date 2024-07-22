@@ -1,25 +1,23 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useMovies } from "./MoviesContext";
 
 export default function Header() {
   const [change, setChange] = useState("");
   const navigate = useNavigate();
 
-  function getRatingclassName(rating) {
-    if (Number(rating) < 6) return "#eb5757";
-    if (Number(rating) < 7) return "#ffc312";
-    if (Number(rating) >= 7) return "#29b474";
-    return "";
-  }
+  const geo = 'ქწერტყუიოპასდფგჰჯკლზხცვბნმ';
+  const en = 'qwertyuiopasdfghjklzxcvbnm';
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`/search?title=${change.toLocaleLowerCase()}`);
+    if(geo.split('').some(letter => change.includes(letter))) {
+      navigate(`/search?title_geo=${change.toLocaleLowerCase()}`);
+    }
+    if(en.split('').some(letter => change.includes(letter))) {
+      navigate(`/search?title_en=${change.toLocaleLowerCase()}`);
+    }
     setChange("");
   };
-
-  const { movies } = useMovies();
 
   return (
     <>
@@ -50,18 +48,6 @@ export default function Header() {
                       სერიალები
                     </Link>
                   </li>
-
-                  <li className="header__nav-item">
-                    <a href="/anime" className="header__nav-link">
-                      ანიმე
-                    </a>
-                  </li>
-
-                  <li className="header__nav-item">
-                    <a href="/movies" className="header__nav-link">
-                      ტელევიზია
-                    </a>
-                  </li>
                 </ul>
 
                 <div className="header__auth">
@@ -81,54 +67,7 @@ export default function Header() {
                     </button>
                   </form>
 
-                  <div
-                    className="quicksearch"
-                    style={
-                      change.length >= 3
-                        ? { visibility: "visible", opacity: 1 }
-                        : { visibility: "hidden" }
-                    }
-                  >
-                    <ul>
-                      {movies
-                        .filter(
-                          (data) =>
-                            String(data.title_geo).includes(change) ||
-                            String(data.title_en).toLowerCase().includes(change)
-                        )
-                        .slice(0, 6)
-                        .map((item) => (
-                          <Link
-                            key={item.detailLink}
-                            to={`/${item.detailLink}`}
-                            state={{ movies }}
-                            onClick={() => setChange("")}
-                          >
-                            <li>
-                              <img
-                                src={`../src/db/${item.poster}`}
-                                alt={`${item.title_geo} / ${item.title_en} ქართულად`}
-                              />
-                              <div className="title">
-                                <h3>{item.title_geo}</h3>
-                                <small>{item.title_en}</small>
-                              </div>
-                              <span
-                                className="item_rate_quicksearch"
-                                style={{
-                                  border: `1px solid ${getRatingclassName(
-                                    item.imdb
-                                  )}`,
-                                }}
-                              >
-                                {item.imdb}
-                              </span>
-                            </li>
-                          </Link>
-                        ))}
-                    </ul>
-                  </div>
-
+                
                   <button className="header__search-btn" type="button">
                     <i className="ti ti-search"></i>
                   </button>

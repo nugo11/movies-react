@@ -4,7 +4,6 @@ import img404 from "../../public/assets/img/404 - mov.webp";
 import { useMovies } from "./MoviesContext";
 
 const options = [
-  "სერიალი",
   "კომედია",
   "სათავგადასავლო",
   "საშინელება",
@@ -243,35 +242,8 @@ export default function Mov() {
 
   return (
     <>
-      {/* page title */}
-      <section className="section section--first" style={{ marginTop: 80 }}>
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <div className="section__wrap">
-                {/* section title */}
-                <h1 className="section__title section__title--head">ფილმები</h1>
-                {/* end section title */}
-
-                {/* breadcrumbs */}
-                <ul className="breadcrumbs">
-                  <li className="breadcrumbs__item">
-                    <a href="/">მთავარი</a>
-                  </li>
-                  <li className="breadcrumbs__item breadcrumbs__item--active">
-                    ფილმები
-                  </li>
-                </ul>
-                {/* end breadcrumbs */}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* end page title */}
-
       {/* filter */}
-      <div className="filter">
+      <div className="filter" style={{ marginTop: 100 }}>
         <div className="container">
           <div className="row">
             <div className="col-12">
@@ -394,7 +366,9 @@ export default function Mov() {
                         <img
                           src={`/src/db/mov/${item.poster}`}
                           alt={`${item.title_geo} / ${item.title_en} ქართულად`}
+                          loading="lazy"
                         />
+
                         <Link
                           key={item.detailLink}
                           to={`/${item.detailLink}`}

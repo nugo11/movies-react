@@ -4,8 +4,7 @@ import { useParams, Link, useLocation } from "react-router-dom";
 export default function Detail() {
   const { detailLink } = useParams();
   const location = useLocation();
-  const movies = location.state?.series ? (location.state?.series || []) : (location.state?.movies || []);
-
+  const movies = location.state?.movies || location.state?.ser || location.state?.turk || location.state?.anime || location.state?.animation || location.state?.searchResults;
   const selectedItem = movies.find((movie) => movie.detailLink === detailLink);
 
   if (!selectedItem) {
@@ -91,11 +90,11 @@ export default function Detail() {
     <>
       <div
         className="fullbg"
-        style={{ backgroundImage: `url(../src/db/${selectedItem.poster})` }}
+        style={{ backgroundImage: `url(../src/db/mov/${selectedItem.poster})` }}
       ></div>
       <div className="fullbg-pattern" style={{height: '80%'}}></div>
       <div className="detail-container">
-        <section className="section section--details">
+        <section className="section section--details" style={{marginTop: 0}}>
           <div className="content__head content__head--mt">
             <div className="container">
               <div className="row">
