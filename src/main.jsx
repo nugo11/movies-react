@@ -7,6 +7,7 @@ import Footer from "./componenets/Footer.jsx";
 import Detail from "./componenets/Detail.jsx";
 import Mov from "./componenets/Mov.jsx";
 import Search from "./componenets/search.jsx";
+import TvComp from "./componenets/TvComp";
 import { MoviesProvider } from "./componenets/MoviesContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/movies" element={<Mov />} />
         <Route path="/serial" element={<Mov />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/tv" element={<TvComp />} />
       </Routes>
       <Footer />
     </MoviesProvider>

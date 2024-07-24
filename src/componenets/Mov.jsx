@@ -271,6 +271,39 @@ export default function Mov() {
                 </div>
 
                 <div className="filter_two">
+                 
+                  <div className="filter_year">
+                    <input
+                      type="number"
+                      placeholder={year_from_state}
+                      onChange={(e) =>
+                        handleFilterChange("year_from", e.target.value)
+                      }
+                    />
+                    <input
+                      type="number"
+                      placeholder={year_to_state}
+                      onChange={(e) =>
+                        handleFilterChange("year_to", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="filter_imdb">
+                    <input
+                      type="number"
+                      placeholder={Imdb_from_state}
+                      onChange={(e) =>
+                        handleFilterChange("imdb_from", e.target.value)
+                      }
+                    />
+                    <input
+                      type="number"
+                      placeholder={Imdb_to_state}
+                      onChange={(e) =>
+                        handleFilterChange("imdb_to", e.target.value)
+                      }
+                    />
+                  </div>
                   <select
                     name="country"
                     id="lang"
@@ -306,38 +339,6 @@ export default function Mov() {
                       რუსულად
                     </option>
                   </select>
-                  <div className="filter_year">
-                    <input
-                      type="number"
-                      placeholder={year_from_state}
-                      onChange={(e) =>
-                        handleFilterChange("year_from", e.target.value)
-                      }
-                    />
-                    <input
-                      type="number"
-                      placeholder={year_to_state}
-                      onChange={(e) =>
-                        handleFilterChange("year_to", e.target.value)
-                      }
-                    />
-                  </div>
-                  <div className="filter_imdb">
-                    <input
-                      type="number"
-                      placeholder={Imdb_from_state}
-                      onChange={(e) =>
-                        handleFilterChange("imdb_from", e.target.value)
-                      }
-                    />
-                    <input
-                      type="number"
-                      placeholder={Imdb_to_state}
-                      onChange={(e) =>
-                        handleFilterChange("imdb_to", e.target.value)
-                      }
-                    />
-                  </div>
                   <button id="fullSearch" onClick={applyFilters}>
                     მოძებნა
                   </button>

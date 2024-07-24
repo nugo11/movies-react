@@ -18,7 +18,7 @@ export default function Detail() {
   }
 
   const [count, setCount] = useState(
-    selectedItem.movieScriptContent_script ? 10 : 0
+    selectedItem.movieScriptContent_script.length > 10 ? 10 : 0
   );
   const [loading, setLoading] = useState(true);
 
@@ -124,10 +124,10 @@ export default function Detail() {
                           let buttonText = `ფლეიერი ${index + 1}`;
                           const isLastIndex =
                             index ===
-                            selectedItem.movieScriptContent_serial.length - 1;
+                            selectedItem.movieScriptContent_serial.replace(/\n/g, '').split("</div>").filter(item => item.trim() !== '').length - 1;
                           const isSecondToLastIndex =
                             index ===
-                            selectedItem.movieScriptContent_serial.length - 2;
+                            selectedItem.movieScriptContent_serial.replace(/\n/g, '').split("</div>").filter(item => item.trim() !== '').length - 2;
 
                           if (
                             selectedItem.country.includes("ინგლისურად") &&
@@ -314,7 +314,6 @@ export default function Detail() {
                       </div>
                     </div>
                   )}
-
                   {selectedItem.movieScriptContent_serial &&
                     !selectedItem.genre.split(", ").includes("სერიალი") &&
                     selectedItem.movieScriptContent_serial.replace(/\n/g, '').split("</div>").filter(item => item.trim() !== '')

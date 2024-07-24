@@ -27,7 +27,7 @@ export default function Header() {
             <div className="col-12">
               <div className="header__content">
                 <Link to="/" className="header__logo">
-                  <img src="../../public/assets/img/logo.png" alt="" />
+                  <img src="assets/img/logo.png" alt="" />
                 </Link>
 
                 <ul className="header__nav">
@@ -49,7 +49,7 @@ export default function Header() {
                     </Link>
                   </li>
                   <li className="header__nav-item">
-                    <Link to="/serial?genre=სერიალი" className="header__nav-link">
+                    <Link to="/tv" className="header__nav-link">
                       ტელევიზია
                     </Link>
                   </li>

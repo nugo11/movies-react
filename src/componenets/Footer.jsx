@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   useEffect(() => {
@@ -48,17 +49,19 @@ export default function Footer() {
         <div className="row">
           <div className="col-12">
             <div className="footer__content">
-              <a href="index.html" className="footer__logo">
-                <img src="img/logo.svg" alt="" />
-              </a>
+          
+
+              <Link to="/" className="footer__logo">
+                  <img src="assets/img/logo.png" alt="" />
+                </Link>
 
               <span className="footer__copyright">
-                Imov.Ge, 2021—2024 <br /> © დაცულია ყველა უფლება
+                filmebi.in 2024 <br /> © ყველა უფლება დაცულია
               </span>
 
               <nav className="footer__nav">
-                <a href="about">ჩვენს შესახებ</a>
-                <a href="contacts">კონტაქტი</a>
+                <Link to="/">ჩვენს შესახებ</Link>
+                <Link to="/">კონტაქტი</Link>
               </nav>
 
               <button className="footer__back" type="button">

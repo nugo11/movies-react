@@ -803,11 +803,13 @@ function App() {
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
                           {" "}
-                          <img
-                            src="../public/assets/img/tv/tv-01.png"
-                            alt="მთავარი არხი"
-                            loading="lazy"
-                          />
+                          <Link to="/tv">
+                            <img
+                              src="/src/assets/img/tv/tv-01.png"
+                              alt="ტელევიზია"
+                              loading="lazy"
+                            />
+                          </Link>
                         </div>
                       </div>
                     </li>
@@ -815,11 +817,13 @@ function App() {
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
                           {" "}
-                          <img
-                            src="../public/assets/img/tv/tv-02.png"
-                            alt="მთავარი არხი"
-                            loading="lazy"
-                          />
+                          <Link to="/tv">
+                            <img
+                              src="/src/assets/img/tv/tv-02.png"
+                              alt="ტელევიზია"
+                              loading="lazy"
+                            />
+                          </Link>
                         </div>
                       </div>
                     </li>
@@ -827,11 +831,13 @@ function App() {
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
                           {" "}
-                          <img
-                            src="../public/assets/img/tv/tv-03.png"
-                            alt="მთავარი არხი"
-                            loading="lazy"
-                          />
+                          <Link to="/tv">
+                            <img
+                              src="/src/assets/img/tv/tv-03.png"
+                              alt="ტელევიზია"
+                              loading="lazy"
+                            />
+                          </Link>
                         </div>
                       </div>
                     </li>
@@ -839,11 +845,13 @@ function App() {
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
                           {" "}
-                          <img
-                            src="../public/assets/img/tv/tv-04.png"
-                            alt="მთავარი არხი"
-                            loading="lazy"
-                          />
+                          <Link to="/tv">
+                            <img
+                              src="/src/assets/img/tv/tv-04.png"
+                              alt="ტელევიზია"
+                              loading="lazy"
+                            />
+                          </Link>
                         </div>
                       </div>
                     </li>
@@ -851,11 +859,13 @@ function App() {
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
                           {" "}
-                          <img
-                            src="../public/assets/img/tv/tv-05.png"
-                            alt="მთავარი არხი"
-                            loading="lazy"
-                          />
+                          <Link to="/tv">
+                            <img
+                              src="/src/assets/img/tv/tv-05.png"
+                              alt="ტელევიზია"
+                              loading="lazy"
+                            />
+                          </Link>
                         </div>
                       </div>
                     </li>
@@ -863,11 +873,13 @@ function App() {
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
                           {" "}
-                          <img
-                            src="../public/assets/img/tv/tv-06.png"
-                            alt="მთავარი არხი"
-                            loading="lazy"
-                          />
+                          <Link to="/tv">
+                            <img
+                              src="/src/assets/img/tv/tv-06.png"
+                              alt="ტელევიზია"
+                              loading="lazy"
+                            />
+                          </Link>
                         </div>
                       </div>
                     </li>
@@ -875,11 +887,13 @@ function App() {
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
                           {" "}
-                          <img
-                            src="../public/assets/img/tv/tv-07.png"
-                            alt="მთავარი არხი"
-                            loading="lazy"
-                          />
+                          <Link to="/tv">
+                            <img
+                              src="/src/assets/img/tv/tv-07.png"
+                              alt="ტელევიზია"
+                              loading="lazy"
+                            />
+                          </Link>
                         </div>
                       </div>
                     </li>
@@ -887,11 +901,13 @@ function App() {
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
                           {" "}
-                          <img
-                            src="../public/assets/img/tv/tv-08.png"
-                            alt="მთავარი არხი"
-                            loading="lazy"
-                          />
+                          <Link to="/tv">
+                            <img
+                              src="/src/assets/img/tv/tv-08.png"
+                              alt="ტელევიზია"
+                              loading="lazy"
+                            />
+                          </Link>
                         </div>
                       </div>
                     </li>
@@ -899,11 +915,13 @@ function App() {
                       <div className="item item--hero" id="tvcorrect">
                         <div className="item__cover" id="tv_id">
                           {" "}
-                          <img
-                            src="../public/assets/img/tv/tv-09.png"
-                            alt="მთავარი არხი"
-                            loading="lazy"
-                          />
+                          <Link to="/tv">
+                            <img
+                              src="/src/assets/img/tv/tv-09.png"
+                              alt="ტელევიზია"
+                              loading="lazy"
+                            />
+                          </Link>
                         </div>
                       </div>
                     </li>
