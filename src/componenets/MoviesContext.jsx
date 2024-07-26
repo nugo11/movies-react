@@ -19,15 +19,27 @@ export const MoviesProvider = ({ children }) => {
       if (!response.ok) {
         throw new Error("Failed to fetch movies");
       }
-      return await response.json();
+      const encodedData = await response.text();
+      const decodedData = atob(encodedData);
+
+const bytes = new Uint8Array(decodedData.length);
+for (let i = 0; i < decodedData.length; i++) {
+  bytes[i] = decodedData.charCodeAt(i);
+}
+
+const decoder = new TextDecoder('utf-8');
+const utf8String = decoder.decode(bytes);
+
+const jsonData = JSON.parse(utf8String);
+      return jsonData;
     };
 
     const fetchData = async () => {
       try {
         const queryParams = new URLSearchParams(location.search);
         const queryString = queryParams.toString();
-        const baseUrl = "https://filmebi.in/db/api";
-
+        const baseUrl = "https://filmebi.in/CePaSYceBolveNtlegUremPlOULEAu/emEnsItaNyCEnTARGuANacYaNQuEsTrizarYpsYmAtERBILiGh";
+        
         const requests = [fetchMovies(`${baseUrl}?${queryString}`)];
 
         if (location.pathname === "/") {
@@ -61,7 +73,6 @@ export const MoviesProvider = ({ children }) => {
 
     fetchData();
 
-    // Cleanup function to clear movies state on unmount
     return () => {
       setMovies([]);
       setSearchResults([]);

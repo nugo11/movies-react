@@ -11,6 +11,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@splidejs/react-splide": "^0.7.12",
     "cors": "^2.8.5",
     "event-stream": "^4.0.1",
     "express": "^4.19.2",

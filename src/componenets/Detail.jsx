@@ -50,7 +50,6 @@ export default function Detail() {
     }
   }, [selectedItem]);
 
-
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [selectedEpisode, setSelectedEpisode] = useState("");
 
@@ -72,7 +71,7 @@ export default function Detail() {
 
   const filtrk = filteredScript[0];
   let seasons;
-  if(filteredScript[0]) {
+  if (filteredScript[0]) {
     seasons = Object.keys(filtrk);
   }
 
@@ -87,7 +86,7 @@ export default function Detail() {
     <>
       <div
         className="fullbg"
-        style={{ backgroundImage: `url(../src/db/mov/${selectedItem.poster})` }}
+        style={{ backgroundImage: `url(../src/mov/${selectedItem.poster})` }}
       ></div>
       <div className="fullbg-pattern" style={{ height: "80%" }}></div>
       <div className="detail-container">
@@ -101,7 +100,7 @@ export default function Detail() {
                     id="content__tabs"
                     role="tablist"
                   >
-                    {selectedItem.movieScriptContent_script.length > 10 && (
+                    {selectedItem.movieScriptContent_script.length > 10 ? (
                       <li className="nav-item" role="presentation">
                         <button
                           id={`0-tab`}
@@ -117,17 +116,30 @@ export default function Detail() {
                           {"სერიალი"}
                         </button>
                       </li>
-                    )}
-                    {selectedItem.movieScriptContent_serial &&
-                      selectedItem.movieScriptContent_serial.replace(/\n/g, '').split("</div>").filter(item => item.trim() !== '')
+                    ) : console.error()}
+                    {!selectedItem.movieScriptContent_serial.includes(
+                      "movie_box_new"
+                    ) ?
+                      selectedItem.movieScriptContent_serial
+                        .replace(/\n/g, "")
+                        .split("</div>")
+                        .filter((item) => item.trim() !== "")
                         .map((item, index) => {
                           let buttonText = `ფლეიერი ${index + 1}`;
                           const isLastIndex =
                             index ===
-                            selectedItem.movieScriptContent_serial.replace(/\n/g, '').split("</div>").filter(item => item.trim() !== '').length - 1;
+                            selectedItem.movieScriptContent_serial
+                              .replace(/\n/g, "")
+                              .split("</div>")
+                              .filter((item) => item.trim() !== "").length -
+                              1;
                           const isSecondToLastIndex =
                             index ===
-                            selectedItem.movieScriptContent_serial.replace(/\n/g, '').split("</div>").filter(item => item.trim() !== '').length - 2;
+                            selectedItem.movieScriptContent_serial
+                              .replace(/\n/g, "")
+                              .split("</div>")
+                              .filter((item) => item.trim() !== "").length -
+                              2;
 
                           if (
                             selectedItem.country.includes("ინგლისურად") &&
@@ -173,7 +185,7 @@ export default function Detail() {
                               </button>
                             </li>
                           );
-                        })}
+                        }) : console.error()}
                   </ul>
                 </div>
               </div>
@@ -184,10 +196,13 @@ export default function Detail() {
             <div className="row">
               <div className="col-12 ">
                 <div className="tab-content">
-                  
-                  {selectedItem.movieScriptContent_serial &&
-                    selectedItem.genre.split(", ").includes("სერიალი") &&
-                    selectedItem.movieScriptContent_serial.replace(/\n/g, '').split("</div>").filter(item => item.trim() !== '')
+                  {!selectedItem.movieScriptContent_serial.includes(
+                    "movie_box_new"
+                  ) && selectedItem.genre.split(", ").includes("სერიალი") ? (
+                    selectedItem.movieScriptContent_serial
+                      .replace(/\n/g, "")
+                      .split("</div>")
+                      .filter((item) => item.trim() !== "")
                       .map((item, index) => (
                         <div
                           className={`tab-pane fade ${
@@ -219,8 +234,28 @@ export default function Detail() {
                             </div>
                           </div>
                         </div>
-                      ))}
-                  {selectedItem.movieScriptContent_script.length > 10 && (
+                      ))
+                  ) : (
+                    <>
+                      {
+                        <>
+                          {
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: selectedItem.movieScriptContent_serial
+                                  .replace(/\n/g, "")
+                                  .replaceAll(
+                                    'class="player-container"',
+                                    'class="player-container" style="display: none"'
+                                  ),
+                              }}
+                            />
+                          }
+                        </>
+                      }
+                    </>
+                  )}
+                  {selectedItem.movieScriptContent_script.length > 10 ? (
                     <div
                       className={`tab-pane fade ${
                         count === 10 ? "show active" : ""
@@ -257,12 +292,12 @@ export default function Detail() {
                                     {filteredScript[0][selectedSeason].map(
                                       (opt, index) => (
                                         <option
-                                        key={index}
-                                        value={
-                                          opt.url
-                                          ? opt.url
-                                          : opt.languages[0].sources[0].file
-                                        }
+                                          key={index}
+                                          value={
+                                            opt.url
+                                              ? opt.url
+                                              : opt.languages[0].sources[0].file
+                                          }
                                         >
                                           {opt.title
                                             .replaceAll("სერია", "სერია ")
@@ -276,7 +311,7 @@ export default function Detail() {
                                       <iframe
                                         src={
                                           selectedEpisode == ""
-                                            ? filteredScript[0]['1'][0].url
+                                            ? filteredScript[0]["1"][0].url
                                             : selectedEpisode
                                         }
                                         frameBorder="0"
@@ -313,10 +348,13 @@ export default function Detail() {
                         </div>
                       </div>
                     </div>
-                  )}
+                  ) : console.error()}
                   {selectedItem.movieScriptContent_serial &&
-                    !selectedItem.genre.split(", ").includes("სერიალი") &&
-                    selectedItem.movieScriptContent_serial.replace(/\n/g, '').split("</div>").filter(item => item.trim() !== '')
+                    !selectedItem.genre.split(", ").includes("სერიალი") ?
+                    selectedItem.movieScriptContent_serial
+                      .replace(/\n/g, "")
+                      .split("</div>")
+                      .filter((item) => item.trim() !== "")
                       .map((item, index) => (
                         <div
                           key={index}
@@ -345,7 +383,7 @@ export default function Detail() {
                             </div>
                           </div>
                         </div>
-                      ))}
+                      )) : console.error()}
                 </div>
               </div>
             </div>
@@ -367,7 +405,7 @@ export default function Detail() {
                     <div className="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-3">
                       <div className="item__cover">
                         <img
-                          src={`../src/db/mov/${selectedItem.poster}`}
+                          src={`../src/mov/${selectedItem.poster}`}
                           alt={`${selectedItem.title_geo} / ${selectedItem.title_en} ქართულად`}
                         />
                         <span

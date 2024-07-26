@@ -5,11 +5,7 @@ export default function Footer() {
   useEffect(() => {
     const scriptUrls = [
       'src/assets/js/bootstrap.bundle.min.js',
-      'src/assets/js/splide.min.js',
       'src/assets/js/smooth-scrollbar.js',
-      'src/assets/js/plyr.min.js',
-      'src/assets/js/photoswipe.min.js',
-      'src/assets/js/photoswipe-ui-default.min.js',
       'src/assets/js/main.js',
     ];
 
@@ -30,10 +26,6 @@ export default function Footer() {
     };
 
     loadScripts();
-
-    setTimeout(() => {
-      loadScripts();
-    }, 1000);
 
     return () => {
       scriptUrls.forEach((src) => {

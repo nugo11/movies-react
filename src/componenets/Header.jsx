@@ -38,13 +38,13 @@ export default function Header() {
                   </li>
 
                   <li className="header__nav-item">
-                    <Link to="/movies" className="header__nav-link">
+                    <Link to="/movies?mov" className="header__nav-link">
                       ფილმები
                     </Link>
                   </li>
 
                   <li className="header__nav-item">
-                    <Link to="/serial?genre=სერიალი" className="header__nav-link">
+                    <Link to="/serial?ser" className="header__nav-link">
                       სერიალები
                     </Link>
                   </li>

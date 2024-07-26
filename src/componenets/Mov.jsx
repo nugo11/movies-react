@@ -365,7 +365,7 @@ export default function Mov() {
                     <div className="item">
                       <div className="item__cover">
                         <img
-                          src={`/src/db/mov/${item.poster}`}
+                          src={`/src/mov/${item.poster}`}
                           alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                           loading="lazy"
                         />
@@ -389,29 +389,35 @@ export default function Mov() {
                           HD
                         </div>
                         <div className="item__lang" type="button">
-                          <ul>
-                            <li
-                              style={{
-                                color: item.country[0] ? "white" : "gray",
-                              }}
-                            >
-                              GEO
-                            </li>
-                            <li
-                              style={{
-                                color: item.country[1] ? "white" : "gray",
-                              }}
-                            >
-                              ENG
-                            </li>
-                            <li
-                              style={{
-                                color: item.country[2] ? "white" : "gray",
-                              }}
-                            >
-                              RUS
-                            </li>
-                          </ul>
+                        <ul>
+                                      <li
+                                        style={{
+                                          color: item.country.includes('ქართულად')
+                                            ? "white"
+                                            : "gray",
+                                        }}
+                                      >
+                                        GEO
+                                      </li>
+                                      <li
+                                        style={{
+                                          color: item.country.includes('ინგლისურად')
+                                            ? "white"
+                                            : "gray",
+                                        }}
+                                      >
+                                        ENG
+                                      </li>
+                                      <li
+                                        style={{
+                                          color: item.country.includes('რუსულად')
+                                            ? "white"
+                                            : "gray",
+                                        }}
+                                      >
+                                        RUS
+                                      </li>
+                                    </ul>
                         </div>
                       </div>
                       <div className="item__content">
