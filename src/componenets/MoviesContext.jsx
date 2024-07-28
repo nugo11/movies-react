@@ -5,7 +5,8 @@ const MoviesContext = createContext();
 
 export const MoviesProvider = ({ children }) => {
   const [movies, setMovies] = useState([]);
-  const [searchResults, setSearchResults] = useState([]);
+  const [movs, setMovs] = useState([]);
+  const [searchResults, setSearchResults] = useState(null);
   const [ser, setSer] = useState([]);
   const [turk, setTurk] = useState([]);
   const [anime, setAnime] = useState([]);
@@ -22,15 +23,15 @@ export const MoviesProvider = ({ children }) => {
       const encodedData = await response.text();
       const decodedData = atob(encodedData);
 
-const bytes = new Uint8Array(decodedData.length);
-for (let i = 0; i < decodedData.length; i++) {
-  bytes[i] = decodedData.charCodeAt(i);
-}
+      const bytes = new Uint8Array(decodedData.length);
+      for (let i = 0; i < decodedData.length; i++) {
+        bytes[i] = decodedData.charCodeAt(i);
+      }
 
-const decoder = new TextDecoder('utf-8');
-const utf8String = decoder.decode(bytes);
+      const decoder = new TextDecoder("utf-8");
+      const utf8String = decoder.decode(bytes);
 
-const jsonData = JSON.parse(utf8String);
+      const jsonData = JSON.parse(utf8String);
       return jsonData;
     };
 
@@ -38,9 +39,18 @@ const jsonData = JSON.parse(utf8String);
       try {
         const queryParams = new URLSearchParams(location.search);
         const queryString = queryParams.toString();
-        const baseUrl = "https://filmebi.in/CePaSYceBolveNtlegUremPlOULEAu/emEnsItaNyCEnTARGuANacYaNQuEsTrizarYpsYmAtERBILiGh";
-        
-        const requests = [fetchMovies(`${baseUrl}?${queryString}`)];
+        const baseUrl =
+          "https://filmebi.in/CePaSYceBolveNtlegUremPlOULEAu/emEnsItaNyCEnTARGuANacYaNQuEsTrizarYpsYmAtERBILiGh";
+
+        const requests = [
+          fetchMovies(
+            `${baseUrl}${
+              location.pathname.startsWith("/detail")
+                ? `?detailLink=${location.pathname.replace("/detail/", "")}`
+                : `?${queryString}`
+            }`
+          ),
+        ];
 
         if (location.pathname === "/") {
           requests.push(
@@ -53,11 +63,14 @@ const jsonData = JSON.parse(utf8String);
 
         const results = await Promise.all(requests);
 
-        if (location.pathname === "/search") {
+        if (location.pathname.startsWith("/detail")) {
+          setSearchResults(results[0].articles[0]);
+        } else if (location.pathname === "/search") {
           setSearchResults(results[0].articles);
           setTotalPages(results[0].totalPages);
         } else {
           setMovies(results[0].articles);
+          setMovs(results[0].articles);
           setTotalPages(results[0].totalPages);
           if (results.length > 1) {
             setSer(results[1].articles);
@@ -75,6 +88,7 @@ const jsonData = JSON.parse(utf8String);
 
     return () => {
       setMovies([]);
+      setMovs([]);
       setSearchResults([]);
       setSer([]);
       setTurk([]);
@@ -85,7 +99,16 @@ const jsonData = JSON.parse(utf8String);
 
   return (
     <MoviesContext.Provider
-      value={{ movies, searchResults, ser, turk, anime, animation, totalPages }}
+      value={{
+        movies,
+        searchResults,
+        ser,
+        turk,
+        anime,
+        animation,
+        totalPages,
+        movs,
+      }}
     >
       {children}
     </MoviesContext.Provider>

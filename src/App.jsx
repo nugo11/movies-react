@@ -128,7 +128,7 @@ function App() {
 
                                   <Link
                                     key={item.detailLink}
-                                    to={`/${item.detailLink}`}
+                                    to={`/detail/${item.detailLink}`}
                                     state={{ movies }}
                                     className="item__play"
                                   >
@@ -180,7 +180,7 @@ function App() {
                                   <h3 className="item__title">
                                     <Link
                                       key={item.detailLink}
-                                      to={`/${item.detailLink}`}
+                                      to={`/detail/${item.detailLink}`}
                                       state={{ movies }}
                                     >
                                       {item.title_geo}
@@ -190,7 +190,7 @@ function App() {
                                   <span className="item__category">
                                     <Link
                                       key={item.detailLink}
-                                      to={`/${item.detailLink}`}
+                                      to={`/detail/${item.detailLink}`}
                                       state={{ movies }}
                                     >
                                       {item.title_en}
@@ -282,7 +282,7 @@ function App() {
                                 />
                                 <Link
                                   key={item.detailLink}
-                                  to={`/${item.detailLink}`}
+                                  to={`/detail/${item.detailLink}`}
                                   state={{ ser }}
                                   className="item__play"
                                 >
@@ -334,7 +334,7 @@ function App() {
                                 <h3 className="item__title">
                                   <Link
                                     key={item.detailLink}
-                                    to={`/${item.detailLink}`}
+                                    to={`/detail/${item.detailLink}`}
                                     state={{ ser }}
                                   >
                                     {item.title_geo}
@@ -343,7 +343,7 @@ function App() {
                                 <span className="item__category">
                                   <Link
                                     key={item.detailLink}
-                                    to={`/${item.detailLink}`}
+                                    to={`/detail/${item.detailLink}`}
                                     state={{ ser }}
                                   >
                                     {item.title_en}
@@ -444,7 +444,7 @@ function App() {
                         />
                         <Link
                           key={item.detailLink}
-                          to={`/${item.detailLink}`}
+                          to={`/detail/${item.detailLink}`}
                           state={{ turk }}
                           className="item__play"
                         >
@@ -496,7 +496,7 @@ function App() {
                         <h3 className="item__title">
                           <Link
                             key={item.detailLink}
-                            to={`/${item.detailLink}`}
+                            to={`/detail/${item.detailLink}`}
                             state={{ turk }}
                           >
                             {item.title_geo}
@@ -505,7 +505,7 @@ function App() {
                         <span className="item__category">
                           <Link
                             key={item.detailLink}
-                            to={`/${item.detailLink}`}
+                            to={`/detail/${item.detailLink}`}
                             state={{ turk }}
                           >
                             {item.title_en}
@@ -542,7 +542,7 @@ function App() {
                         />
                         <Link
                           key={item.detailLink}
-                          to={`/${item.detailLink}`}
+                          to={`/detail/${item.detailLink}`}
                           state={{ anime }}
                           className="item__play"
                         >
@@ -594,7 +594,7 @@ function App() {
                         <h3 className="item__title">
                           <Link
                             key={item.detailLink}
-                            to={`/${item.detailLink}`}
+                            to={`/detail/${item.detailLink}`}
                             state={{ anime }}
                           >
                             {item.title_geo}
@@ -603,7 +603,7 @@ function App() {
                         <span className="item__category">
                           <Link
                             key={item.detailLink}
-                            to={`/${item.detailLink}`}
+                            to={`/detail/${item.detailLink}`}
                             state={{ anime }}
                           >
                             {item.title_en}
@@ -692,7 +692,7 @@ function App() {
                                 />
                                 <Link
                                   key={item.detailLink}
-                                  to={`/${item.detailLink}`}
+                                  to={`/detail/${item.detailLink}`}
                                   state={{ animation }}
                                   className="item__play"
                                 >
@@ -744,7 +744,7 @@ function App() {
                                 <h3 className="item__title">
                                   <Link
                                     key={item.detailLink}
-                                    to={`/${item.detailLink}`}
+                                    to={`/detail/${item.detailLink}`}
                                     state={{ animation }}
                                   >
                                     {item.title_geo}
@@ -754,7 +754,7 @@ function App() {
                                 <span className="item__category">
                                   <Link
                                     key={item.detailLink}
-                                    to={`/${item.detailLink}`}
+                                    to={`/detail/${item.detailLink}`}
                                     state={{ animation }}
                                   >
                                     {item.title_en}

@@ -372,7 +372,7 @@ export default function Mov() {
 
                         <Link
                           key={item.detailLink}
-                          to={`/${item.detailLink}`}
+                          to={`/detail/${item.detailLink}`}
                           state={{ movies }}
                           className="item__play"
                         >
@@ -424,7 +424,7 @@ export default function Mov() {
                         <h3 className="item__title">
                           <Link
                             key={item.detailLink}
-                            to={`/${item.detailLink}`}
+                            to={`/detail/${item.detailLink}`}
                             state={{ movies }}
                           >
                             {item.title_geo}
@@ -433,7 +433,7 @@ export default function Mov() {
                         <span className="item__category">
                           <Link
                             key={item.detailLink}
-                            to={`/${item.detailLink}`}
+                            to={`/detail/${item.detailLink}`}
                             state={{ movies }}
                           >
                             {item.title_en}

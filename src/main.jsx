@@ -9,6 +9,8 @@ import Mov from "./componenets/Mov.jsx";
 import Search from "./componenets/search.jsx";
 import TvComp from "./componenets/TvComp";
 import { MoviesProvider } from "./componenets/MoviesContext.jsx";
+import Privacy from "./componenets/privacy.jsx";
+import Collections from "./componenets/collect/Collections.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Router>
@@ -16,11 +18,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Header />
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/:detailLink" element={<Detail />} />
+        <Route path="/detail/:detailLink" element={<Detail />} />
         <Route path="/movies" element={<Mov />} />
         <Route path="/serial" element={<Mov />} />
         <Route path="/search" element={<Search />} />
         <Route path="/tv" element={<TvComp />} />
+        <Route path="/privacy-policy" element={<Privacy />} />
+        <Route path="/collections" element={<Collections />} />
       </Routes>
       <Footer />
     </MoviesProvider>

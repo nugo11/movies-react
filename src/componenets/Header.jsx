@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [change, setChange] = useState("");
   const navigate = useNavigate();
 
-  const geo = 'ქწერტყუიოპასდფგჰჯკლზხცვბნმ';
-  const en = 'qwertyuiopasdfghjklzxcvbnm';
+  const geo = "ქწერტყუიოპასდფგჰჯკლზხცვბნმ";
+  const en = "qwertyuiopasdfghjklzxcvbnm";
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(geo.split('').some(letter => change.includes(letter))) {
+    if (geo.split("").some((letter) => change.includes(letter))) {
       navigate(`/search?title_geo=${change.toLocaleLowerCase()}`);
     }
-    if(en.split('').some(letter => change.includes(letter))) {
+    if (en.split("").some((letter) => change.includes(letter))) {
       navigate(`/search?title_en=${change.toLocaleLowerCase()}`);
     }
     setChange("");
@@ -21,13 +22,27 @@ export default function Header() {
 
   return (
     <>
+      <Helmet>
+        <link rel="canonical" href={window.location.href} />
+        <link
+          rel="search"
+          type="application/opensearchdescription+xml"
+          title="filmebi.in | filmebi qartulad | serialebi qartulad"
+          href="https://filmebi.in/opensearch.xml"
+        />
+        <link
+          rel="preconnect"
+          href="https://filmebi.in/"
+          fetchpriority="high"
+        />
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="row">
             <div className="col-12">
               <div className="header__content">
                 <Link to="/" className="header__logo">
-                  <img src="assets/img/logo.png" alt="" />
+                  <img src="/assets/img/logo.png" alt="logo" />
                 </Link>
 
                 <ul className="header__nav">
@@ -71,9 +86,7 @@ export default function Header() {
                       <i className="ti ti-x"></i>
                     </button>
                   </form>
-                  
 
-                
                   <button className="header__search-btn" type="button">
                     <i className="ti ti-search"></i>
                   </button>

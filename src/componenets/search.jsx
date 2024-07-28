@@ -71,7 +71,7 @@ export default function Search() {
                           />
                           <Link
                             key={item.detailLink}
-                            to={`/${item.detailLink}`}
+                            to={`/detail/${item.detailLink}`}
                             state={{ searchResults }}
                             className="item__play"
                           >
@@ -123,7 +123,7 @@ export default function Search() {
                           <h3 className="item__title">
                             <Link
                               key={item.detailLink}
-                              to={`/${item.detailLink}`}
+                              to={`/detail/${item.detailLink}`}
                               state={{ searchResults }}
                             >
                               {item.title_geo}
@@ -132,7 +132,7 @@ export default function Search() {
                           <span className="item__category">
                             <Link
                               key={item.detailLink}
-                              to={`/${item.detailLink}`}
+                              to={`/detail/${item.detailLink}`}
                               state={{ searchResults }}
                             >
                               {item.title_en}

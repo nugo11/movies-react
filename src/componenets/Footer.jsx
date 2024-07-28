@@ -54,6 +54,8 @@ export default function Footer() {
               <nav className="footer__nav">
                 <Link to="/">ჩვენს შესახებ</Link>
                 <Link to="/">კონტაქტი</Link>
+            <div id="top-ge-counter-container" data-site-id="117514"></div>
+            <script async src="//counter.top.ge/counter.js"></script>
               </nav>
 
               <button className="footer__back" type="button">

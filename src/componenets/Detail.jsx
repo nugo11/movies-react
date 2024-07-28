@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useParams, Link, useLocation } from "react-router-dom";
+import { useMovies } from "./MoviesContext";
 
 export default function Detail() {
   const { detailLink } = useParams();
+  const { searchResults } = useMovies();
+
   const location = useLocation();
+
   const movies =
     location.state?.movies ||
     location.state?.ser ||
@@ -11,7 +16,10 @@ export default function Detail() {
     location.state?.anime ||
     location.state?.animation ||
     location.state?.searchResults;
-  const selectedItem = movies.find((movie) => movie.detailLink === detailLink);
+
+  const selectedItem = movies
+    ? movies.find((movie) => movie.detailLink === detailLink)
+    : searchResults;
 
   if (!selectedItem) {
     return <div>Item not found</div>;
@@ -38,17 +46,33 @@ export default function Detail() {
 
   useEffect(() => {
     if (selectedItem.movieScriptContent_script) {
-      setFilteredScript(
-        JSON.parse(
-          selectedItem.movieScriptContent_script
-            .replace(/\\/g, "")
-            .replaceAll('""}', '"}')
-            .replaceAll('"{"', '[{"')
-            .replaceAll('}"', "}]")
-        )
-      );
+      try {
+        const sanitizedScript = selectedItem.movieScriptContent_script
+          .replace(/\\/g, "")
+          .replaceAll('""}', '"}')
+          .replaceAll('"{"', '[{"')
+          .replaceAll('}"', "}]");
+
+        const parsedScript = JSON.parse(sanitizedScript);
+
+        setFilteredScript(parsedScript);
+      } catch (error) {
+        console.error("Failed to parse JSON:", error);
+        setFilteredScript([
+          {
+              "1": [
+                  {
+                      "title": "null",
+                      "url": "../assets/img/404 - mov.webp"
+                  }
+              ]
+          }
+      ]);
+      }
     }
   }, [selectedItem]);
+
+  console.log(filteredScript);
 
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [selectedEpisode, setSelectedEpisode] = useState("");
@@ -84,6 +108,44 @@ export default function Detail() {
 
   return (
     <>
+      <Helmet>
+        <meta name="description" content={selectedItem.story} />
+        <meta
+          name="keywords"
+          content={`${selectedItem.title_geo}, ${selectedItem.title_en}<`}
+        />
+
+        <meta property="twitter:card" content="summary" />
+        <meta
+          property="twitter:title"
+          content={`${selectedItem.title_geo} | ${selectedItem.title_en} | ${selectedItem.country}`}
+        />
+        <meta property="twitter:url" content={window.location.href} />
+        <meta property="twitter:description" content={selectedItem.story} />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:site_name"
+          content="Filmebi.in | filmebi qartulad | serialebi qartulad"
+        />
+        <meta
+          property="og:title"
+          content={`${selectedItem.title_geo} | ${selectedItem.title_en} | ${selectedItem.country}`}
+        />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:description" content={selectedItem.story} />
+        <meta property="og:image" content={selectedItem.poster} />
+        <meta property="fb:app_id" content="5369417443166292" />
+
+        <div id="fb-root"></div>
+        <script
+          async
+          defer
+          crossorigin="anonymous"
+          src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v20.0&appId=419473549161355"
+          nonce="H1hc4ujB"
+        ></script>
+      </Helmet>
+      {console.log(selectedItem.movieScriptContent_script)}
       <div
         className="fullbg"
         style={{ backgroundImage: `url(../src/mov/${selectedItem.poster})` }}
@@ -116,76 +178,79 @@ export default function Detail() {
                           {"სერიალი"}
                         </button>
                       </li>
-                    ) : console.error()}
+                    ) : (
+                      console.error()
+                    )}
                     {!selectedItem.movieScriptContent_serial.includes(
                       "movie_box_new"
-                    ) ?
-                      selectedItem.movieScriptContent_serial
-                        .replace(/\n/g, "")
-                        .split("</div>")
-                        .filter((item) => item.trim() !== "")
-                        .map((item, index) => {
-                          let buttonText = `ფლეიერი ${index + 1}`;
-                          const isLastIndex =
-                            index ===
-                            selectedItem.movieScriptContent_serial
-                              .replace(/\n/g, "")
-                              .split("</div>")
-                              .filter((item) => item.trim() !== "").length -
-                              1;
-                          const isSecondToLastIndex =
-                            index ===
-                            selectedItem.movieScriptContent_serial
-                              .replace(/\n/g, "")
-                              .split("</div>")
-                              .filter((item) => item.trim() !== "").length -
-                              2;
+                    )
+                      ? selectedItem.movieScriptContent_serial
+                          .replace(/\n/g, "")
+                          .split("</div>")
+                          .filter((item) => item.trim() !== "")
+                          .map((item, index) => {
+                            let buttonText = `ფლეიერი ${index + 1}`;
+                            const isLastIndex =
+                              index ===
+                              selectedItem.movieScriptContent_serial
+                                .replace(/\n/g, "")
+                                .split("</div>")
+                                .filter((item) => item.trim() !== "").length -
+                                1;
+                            const isSecondToLastIndex =
+                              index ===
+                              selectedItem.movieScriptContent_serial
+                                .replace(/\n/g, "")
+                                .split("</div>")
+                                .filter((item) => item.trim() !== "").length -
+                                2;
 
-                          if (
-                            selectedItem.country.includes("ინგლისურად") &&
-                            selectedItem.country.includes("რუსულად")
-                          ) {
-                            if (isLastIndex) {
-                              buttonText = "რუსულად";
-                            } else if (isSecondToLastIndex) {
+                            if (
+                              selectedItem.country.includes("ინგლისურად") &&
+                              selectedItem.country.includes("რუსულად")
+                            ) {
+                              if (isLastIndex) {
+                                buttonText = "რუსულად";
+                              } else if (isSecondToLastIndex) {
+                                buttonText = "ინგლისურად";
+                              }
+                            } else if (
+                              selectedItem.country.includes("ინგლისურად") &&
+                              isLastIndex
+                            ) {
                               buttonText = "ინგლისურად";
+                            } else if (
+                              selectedItem.country.includes("რუსულად") &&
+                              isLastIndex
+                            ) {
+                              buttonText = "რუსულად";
                             }
-                          } else if (
-                            selectedItem.country.includes("ინგლისურად") &&
-                            isLastIndex
-                          ) {
-                            buttonText = "ინგლისურად";
-                          } else if (
-                            selectedItem.country.includes("რუსულად") &&
-                            isLastIndex
-                          ) {
-                            buttonText = "რუსულად";
-                          }
 
-                          return (
-                            <li
-                              className="nav-item"
-                              role="presentation"
-                              key={index}
-                            >
-                              <button
-                                id={`${index}-tab`}
-                                className={`${
-                                  count === index ? "active" : "activei"
-                                }`}
-                                data-bs-toggle="tab"
-                                data-bs-target={`#tab-${index}`}
-                                type="button"
-                                role="tab"
-                                aria-controls={`tab-${index}`}
-                                aria-selected="true"
-                                onClick={() => setCount(index)}
+                            return (
+                              <li
+                                className="nav-item"
+                                role="presentation"
+                                key={index}
                               >
-                                {buttonText}
-                              </button>
-                            </li>
-                          );
-                        }) : console.error()}
+                                <button
+                                  id={`${index}-tab`}
+                                  className={`${
+                                    count === index ? "active" : "activei"
+                                  }`}
+                                  data-bs-toggle="tab"
+                                  data-bs-target={`#tab-${index}`}
+                                  type="button"
+                                  role="tab"
+                                  aria-controls={`tab-${index}`}
+                                  aria-selected="true"
+                                  onClick={() => setCount(index)}
+                                >
+                                  {buttonText}
+                                </button>
+                              </li>
+                            );
+                          })
+                      : console.error()}
                   </ul>
                 </div>
               </div>
@@ -348,42 +413,45 @@ export default function Detail() {
                         </div>
                       </div>
                     </div>
-                  ) : console.error()}
+                  ) : (
+                    console.error()
+                  )}
                   {selectedItem.movieScriptContent_serial &&
-                    !selectedItem.genre.split(", ").includes("სერიალი") ?
-                    selectedItem.movieScriptContent_serial
-                      .replace(/\n/g, "")
-                      .split("</div>")
-                      .filter((item) => item.trim() !== "")
-                      .map((item, index) => (
-                        <div
-                          key={index}
-                          className={`tab-pane fade ${
-                            count === index ||
-                            (count === index &&
-                              !selectedItem.movieScriptContent_script)
-                              ? "show active"
-                              : ""
-                          }`}
-                          id={`tab-${index}`}
-                          role="tabpanel"
-                          aria-labelledby={`${index}-tab`}
-                          tabIndex="0"
-                        >
-                          <div className="row">
-                            <div className="col-12">
-                              {loading ? (
-                                <span className="loader"></span>
-                              ) : (
-                                <div
-                                  key={index}
-                                  dangerouslySetInnerHTML={{ __html: item }}
-                                />
-                              )}
+                  !selectedItem.genre.split(", ").includes("სერიალი")
+                    ? selectedItem.movieScriptContent_serial
+                        .replace(/\n/g, "")
+                        .split("</div>")
+                        .filter((item) => item.trim() !== "")
+                        .map((item, index) => (
+                          <div
+                            key={index}
+                            className={`tab-pane fade ${
+                              count === index ||
+                              (count === index &&
+                                !selectedItem.movieScriptContent_script)
+                                ? "show active"
+                                : ""
+                            }`}
+                            id={`tab-${index}`}
+                            role="tabpanel"
+                            aria-labelledby={`${index}-tab`}
+                            tabIndex="0"
+                          >
+                            <div className="row">
+                              <div className="col-12">
+                                {loading ? (
+                                  <span className="loader"></span>
+                                ) : (
+                                  <div
+                                    key={index}
+                                    dangerouslySetInnerHTML={{ __html: item }}
+                                  />
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )) : console.error()}
+                        ))
+                    : console.error()}
                 </div>
               </div>
             </div>
@@ -477,6 +545,49 @@ export default function Detail() {
                         </ul>
                         <div className="item__description">
                           <p>{selectedItem.story}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="content">
+          <div className="content__head content__head--mt">
+            <div className="container">
+              <div className="row">
+                <div className="col-12">
+                  <ul
+                    className="nav nav-tabs content__tabs"
+                    id="content__tabs"
+                    role="tablist"
+                  >
+                    <li className="nav-item" role="presentation">
+                      <button className="active">კომენტარები</button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="container">
+            <div className="row">
+              <div className="col-12">
+                <div className="tab-content">
+                  <div className="tab-pane fade active show">
+                    <div className="row">
+                      <div className="col-12">
+                        <div className="comments">
+                          <div
+                            className="fb-comments"
+                            data-href={window.location.href}
+                            data-width="100%"
+                            data-numposts="5"
+                          ></div>
                         </div>
                       </div>
                     </div>

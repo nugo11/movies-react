@@ -24307,10 +24307,6 @@ body::-webkit-scrollbar-thumb {
     margin-top: 50px
 }
 
-.paginator--comments {
-    margin-top: 30px;
-    margin-bottom: 30px
-}
 
 .paginator__item {
     margin-right: 15px
@@ -27605,4 +27601,30 @@ body::-webkit-scrollbar-thumb {
     padding: 1em 0;
     right: .5em;
     top: 0
+}
+
+.comments {
+    background-color: white;
+    border-radius: 5px;
+}
+
+.col_item__cover {
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+}
+
+.col_item__cover img {
+    width: 100%;
+    opacity: 0.4;
+}
+
+.collection_item__title {
+    position: absolute;
+    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 17px;
+    cursor: pointer;
 }
