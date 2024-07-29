@@ -27628,3 +27628,47 @@ body::-webkit-scrollbar-thumb {
     font-size: 17px;
     cursor: pointer;
 }
+
+.authform {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.authform div {
+    width: 30%;
+}
+
+.authform div input {
+    background-color: #2220287c;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 1px 1px 1px #f9ab00;
+    width: 100%;
+}
+
+.authform div input:focus {
+    background-color: #44424b7c;
+    box-shadow: 1px 1px 1px #534018;
+}
+
+.authform button {
+    background-color: #f9ab00;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    color: white;
+    opacity: 0.8;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.authform button:hover {
+    transition: 0.5s;
+    opacity: 1;
+}

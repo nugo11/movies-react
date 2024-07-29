@@ -2,28 +2,60 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { useMovies } from "./MoviesContext";
+import { useAuth } from "./login/authcontext";
+
 
 export default function Detail() {
   const { detailLink } = useParams();
   const { searchResults } = useMovies();
-
+  const { user } = useAuth();
   const location = useLocation();
 
   const movies =
-    location.state?.movies ||
-    location.state?.ser ||
-    location.state?.turk ||
-    location.state?.anime ||
-    location.state?.animation ||
-    location.state?.searchResults;
+  location.state?.movies ||
+  location.state?.ser ||
+  location.state?.turk ||
+  location.state?.anime ||
+  location.state?.animation ||
+  location.state?.searchResults;
 
-  const selectedItem = movies
-    ? movies.find((movie) => movie.detailLink === detailLink)
-    : searchResults;
+const selectedItem = movies
+  ? movies.find((movie) => movie.detailLink === detailLink)
+  : searchResults;
 
-  if (!selectedItem) {
-    return <div>Item not found</div>;
-  }
+if (!selectedItem) {
+  return <div>Item not found</div>;
+}
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedMovie, setEditedMovie] = useState(selectedItem);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedMovie({ ...editedMovie, [name]: value });
+  };
+
+
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    const response = await fetch('https://filmebi.in/CePaSYceBolveNtlegUremPlOULEAu/JKHBAsdbaKLBASDMEoD.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(editedMovie),
+    });
+
+    if (response.ok) {
+      const updatedMovie = await response.json();
+      setEditedMovie(updatedMovie);
+      setIsEditing(false);
+    } else {
+      console.error('Failed to update movie');
+    }
+  };
+
+
 
   const [count, setCount] = useState(
     selectedItem.movieScriptContent_script.length > 10 ? 10 : 0
@@ -72,7 +104,6 @@ export default function Detail() {
     }
   }, [selectedItem]);
 
-  console.log(filteredScript);
 
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [selectedEpisode, setSelectedEpisode] = useState("");
@@ -145,7 +176,7 @@ export default function Detail() {
           nonce="H1hc4ujB"
         ></script>
       </Helmet>
-      {console.log(selectedItem.movieScriptContent_script)}
+
       <div
         className="fullbg"
         style={{ backgroundImage: `url(../src/mov/${selectedItem.poster})` }}
@@ -466,6 +497,135 @@ export default function Detail() {
                     {selectedItem.title_en}
                   </span>
                 </h1>
+                
+                <div>
+      {user && (
+        <button onClick={() => setIsEditing(!isEditing)}>
+          {isEditing ? 'Cancel' : 'Edit'}
+        </button>
+      )}
+      {isEditing ? (
+        <form onSubmit={handleEdit}>
+          <label>
+            Detail Link:
+            <input
+              type="text"
+              name="detailLink"
+              value={editedMovie.detailLink}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Poster:
+            <input
+              type="text"
+              name="poster"
+              value={editedMovie.poster}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Title (Geo):
+            <input
+              type="text"
+              name="title_geo"
+              value={editedMovie.title_geo}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Title (En):
+            <input
+              type="text"
+              name="title_en"
+              value={editedMovie.title_en}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Year:
+            <input
+              type="text"
+              name="year"
+              value={editedMovie.year}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Genre:
+            <textarea
+              name="genre"
+              value={editedMovie.genre}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Country:
+            <textarea
+              name="country"
+              value={editedMovie.country}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Director:
+            <textarea
+              name="director"
+              value={editedMovie.director}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Actors:
+            <textarea
+              name="actors"
+              value={editedMovie.actors}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Story:
+            <textarea
+              name="story"
+              value={editedMovie.story}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            IMDb:
+            <input
+              type="text"
+              name="imdb"
+              value={editedMovie.imdb}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Movie Script Content (Serial):
+            <textarea
+              name="movieScriptContent_serial"
+              value={editedMovie.movieScriptContent_serial}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Movie Script Content (Script):
+            <textarea
+              name="movieScriptContent_script"
+              value={editedMovie.movieScriptContent_script}
+              onChange={handleChange}
+            />
+          </label>
+          <button type="submit">Save</button>
+        </form>
+      ) : (
+        <div>
+     
+        </div>
+      )}
+    </div>
+
+
               </div>
               <div className="col-12">
                 <div className="item item--details">

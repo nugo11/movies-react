@@ -1,10 +1,23 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+import { useAuth } from "./login/authcontext";
 
 export default function Header() {
   const [change, setChange] = useState("");
   const navigate = useNavigate();
+
+  const { user } = useAuth();
+
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/login");
+      })
+      .catch((error) => {});
+  };
 
   const geo = "ქწერტყუიოპასდფგჰჯკლზხცვბნმ";
   const en = "qwertyuiopasdfghjklzxcvbnm";
@@ -90,13 +103,16 @@ export default function Header() {
                   <button className="header__search-btn" type="button">
                     <i className="ti ti-search"></i>
                   </button>
+                  {user && (
+                    <>
+                      <button onClick={handleLogout} style={{ color: "white" }}>
+                        Logout
+                      </button>
+                    </>
+                  )}
                 </div>
 
-                <button className="header__btn" type="button">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </button>
+                <button className="header__btn" type="button"></button>
               </div>
             </div>
           </div>
