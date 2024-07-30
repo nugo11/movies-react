@@ -27672,3 +27672,67 @@ body::-webkit-scrollbar-thumb {
     transition: 0.5s;
     opacity: 1;
 }
+
+.editbox, .editbox1 {
+    position: fixed;
+    z-index: 999;
+    top: 50%;
+    left: 50%;
+    height: 80vh;
+    width: 85%;
+    overflow-y: scroll;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.editbox1 {
+    position: relative;
+    height: fit-content;
+    background-color: #1a191f;
+    overflow: hidden;
+}
+
+.editbox1 textarea {
+    height: 300px !important;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.editbox1 input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.editbox label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.editbox label input {
+    width: 90%;
+    padding: 10px;
+}
+
+.editbox label textarea {
+    width: 90%;
+    height: 400px;
+}
+
+.editbox div {
+    display: flex;
+    justify-content: space-around;
+}
+
+.editbox button,.editbox1 button {
+    background-color: #f9ab00;
+    padding: 8px;
+    width: 40%;
+}
+
