@@ -7,11 +7,16 @@ export default function Search() {
   const { searchResults } = useMovies();
   const [show404, setShow404] = useState(false);
 
+  let moviesarr = [];
+
+console.log(searchResults == null ? '' : moviesarr = searchResults)
+  
   useEffect(() => {
     setTimeout(() => {
         setShow404(true);
       }, 1000);
 }, []);
+
 
 
   function getRatingClassName(rating) {
@@ -55,7 +60,7 @@ export default function Search() {
         <div className="container">
           <div className="row">
             {/* item */}
-            {searchResults ? (
+            {moviesarr.length > 1 ? (
               <>
                 {searchResults
                   .map((item) => (

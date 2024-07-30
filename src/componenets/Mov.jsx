@@ -52,11 +52,29 @@ export default function Mov() {
   const navigate = useNavigate();
   const currentPage = Number(query.get("page")) || 1;
 
-  const [filterValues, setFilterValues] = useState({});
+  const [filterValues, setFilterValues] = useState({
+    country: "",
+    year_from: 1921,
+    year_to: 2026,
+    imdb_from: 1.1,
+    imdb_to: 9.9,
+    genre: [],
+  });
+
 
   const [show404, setShow404] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
+  useEffect(() => {
+    if (movies.length === 0) {
+      setTimeout(() => {
+        setShow404(true);
+      }, 1000);
+    } else {
+      setShow404(false);
+    }
+  }, []);
+  
   const [year_from_state, setYearState] = useState(null);
   const [year_to_state, setYearToState] = useState(null);
 
@@ -271,7 +289,6 @@ export default function Mov() {
                 </div>
 
                 <div className="filter_two">
-                 
                   <div className="filter_year">
                     <input
                       type="number"
@@ -389,35 +406,35 @@ export default function Mov() {
                           HD
                         </div>
                         <div className="item__lang" type="button">
-                        <ul>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('ქართულად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        GEO
-                                      </li>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('ინგლისურად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        ENG
-                                      </li>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('რუსულად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        RUS
-                                      </li>
-                                    </ul>
+                          <ul>
+                            <li
+                              style={{
+                                color: item.country.includes("ქართულად")
+                                  ? "white"
+                                  : "gray",
+                              }}
+                            >
+                              GEO
+                            </li>
+                            <li
+                              style={{
+                                color: item.country.includes("ინგლისურად")
+                                  ? "white"
+                                  : "gray",
+                              }}
+                            >
+                              ENG
+                            </li>
+                            <li
+                              style={{
+                                color: item.country.includes("რუსულად")
+                                  ? "white"
+                                  : "gray",
+                              }}
+                            >
+                              RUS
+                            </li>
+                          </ul>
                         </div>
                       </div>
                       <div className="item__content">

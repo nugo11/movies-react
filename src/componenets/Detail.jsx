@@ -6,7 +6,7 @@ import { useAuth } from "./login/authcontext";
 
 export default function Detail() {
   const { detailLink } = useParams();
-  const { searchResults } = useMovies();
+  const { detailResults } = useMovies();
   const { user } = useAuth();
   const location = useLocation();
 
@@ -16,11 +16,11 @@ export default function Detail() {
     location.state?.turk ||
     location.state?.anime ||
     location.state?.animation ||
-    location.state?.searchResults;
+    location.state?.detailResults;
 
   const selectedItem = movies
     ? movies.find((movie) => movie.detailLink === detailLink)
-    : searchResults;
+    : detailResults;
 
   if (!selectedItem) {
     return <div>Item not found</div>;

@@ -6,6 +6,7 @@ const MoviesContext = createContext();
 export const MoviesProvider = ({ children }) => {
   const [movies, setMovies] = useState([]);
   const [movs, setMovs] = useState([]);
+  const [detailResults, setdetailResults] = useState(null);
   const [searchResults, setSearchResults] = useState(null);
   const [ser, setSer] = useState([]);
   const [turk, setTurk] = useState([]);
@@ -64,8 +65,8 @@ export const MoviesProvider = ({ children }) => {
         const results = await Promise.all(requests);
 
         if (location.pathname.startsWith("/detail")) {
-          setSearchResults(results[0].articles[0]);
-        } else if (location.pathname === "/search") {
+          setdetailResults(results[0].articles[0]);
+        } else if (location.pathname.startsWith("/search")) {
           setSearchResults(results[0].articles);
           setTotalPages(results[0].totalPages);
         } else {
@@ -102,6 +103,7 @@ export const MoviesProvider = ({ children }) => {
       value={{
         movies,
         searchResults,
+        detailResults,
         ser,
         turk,
         anime,
