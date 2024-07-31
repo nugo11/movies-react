@@ -40,7 +40,7 @@ export default function Header() {
         <link
           rel="search"
           type="application/opensearchdescription+xml"
-          title="filmebi.in | filmebi qartulad | serialebi qartulad"
+          title="filmebi.in | ფილმები ქართულად | Filmebi Qartulad | სერიალები ქართულად | Serialebi Qartulad"
           href="https://filmebi.in/opensearch.xml"
         />
         <link

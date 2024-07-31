@@ -4,6 +4,7 @@ import { useMovies } from "../src/componenets/MoviesContext";
 import { Splide, SplideTrack, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import useWindowDimensions from "../src/componenets/useWindowDimensions";
+import { Helmet } from "react-helmet";
 
 function getRatingclassName(rating) {
   if (Number(rating) < 6) return "red";
@@ -59,6 +60,33 @@ function App() {
 
   return (
     <>
+      <Helmet>
+        <meta name="robots" content="index,follow,all" />
+        <base href={window.location.href} />
+        <meta name="application-name" content="FILMEBI.IN" />
+        <meta
+          name="title"
+          content="Filmebi.in - ფილმები ქართულად | Filmebi Qartulad | სერიალები ქართულად | Serialebi Qartulad"
+        />
+        <meta
+          name="description"
+          content="filmebi.in - ახალი ფილმები და სერიალები ქართულად უფასოდ, უახლესი თურქული სერიალები ქართულად, axali filmebi da serialebi qartulad ufasod, pilmebi qartulad online, uaxlesi turquli serialebi qartulad"
+        />
+        <meta
+          name="keywords"
+          content="ფილმები, სერიალები, ქართულად, თრეილერები, მსახიობები, ონლაინ, ყურება, უფასოდ, თურქული, უახლესი, Filmebi.in, მუვიჯი, filmebi, pilmebi, serialebi, qartulad, kartulad, online, treilerebi, msaxiobebi, yureba, ufasod, turquli, uaxlesi, Filmebi.in, gemovie, jimuvi, movie.ge, moviege, muviji, gemovies, imovie.ge"
+        />
+        <meta
+          property="og:title"
+          content="ფილმები ქართულად | Filmebi Qartulad | სერიალები ქართულად | Serialebi Qartulad - Filmebi.in"
+        />
+        <meta
+          property="og:description"
+          content="Filmebi.in - ახალი ფილმები და სერიალები ქართულად უფასოდ, უახლესი თურქული სერიალები ქართულად, axali filmebi da serialebi qartulad ufasod, pilmebi qartulad online, uaxlesi turquli serialebi qartulad"
+        />
+        <meta property="og:image" content="/assets/img/cover.webp" />
+        <meta property="og:url" content="https://Filmebi.in/" />
+      </Helmet>
       <div
         className="laoder_mix"
         style={{ display: loader === true ? "flex" : "none" }}
@@ -148,7 +176,9 @@ function App() {
                                     <ul>
                                       <li
                                         style={{
-                                          color: item.country.includes('ქართულად')
+                                          color: item.country.includes(
+                                            "ქართულად"
+                                          )
                                             ? "white"
                                             : "gray",
                                         }}
@@ -157,7 +187,9 @@ function App() {
                                       </li>
                                       <li
                                         style={{
-                                          color: item.country.includes('ინგლისურად')
+                                          color: item.country.includes(
+                                            "ინგლისურად"
+                                          )
                                             ? "white"
                                             : "gray",
                                         }}
@@ -166,7 +198,9 @@ function App() {
                                       </li>
                                       <li
                                         style={{
-                                          color: item.country.includes('რუსულად')
+                                          color: item.country.includes(
+                                            "რუსულად"
+                                          )
                                             ? "white"
                                             : "gray",
                                         }}
@@ -184,7 +218,6 @@ function App() {
                                       state={{ movies }}
                                     >
                                       {item.title_geo}
-                                    
                                     </Link>
                                   </h3>
                                   <span className="item__category">
@@ -299,35 +332,37 @@ function App() {
                                   HD
                                 </div>
                                 <div className="item__lang" type="button">
-                                <ul>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('ქართულად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        GEO
-                                      </li>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('ინგლისურად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        ENG
-                                      </li>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('რუსულად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        RUS
-                                      </li>
-                                    </ul>
+                                  <ul>
+                                    <li
+                                      style={{
+                                        color: item.country.includes("ქართულად")
+                                          ? "white"
+                                          : "gray",
+                                      }}
+                                    >
+                                      GEO
+                                    </li>
+                                    <li
+                                      style={{
+                                        color: item.country.includes(
+                                          "ინგლისურად"
+                                        )
+                                          ? "white"
+                                          : "gray",
+                                      }}
+                                    >
+                                      ENG
+                                    </li>
+                                    <li
+                                      style={{
+                                        color: item.country.includes("რუსულად")
+                                          ? "white"
+                                          : "gray",
+                                      }}
+                                    >
+                                      RUS
+                                    </li>
+                                  </ul>
                                 </div>
                               </div>
                               <div className="item__content">
@@ -461,35 +496,35 @@ function App() {
                           HD
                         </div>
                         <div className="item__lang" type="button">
-                        <ul>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('ქართულად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        GEO
-                                      </li>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('ინგლისურად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        ENG
-                                      </li>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('რუსულად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        RUS
-                                      </li>
-                                    </ul>
+                          <ul>
+                            <li
+                              style={{
+                                color: item.country.includes("ქართულად")
+                                  ? "white"
+                                  : "gray",
+                              }}
+                            >
+                              GEO
+                            </li>
+                            <li
+                              style={{
+                                color: item.country.includes("ინგლისურად")
+                                  ? "white"
+                                  : "gray",
+                              }}
+                            >
+                              ENG
+                            </li>
+                            <li
+                              style={{
+                                color: item.country.includes("რუსულად")
+                                  ? "white"
+                                  : "gray",
+                              }}
+                            >
+                              RUS
+                            </li>
+                          </ul>
                         </div>
                       </div>
                       <div className="item__content">
@@ -559,35 +594,35 @@ function App() {
                           HD
                         </div>
                         <div className="item__lang" type="button">
-                        <ul>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('ქართულად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        GEO
-                                      </li>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('ინგლისურად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        ENG
-                                      </li>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('რუსულად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        RUS
-                                      </li>
-                                    </ul>
+                          <ul>
+                            <li
+                              style={{
+                                color: item.country.includes("ქართულად")
+                                  ? "white"
+                                  : "gray",
+                              }}
+                            >
+                              GEO
+                            </li>
+                            <li
+                              style={{
+                                color: item.country.includes("ინგლისურად")
+                                  ? "white"
+                                  : "gray",
+                              }}
+                            >
+                              ENG
+                            </li>
+                            <li
+                              style={{
+                                color: item.country.includes("რუსულად")
+                                  ? "white"
+                                  : "gray",
+                              }}
+                            >
+                              RUS
+                            </li>
+                          </ul>
                         </div>
                       </div>
                       <div className="item__content">
@@ -709,35 +744,37 @@ function App() {
                                   HD
                                 </div>
                                 <div className="item__lang" type="button">
-                                <ul>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('ქართულად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        GEO
-                                      </li>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('ინგლისურად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        ENG
-                                      </li>
-                                      <li
-                                        style={{
-                                          color: item.country.includes('რუსულად')
-                                            ? "white"
-                                            : "gray",
-                                        }}
-                                      >
-                                        RUS
-                                      </li>
-                                    </ul>
+                                  <ul>
+                                    <li
+                                      style={{
+                                        color: item.country.includes("ქართულად")
+                                          ? "white"
+                                          : "gray",
+                                      }}
+                                    >
+                                      GEO
+                                    </li>
+                                    <li
+                                      style={{
+                                        color: item.country.includes(
+                                          "ინგლისურად"
+                                        )
+                                          ? "white"
+                                          : "gray",
+                                      }}
+                                    >
+                                      ENG
+                                    </li>
+                                    <li
+                                      style={{
+                                        color: item.country.includes("რუსულად")
+                                          ? "white"
+                                          : "gray",
+                                      }}
+                                    >
+                                      RUS
+                                    </li>
+                                  </ul>
                                 </div>
                               </div>
                               <div className="item__content">
@@ -748,7 +785,6 @@ function App() {
                                     state={{ animation }}
                                   >
                                     {item.title_geo}
-                                   
                                   </Link>
                                 </h3>
                                 <span className="item__category">

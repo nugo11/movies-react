@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import img404 from "../assets/img/404 - mov.webp";
 import { useMovies } from "./MoviesContext";
+import { Helmet } from "react-helmet";
 
 export default function Search() {
   const { searchResults } = useMovies();
   const [show404, setShow404] = useState(false);
 
   let moviesarr = [];
-
-console.log(searchResults == null ? '' : moviesarr = searchResults)
+  searchResults == null ? '' : moviesarr = searchResults;
   
   useEffect(() => {
     setTimeout(() => {
@@ -28,6 +28,33 @@ console.log(searchResults == null ? '' : moviesarr = searchResults)
 
   return (
     <>
+     <Helmet>
+        <meta name="robots" content="index,follow,all" />
+        <base href={window.location.href} />
+        <meta name="application-name" content="FILMEBI.IN" />
+        <meta
+          name="title"
+          content="Filmebi.in - ფილმები ქართულად | Filmebi Qartulad | სერიალები ქართულად | Serialebi Qartulad"
+        />
+        <meta
+          name="description"
+          content="filmebi.in - ახალი ფილმები და სერიალები ქართულად უფასოდ, უახლესი თურქული სერიალები ქართულად, axali filmebi da serialebi qartulad ufasod, pilmebi qartulad online, uaxlesi turquli serialebi qartulad"
+        />
+        <meta
+          name="keywords"
+          content="ფილმები, სერიალები, ქართულად, თრეილერები, მსახიობები, ონლაინ, ყურება, უფასოდ, თურქული, უახლესი, Filmebi.in, მუვიჯი, filmebi, pilmebi, serialebi, qartulad, kartulad, online, treilerebi, msaxiobebi, yureba, ufasod, turquli, uaxlesi, Filmebi.in, gemovie, jimuvi, movie.ge, moviege, muviji, gemovies, imovie.ge"
+        />
+        <meta
+          property="og:title"
+          content="ფილმები ქართულად | Filmebi Qartulad | სერიალები ქართულად | Serialebi Qartulad - Filmebi.in"
+        />
+        <meta
+          property="og:description"
+          content="Filmebi.in - ახალი ფილმები და სერიალები ქართულად უფასოდ, უახლესი თურქული სერიალები ქართულად, axali filmebi da serialebi qartulad ufasod, pilmebi qartulad online, uaxlesi turquli serialebi qartulad"
+        />
+        <meta property="og:image" content="/assets/img/cover.webp" />
+        <meta property="og:url" content="https://Filmebi.in/" />
+      </Helmet>
       {/* page title */}
       <section className="section section--first" style={{ marginTop: 80 }}>
         <div className="container">
@@ -60,7 +87,7 @@ console.log(searchResults == null ? '' : moviesarr = searchResults)
         <div className="container">
           <div className="row">
             {/* item */}
-            {moviesarr.length > 1 ? (
+            {moviesarr.length >= 1 ? (
               <>
                 {searchResults
                   .map((item) => (

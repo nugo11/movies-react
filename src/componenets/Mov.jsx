@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import img404 from "../assets/img/404 - mov.webp";
 import { useMovies } from "./MoviesContext";
+import { Helmet } from "react-helmet";
 
 const options = [
   "კომედია",
@@ -67,13 +68,11 @@ export default function Mov() {
 
   useEffect(() => {
     if (movies.length === 0) {
-      setTimeout(() => {
         setShow404(true);
-      }, 1000);
     } else {
       setShow404(false);
     }
-  }, []);
+  }, [movies]);
   
   const [year_from_state, setYearState] = useState(null);
   const [year_to_state, setYearToState] = useState(null);
@@ -211,7 +210,7 @@ export default function Mov() {
       pageNumbers.push(i);
     }
 
-    return (
+    return (     
       <ul className="paginator">
         {currentPage > 1 && (
           <li className="paginator__item paginator__item--prev">
@@ -260,6 +259,33 @@ export default function Mov() {
 
   return (
     <>
+     <Helmet>
+        <meta name="robots" content="index,follow,all" />
+        <base href={window.location.href} />
+        <meta name="application-name" content="FILMEBI.IN" />
+        <meta
+          name="title"
+          content="Filmebi.in - ფილმები ქართულად | Filmebi Qartulad | სერიალები ქართულად | Serialebi Qartulad"
+        />
+        <meta
+          name="description"
+          content="filmebi.in - ახალი ფილმები და სერიალები ქართულად უფასოდ, უახლესი თურქული სერიალები ქართულად, axali filmebi da serialebi qartulad ufasod, pilmebi qartulad online, uaxlesi turquli serialebi qartulad"
+        />
+        <meta
+          name="keywords"
+          content="ფილმები, სერიალები, ქართულად, თრეილერები, მსახიობები, ონლაინ, ყურება, უფასოდ, თურქული, უახლესი, Filmebi.in, მუვიჯი, filmebi, pilmebi, serialebi, qartulad, kartulad, online, treilerebi, msaxiobebi, yureba, ufasod, turquli, uaxlesi, Filmebi.in, gemovie, jimuvi, movie.ge, moviege, muviji, gemovies, imovie.ge"
+        />
+        <meta
+          property="og:title"
+          content="ფილმები ქართულად | Filmebi Qartulad | სერიალები ქართულად | Serialebi Qartulad - Filmebi.in"
+        />
+        <meta
+          property="og:description"
+          content="Filmebi.in - ახალი ფილმები და სერიალები ქართულად უფასოდ, უახლესი თურქული სერიალები ქართულად, axali filmebi da serialebi qartulad ufasod, pilmebi qartulad online, uaxlesi turquli serialebi qartulad"
+        />
+        <meta property="og:image" content="/assets/img/cover.webp" />
+        <meta property="og:url" content="https://Filmebi.in/" />
+      </Helmet>
       {/* filter */}
       <div className="filter" style={{ marginTop: 100 }}>
         <div className="container">
