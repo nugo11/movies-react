@@ -5,6 +5,7 @@ import { Splide, SplideTrack, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import useWindowDimensions from "../src/componenets/useWindowDimensions";
 import { Helmet } from "react-helmet";
+import { ArrowL, PlayIcon } from "./componenets/icons/icons";
 
 function getRatingclassName(rating) {
   if (Number(rating) < 6) return "red";
@@ -37,26 +38,7 @@ function App() {
     setTab(tabId);
   };
 
-  const { movies, ser, turk, anime, animation } = useMovies();
-  const [loader, setLoader] = useState(true);
-
-  setTimeout(() => {
-    setLoader(false);
-  }, 1000);
-
-  const [scriptsLoaded, setScriptsLoaded] = useState(false);
-
-  useEffect(() => {
-    if (
-      movies.length > 0 &&
-      ser.length > 0 &&
-      turk.length > 0 &&
-      anime.length > 0 &&
-      animation.length > 0
-    ) {
-      setScriptsLoaded(true);
-    }
-  }, [movies, ser, turk, anime, animation]);
+  const { movies, ser, turk, anime, animation, movSlider } = useMovies();
 
   return (
     <>
@@ -87,17 +69,9 @@ function App() {
         <meta property="og:image" content="/assets/img/cover.webp" />
         <meta property="og:url" content="https://Filmebi.in/" />
       </Helmet>
-      <div
-        className="laoder_mix"
-        style={{ display: loader === true ? "flex" : "none" }}
-      >
-        <div className="loaderi">
-          <div className="loaderi__filmstrip"></div>
-        </div>
-      </div>
-      <div className="fulminebg"></div>
+
       <div className="fullbg-pattern"></div>
-      <section className="home">
+      <section className="home" id="mineslider">
         <div className="container">
           <div className="row">
             <div className="col-12">
@@ -125,23 +99,25 @@ function App() {
               >
                 <div className="splide__arrows">
                   <button
+                    title="arrow"
                     className="splide__arrow splide__arrow--prev"
                     type="button"
                   >
-                    <i className="ti ti-chevron-left"></i>
+                    <ArrowL color="#fff" height={18} width={18} boo={false} />
                   </button>
                   <button
+                    title="arrow"
                     className="splide__arrow splide__arrow--next"
                     type="button"
                   >
-                    <i className="ti ti-chevron-right"></i>
+                    <ArrowL color="#fff" height={18} width={18} boo={true} />
                   </button>
                 </div>
                 <SplideTrack>
-                  {movies &&
-                    movies
+                  {movSlider &&
+                    movSlider
                       .filter((i) => !i.genre.includes("სერიალი"))
-                      .slice(0, 8)
+
                       .map((item) => {
                         return (
                           <>
@@ -149,7 +125,7 @@ function App() {
                               <div className="item item--hero">
                                 <div className="item__cover">
                                   <img
-                                    src={`/src/mov/${item.poster}`}
+                                    src={`/mov/${item.poster}`}
                                     alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                                     loading="lazy"
                                   />
@@ -160,7 +136,7 @@ function App() {
                                     state={{ movies }}
                                     className="item__play"
                                   >
-                                    <i className="ti ti-player-play-filled"></i>
+                                    <PlayIcon />
                                   </Link>
                                   <span
                                     className={`item__rate item__rate--${getRatingclassName(
@@ -281,23 +257,25 @@ function App() {
               >
                 <div className="splide__arrows">
                   <button
+                    title="arrow"
                     className="splide__arrow splide__arrow--prev"
                     type="button"
                   >
-                    <i className="ti ti-chevron-left"></i>
+                    <ArrowL color="#fff" height={18} width={18} boo={false} />
                   </button>
                   <button
+                    title="arrow"
                     className="splide__arrow splide__arrow--next"
                     type="button"
                   >
-                    <i className="ti ti-chevron-right"></i>
+                    <ArrowL color="#fff" height={18} width={18} boo={true} />
                   </button>
                 </div>
 
                 <SplideTrack>
                   {ser
                     .filter((item) => item.genre.includes("სერიალი"))
-                    .slice(0, 8)
+
                     .map((item) => {
                       return (
                         <>
@@ -309,7 +287,7 @@ function App() {
                               <div className="item__cover">
                                 {" "}
                                 <img
-                                  src={`/src/mov/${item.poster}`}
+                                  src={`/mov/${item.poster}`}
                                   alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                                   loading="lazy"
                                 />
@@ -319,7 +297,7 @@ function App() {
                                   state={{ ser }}
                                   className="item__play"
                                 >
-                                  <i className="ti ti-player-play-filled"></i>
+                                  <PlayIcon />
                                 </Link>
                                 <span
                                   className={`item__rate item__rate--${getRatingclassName(
@@ -464,7 +442,7 @@ function App() {
               tabIndex="0"
             >
               <div className="row">
-                {turk.slice(0, 12).map((item) => (
+                {turk.map((item) => (
                   <div
                     key={item.detailLink}
                     className="col-6 col-sm-4 col-lg-3 col-xl-2"
@@ -473,7 +451,7 @@ function App() {
                       <div className="item__cover">
                         {" "}
                         <img
-                          src={`/src/mov/${item.poster}`}
+                          src={`/mov/${item.poster}`}
                           alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                           loading="lazy"
                         />
@@ -483,7 +461,7 @@ function App() {
                           state={{ turk }}
                           className="item__play"
                         >
-                          <i className="ti ti-player-play-filled"></i>
+                          <PlayIcon />
                         </Link>
                         <span
                           className={`item__rate item__rate--${getRatingclassName(
@@ -562,7 +540,7 @@ function App() {
               tabIndex="0"
             >
               <div className="row">
-                {anime.slice(0, 12).map((item) => (
+                {anime.map((item) => (
                   <div
                     key={item.detailLink}
                     className="col-6 col-sm-4 col-lg-3 col-xl-2"
@@ -571,7 +549,7 @@ function App() {
                       <div className="item__cover">
                         {" "}
                         <img
-                          src={`/src/mov/${item.poster}`}
+                          src={`/mov/${item.poster}`}
                           alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                           loading="lazy"
                         />
@@ -581,7 +559,7 @@ function App() {
                           state={{ anime }}
                           className="item__play"
                         >
-                          <i className="ti ti-player-play-filled"></i>
+                          <PlayIcon />
                         </Link>
                         <span
                           className={`item__rate item__rate--${getRatingclassName(
@@ -693,23 +671,25 @@ function App() {
               >
                 <div className="splide__arrows">
                   <button
+                    title="arrow"
                     className="splide__arrow splide__arrow--prev"
                     type="button"
                   >
-                    <i className="ti ti-chevron-left"></i>
+                    <ArrowL color="#fff" height={18} width={18} boo={false} />
                   </button>
                   <button
+                    title="arrow"
                     className="splide__arrow splide__arrow--next"
                     type="button"
                   >
-                    <i className="ti ti-chevron-right"></i>
+                    <ArrowL color="#fff" height={18} width={18} boo={true} />
                   </button>
                 </div>
 
                 <SplideTrack>
                   {animation
                     .filter((io) => !io.genre.includes("სერიალი"))
-                    .slice(0, 8)
+
                     .map((item) => {
                       return (
                         <>
@@ -721,7 +701,7 @@ function App() {
                               <div className="item__cover">
                                 {" "}
                                 <img
-                                  src={`/src/mov/${item.poster}`}
+                                  src={`/mov/${item.poster}`}
                                   alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                                   loading="lazy"
                                 />
@@ -731,7 +711,7 @@ function App() {
                                   state={{ animation }}
                                   className="item__play"
                                 >
-                                  <i className="ti ti-player-play-filled"></i>
+                                  <PlayIcon />
                                 </Link>
                                 <span
                                   className={`item__rate item__rate--${getRatingclassName(
@@ -841,16 +821,18 @@ function App() {
               >
                 <div className="splide__arrows">
                   <button
+                    title="arrow"
                     className="splide__arrow splide__arrow--prev"
                     type="button"
                   >
-                    <i className="ti ti-chevron-left"></i>
+                    <ArrowL color="#fff" height={18} width={18} boo={false} />
                   </button>
                   <button
+                    title="arrow"
                     className="splide__arrow splide__arrow--next"
                     type="button"
                   >
-                    <i className="ti ti-chevron-right"></i>
+                    <ArrowL color="#fff" height={18} width={18} boo={true} />
                   </button>
                 </div>
 
@@ -861,7 +843,7 @@ function App() {
                         {" "}
                         <Link to="/tv">
                           <img
-                            src="/src/assets/img/tv/tv-01.png"
+                            src="/assets/img/tv/tv-01.png"
                             alt="ტელევიზია"
                             loading="lazy"
                           />
@@ -875,7 +857,7 @@ function App() {
                         {" "}
                         <Link to="/tv">
                           <img
-                            src="/src/assets/img/tv/tv-02.png"
+                            src="/assets/img/tv/tv-02.png"
                             alt="ტელევიზია"
                             loading="lazy"
                           />
@@ -889,7 +871,7 @@ function App() {
                         {" "}
                         <Link to="/tv">
                           <img
-                            src="/src/assets/img/tv/tv-03.png"
+                            src="/assets/img/tv/tv-03.png"
                             alt="ტელევიზია"
                             loading="lazy"
                           />
@@ -903,7 +885,7 @@ function App() {
                         {" "}
                         <Link to="/tv">
                           <img
-                            src="/src/assets/img/tv/tv-04.png"
+                            src="/assets/img/tv/tv-04.png"
                             alt="ტელევიზია"
                             loading="lazy"
                           />
@@ -917,7 +899,7 @@ function App() {
                         {" "}
                         <Link to="/tv">
                           <img
-                            src="/src/assets/img/tv/tv-05.png"
+                            src="/assets/img/tv/tv-05.png"
                             alt="ტელევიზია"
                             loading="lazy"
                           />
@@ -931,7 +913,7 @@ function App() {
                         {" "}
                         <Link to="/tv">
                           <img
-                            src="/src/assets/img/tv/tv-06.png"
+                            src="/assets/img/tv/tv-06.png"
                             alt="ტელევიზია"
                             loading="lazy"
                           />
@@ -945,7 +927,7 @@ function App() {
                         {" "}
                         <Link to="/tv">
                           <img
-                            src="/src/assets/img/tv/tv-07.png"
+                            src="/assets/img/tv/tv-07.png"
                             alt="ტელევიზია"
                             loading="lazy"
                           />
@@ -959,7 +941,7 @@ function App() {
                         {" "}
                         <Link to="/tv">
                           <img
-                            src="/src/assets/img/tv/tv-08.png"
+                            src="/assets/img/tv/tv-08.png"
                             alt="ტელევიზია"
                             loading="lazy"
                           />
@@ -973,7 +955,7 @@ function App() {
                         {" "}
                         <Link to="/tv">
                           <img
-                            src="/src/assets/img/tv/tv-09.png"
+                            src="/assets/img/tv/tv-09.png"
                             alt="ტელევიზია"
                             loading="lazy"
                           />

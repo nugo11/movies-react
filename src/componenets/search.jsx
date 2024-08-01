@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import img404 from "../assets/img/404 - mov.webp";
 import { useMovies } from "./MoviesContext";
 import { Helmet } from "react-helmet";
+import { PlayIcon } from "./icons/icons";
 
 export default function Search() {
   const { searchResults } = useMovies();
@@ -98,7 +99,7 @@ export default function Search() {
                       <div className="item">
                         <div className="item__cover">
                           <img
-                            src={`/src/mov/${item.poster}`}
+                            src={`/mov/${item.poster}`}
                             alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                           />
                           <Link
@@ -107,7 +108,7 @@ export default function Search() {
                             state={{ searchResults }}
                             className="item__play"
                           >
-                            <i className="ti ti-player-play-filled"></i>
+                            <PlayIcon />
                           </Link>
                           <span
                             className={`item__rate item__rate--${getRatingClassName(

@@ -1,40 +1,13 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowUp } from './icons/icons';
+import logo from '../assets/img/logo.webp'
+import mineJS from '../assets/js/main.js'
 
 export default function Footer() {
   useEffect(() => {
-    const scriptUrls = [
-      'src/assets/js/bootstrap.bundle.min.js',
-      'src/assets/js/smooth-scrollbar.js',
-      'src/assets/js/main.js',
-    ];
-
-    const loadScripts = () => {
-      const divScript = document.createElement('div');
-      scriptUrls.forEach((src) => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.async = false;
-        script.onerror = () => {
-          console.error(`Error loading ${src}`);
-        };
-        divScript.classList.add('scriptContainer')
-        document.body.appendChild(divScript);
-        divScript.appendChild(script)
-        divScript.remove()
-      });
-    };
-
-    loadScripts();
-
-    return () => {
-      scriptUrls.forEach((src) => {
-        const scripts = document.querySelectorAll(`script[src="${src}"]`);
-        scripts.forEach((script) => script.remove());
-      });
-    };
+    mineJS();
   }, []);
-
   return (
     <footer className="footer">
       <div className="container">
@@ -42,7 +15,7 @@ export default function Footer() {
           <div className="col-12">
             <div className="footer__content">
               <Link to="/" className="footer__logo">
-                <img src="assets/img/logo.png" alt="" />
+              <img src={logo} alt="logo" width={131} height={24} />
               </Link>
 
               <span className="footer__copyright">
@@ -115,8 +88,8 @@ export default function Footer() {
                 <script async src="//counter.top.ge/counter.js"></script>
               </nav>
 
-              <button className="footer__back" type="button">
-                <i className="ti ti-arrow-narrow-up"></i>
+              <button title="go up" className="footer__back" type="button">
+                <ArrowUp />
               </button>
             </div>
           </div>

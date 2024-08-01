@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import img404 from "../assets/img/404 - mov.webp";
 import { useMovies } from "./MoviesContext";
 import { Helmet } from "react-helmet";
+import { ArrowL, PlayIcon } from "./icons/icons";
 
 const options = [
   "კომედია",
@@ -293,8 +294,8 @@ export default function Mov() {
             <div className="col-12">
               <div className="filter__content">
                 <div className="horizontal-select">
-                  <button className="arrow left-arrow" onClick={scrollLeft}>
-                    <i className="ti ti-chevron-left"></i>
+                  <button title="arrow" className="arrow left-arrow" onClick={scrollLeft}>
+                    <ArrowL color='#fff' height={20} width={20} boo={false} />
                   </button>
                   <div className="options" ref={scrollRef}>
                     {options.map((option) => (
@@ -309,8 +310,8 @@ export default function Mov() {
                       </div>
                     ))}
                   </div>
-                  <button className="arrow right-arrow" onClick={scrollRight}>
-                    <i className="ti ti-chevron-right"></i>
+                  <button title="arrow" className="arrow right-arrow" onClick={scrollRight}>
+                  <ArrowL color='#fff' height={20} width={20} boo={true} />
                   </button>
                 </div>
 
@@ -405,10 +406,10 @@ export default function Mov() {
                     key={item.detailLink}
                     className="col-6 col-sm-4 col-lg-3 col-xl-2"
                   >
-                    <div className="item">
+                    <div className="item">  
                       <div className="item__cover">
                         <img
-                          src={`/src/mov/${item.poster}`}
+                          src={`/mov/${item.poster}`}
                           alt={`${item.title_geo} / ${item.title_en} ქართულად`}
                           loading="lazy"
                         />
@@ -419,7 +420,7 @@ export default function Mov() {
                           state={{ movies }}
                           className="item__play"
                         >
-                          <i className="ti ti-player-play-filled"></i>
+                         <PlayIcon />
                         </Link>
                         <span
                           className={`item__rate item__rate--${getRatingClassName(

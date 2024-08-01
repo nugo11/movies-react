@@ -9,6 +9,7 @@ export const MoviesProvider = ({ children }) => {
   const [detailResults, setdetailResults] = useState(null);
   const [searchResults, setSearchResults] = useState(null);
   const [ser, setSer] = useState([]);
+  const [movSlider, setMovSlider] = useState([]);
   const [turk, setTurk] = useState([]);
   const [anime, setAnime] = useState([]);
   const [animation, setAnimation] = useState([]);
@@ -55,10 +56,11 @@ export const MoviesProvider = ({ children }) => {
 
         if (location.pathname === "/") {
           requests.push(
-            fetchMovies(`${baseUrl}?genre=სერიალი`),
-            fetchMovies(`${baseUrl}?genre=თურქული%20სერიალები`),
-            fetchMovies(`${baseUrl}?genre=სერიალი%2Cანიმაციური`),
-            fetchMovies(`${baseUrl}?genre=ანიმაციური`)
+            fetchMovies(`${baseUrl}?genre=სერიალი&limit=8`),
+            fetchMovies(`${baseUrl}?genre=თურქული%20სერიალები&limit=12`),
+            fetchMovies(`${baseUrl}?genre=სერიალი%2Cანიმაციური&limit=12`),
+            fetchMovies(`${baseUrl}?genre=ანიმაციური&limit=8`),
+            fetchMovies(`${baseUrl}?mov=&limit=8`)
           );
         }
 
@@ -78,6 +80,7 @@ export const MoviesProvider = ({ children }) => {
             setTurk(results[2].articles);
             setAnime(results[3].articles);
             setAnimation(results[4].articles);
+            setMovSlider(results[5].articles);
           }
         }
       } catch (error) {
@@ -110,6 +113,7 @@ export const MoviesProvider = ({ children }) => {
         animation,
         totalPages,
         movs,
+        movSlider
       }}
     >
       {children}

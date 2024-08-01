@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuth } from "./login/authcontext";
+import SearchIcon from "./icons/icons";
+import logo from "../assets/img/logo.webp";
 
 export default function Header() {
   const [change, setChange] = useState("");
@@ -55,7 +57,7 @@ export default function Header() {
             <div className="col-12">
               <div className="header__content">
                 <Link to="/" className="header__logo">
-                  <img src="/assets/img/logo.png" alt="logo" />
+                  <img src={logo} alt="logo" width={131} height={24} />
                 </Link>
 
                 <ul className="header__nav">
@@ -92,16 +94,31 @@ export default function Header() {
                       value={change}
                       onChange={(e) => setChange(e.target.value)}
                     />
-                    <button className="header__search-button" type="submit">
-                      <i className="ti ti-search"></i>
+                    <button className="header__search-button" title="search" type="submit">
+                      <SearchIcon color="#fff" height={20} width={20} />
                     </button>
-                    <button className="header__search-close" type="button">
-                      <i className="ti ti-x"></i>
+                    <button className="header__search-close" title="close" type="button">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-x"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="#fff"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M18 6l-12 12" />
+                        <path d="M6 6l12 12" />
+                      </svg>
                     </button>
                   </form>
 
-                  <button className="header__search-btn" type="button">
-                    <i className="ti ti-search"></i>
+                  <button title="search" className="header__search-btn" type="button">
+                    <SearchIcon color="#fff" height={20} width={20} />
                   </button>
                   {user && (
                     <>
@@ -112,7 +129,25 @@ export default function Header() {
                   )}
                 </div>
 
-                <button className="header__btn" type="button"></button>
+                <button title="menu" className="header__btn" type="button">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-menu-2"
+                    width="28"
+                    height="28"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="#fff"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M4 6l16 0" />
+                    <path d="M4 12l16 0" />
+                    <path d="M4 18l16 0" />
+                  </svg>
+                </button>
               </div>
             </div>
           </div>

@@ -50,7 +50,6 @@ export default function Detail() {
     if (response.ok) {
       const updatedMovie = await response.json();
       setEditedMovie(updatedMovie);
-      console.log(updatedMovie);
       setIsEditing(false);
     } else {
       console.error("Failed to update movie");
@@ -138,7 +137,6 @@ export default function Detail() {
     return "";
   }
 
-  console.log(filteredScript[0] ? filteredScript[0] : filteredScript)
 
   return (
     <>
@@ -182,7 +180,7 @@ export default function Detail() {
 
       <div
         className="fullbg"
-        style={{ backgroundImage: `url(../src/mov/${selectedItem.poster})` }}
+        style={{ backgroundImage: `url(/mov/${selectedItem.poster})` }}
       ></div>
       <div className="fullbg-pattern" style={{ height: "80%" }}></div>
       <div className="detail-container">
@@ -652,7 +650,7 @@ export default function Detail() {
                     <div className="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-xxl-3">
                       <div className="item__cover">
                         <img
-                          src={`../src/mov/${selectedItem.poster}`}
+                          src={`/mov/${selectedItem.poster}`}
                           alt={`${selectedItem.title_geo} / ${selectedItem.title_en} ქართულად`}
                         />
                         <span

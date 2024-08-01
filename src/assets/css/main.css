@@ -22281,12 +22281,6 @@ body::-webkit-scrollbar-thumb {
     width: auto
 }
 
-.header__logo img {
-    width: auto;
-    height: 20px;
-    display: block
-}
-
 .header__nav {
     display: flex;
     flex-direction: column;
@@ -22520,18 +22514,12 @@ body::-webkit-scrollbar-thumb {
     min-width: 170px
 }
 
-.header__search-btn {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    color: #fff;
-    font-size: 20px
+.icon {
+   transition: 0.5s;
 }
 
-.header__search-btn:hover {
-    color: #f9ab00
+.icon:hover {
+    stroke: #f9ab00
 }
 
 .header__search {
@@ -22618,9 +22606,6 @@ body::-webkit-scrollbar-thumb {
         height:80px
     }
 
-    .header__logo img {
-        height: 24px
-    }
 
     .header__auth {
         margin-right: 52px
@@ -22773,11 +22758,7 @@ body::-webkit-scrollbar-thumb {
     overflow: hidden
 }
 
-@media (width < 800px) {
-    .home {
-        padding: 100px 0 0 0;
-    }
-}
+
 
 .home .container {
     position: relative;
@@ -26736,6 +26717,33 @@ body::-webkit-scrollbar-thumb {
     cursor: pointer
 }
 
+
+.item__content ul li,.item__content ul li a {
+    font-size: 14px
+}
+
+.fullbg-pattern {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 550px;
+    background: url(/assets/img/bg_pattern.png) #1f21284f;
+    z-index: 2;
+    box-shadow: inset 0 -200px 200px #1a191f
+}
+
+@media (width < 770) {
+    .fullbg-pattern {
+        height: 450px;
+    }
+}
+#mineslider {
+    width: 100%;
+    background-image: url(/assets/home-bg-CC2hfMJ6.webp);
+    box-shadow: inset 0 -200px 200px #1a191f;
+    background-size: cover;
+}
+
 .fullbg {
     position: absolute;
     width: 100%;
@@ -26746,31 +26754,6 @@ body::-webkit-scrollbar-thumb {
     right: 0;
     z-index: 1;
     filter: blur(8px)
-}
-
-.fullbg-pattern {
-    position: absolute;
-    content: "";
-    width: 100%;
-    height: 50%;
-    background: url(/assets/img/bg_pattern.png) #1f21284f;
-    z-index: 2;
-    box-shadow: inset 0 -200px 200px #1a191f
-}
-
-.item__content ul li,.item__content ul li a {
-    font-size: 14px
-}
-
-.fulminebg {
-    background-image: url(/assets/home-bg-CC2hfMJ6.webp);
-    position: absolute;
-    width: 100%;
-    height: 50%;
-    z-index: 1;
-    box-shadow: inset 0 -200px 200px #1a191f;
-    filter: blur(5px);
-    background-size: cover
 }
 
 .combineul {
@@ -26829,39 +26812,6 @@ body::-webkit-scrollbar-thumb {
 
 #tvcorrect .item__cover {
     background-color: #0000
-}
-
-.loader {
-    width: 100%;
-    height: 4.8px;
-    display: inline-block;
-    position: relative;
-    background: #ffffff26;
-    overflow: hidden
-}
-
-.loader:after {
-    content: "";
-    width: 192px;
-    height: 4.8px;
-    background: #fff;
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-sizing: border-box;
-    animation: animloader 2s linear infinite
-}
-
-@keyframes animloader {
-    0% {
-        left: 0;
-        transform: translate(-100%)
-    }
-
-    to {
-        left: 100%;
-        transform: translate(0)
-    }
 }
 
 ::-webkit-scrollbar {
