@@ -127,6 +127,8 @@ export default function Detail() {
   let seasons;
   if (filteredScript[0]) {
     seasons = Object.keys(filtrk);
+  } else {
+    seasons = Object.keys(filteredScript);
   }
 
   function getRatingClassName(rating) {
@@ -135,6 +137,8 @@ export default function Detail() {
     if (Number(rating) >= 7) return "green";
     return "";
   }
+
+  console.log(filteredScript[0] ? filteredScript[0] : filteredScript)
 
   return (
     <>
@@ -384,7 +388,22 @@ export default function Detail() {
                                     value={selectedEpisode}
                                     onChange={handleEpisodeChange}
                                   >
-                                    {filteredScript[0][selectedSeason].map(
+                                    {filteredScript[0] ? filteredScript[0][selectedSeason].map(
+                                      (opt, index) => (
+                                        <option
+                                          key={index}
+                                          value={
+                                            opt.url
+                                              ? opt.url
+                                              : opt.languages[0].sources[0].file
+                                          }
+                                        >
+                                          {opt.title
+                                            .replaceAll("სერია", "სერია ")
+                                            .replaceAll("ფლეიერი", "ფლეიერი ")}
+                                        </option>
+                                      )
+                                    ) : filteredScript[selectedSeason].map(
                                       (opt, index) => (
                                         <option
                                           key={index}
